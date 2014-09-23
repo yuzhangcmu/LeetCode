@@ -14,9 +14,6 @@ public class PostOrder {
      *     TreeNode(int x) { val = x; }
      * }
      */
-    
-
-    
     public ArrayList<Integer> postorderTraversal(TreeNode root) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         
