@@ -19,10 +19,11 @@ The height of the root is the height of the tree. The depth of a node is the len
 This is commonly needed in the manipulation of the various self-balancing trees, 
 AVL Trees in particular. The root node has depth zero, leaf nodes have height zero, 
 and a tree with only a single node (hence both a root and leaf) has depth and height zero. 
-Conventionally, an empty tree (tree with no nodes, if such are allowed) has depth and height −1.
+Conventionally, an empty tree (tree with no nodes, if such are allowed) has depth and height −1.[4]
 
 
 REF: 
 [1] http://xlinux.nist.gov/dads//HTML/perfectBinaryTree.html
 [2] http://courses.cs.vt.edu/~cs3114/Fall09/wmcquain/Notes/T03a.BinaryTreeTheorems.
 [3] http://courses.csail.mit.edu/6.006/fall09/lecture_notes/lecture04.pdf
+[4] http://www.cs.cmu.edu/~adamchik/15-121/lectures/Trees/trees.html
