@@ -1,11 +1,36 @@
 package Algorithms;
 
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+/** 
+ * REF: http://blog.csdn.net/fightforyourdream/article/details/16843303
+ * 
+ * http://blog.csdn.net/luckyxiaoqiang/article/details/7518888  轻松搞定面试中的二叉树题目 
+ * http://www.cnblogs.com/Jax/archive/2009/12/28/1633691.html  算法大全（3） 二叉树 
+ *  
+ * 1. 求二叉树中的节点个数: getNodeNumRec（递归），getNodeNum（迭代） 
+ * 2. 求二叉树的深度: getDepthRec（递归），getDepth  
+ * 3. 前序遍历，中序遍历，后序遍历: preorderTraversalRec, preorderTraversal, inorderTraversalRec, postorderTraversalRec 
+ * (https://en.wikipedia.org/wiki/Tree_traversal#Pre-order_2) 
+ * 4.分层遍历二叉树（按层次从上往下，从左往右）: levelTraversal, levelTraversalRec（递归解法！） 
+ * 5. 将二叉查找树变为有序的双向链表: convertBST2DLLRec, convertBST2DLL 
+ * 6. 求二叉树第K层的节点个数：getNodeNumKthLevelRec, getNodeNumKthLevel
+ *  
+ * 7. 求二叉树中叶子节点的个数：getNodeNumLeafRec, getNodeNumLeaf 
+ * 8. 判断两棵二叉树是否相同的树：isSameRec, isSame 
+ * 9. 判断二叉树是不是平衡二叉树：isAVLRec 
+ * 10. 求二叉树的镜像（破坏和不破坏原来的树两种情况）：mirrorRec, mirrorCopyRec 
+ * 10.1 判断两个树是否互相镜像：isMirrorRec 
+ * 11. 求二叉树中两个节点的最低公共祖先节点：getLastCommonParent, getLastCommonParentRec, getLastCommonParentRec2 
+ * 12. 求二叉树中节点的最大距离：getMaxDistanceRec 
+ * 13. 由前序遍历序列和中序遍历序列重建二叉树：rebuildBinaryTreeRec 
+ * 14. 判断二叉树是不是完全二叉树：isCompleteBinaryTree, isCompleteBinaryTreeRec 
+ * 15. 找出二叉树中最长连续子串(即全部往左的连续节点，或是全部往右的连续节点）
+ *  
+ */  
 
 public class TreeDemo {
     /* 
@@ -28,7 +53,9 @@ public class TreeDemo {
        / \  
       6   14  
      / \   \  
-    4   8   16      
+    4   8   16
+   /
+  0        
 */ 
         TreeNode r1 = new TreeNode(10);
         TreeNode r2 = new TreeNode(6);
@@ -47,6 +74,8 @@ public class TreeDemo {
         
         r4.left = r7;
         
+        System.out.println(getNodeNumKthLevelRec(r1, 5));
+        
 //      System.out.println(getNodeNumRec(null));
 //      System.out.println(getNodeNum(r1));
 //        System.out.println(getDepthRec(r1));
@@ -59,7 +88,7 @@ public class TreeDemo {
 //        inorderTraversalRec(r1);
 //        
 //        System.out.println();
-          inorderTraversal(r1);
+//          inorderTraversal(r1);
 //        postorderTraversalRec(r1);
 //        System.out.println();
 //        postorderTraversal(r1);
@@ -91,10 +120,10 @@ public class TreeDemo {
 //            ret = ret.right;
 //        }
         
-        System.out.println();
-        System.out.println(findLongest(r1));
-        System.out.println();
-        System.out.println(findLongest2(r1));
+//        System.out.println();
+//        System.out.println(findLongest(r1));
+//        System.out.println();
+//        System.out.println(findLongest2(r1));
         
     }
     
@@ -495,6 +524,98 @@ public class TreeDemo {
         }
         
         return root;
+    }
+
+/*
+ *  * 6. 求二叉树第K层的节点个数：getNodeNumKthLevelRec, getNodeNumKthLevel 
+ * */
+    public static int getNodeNumKthLevel(TreeNode root, int k) {
+        if (root == null || k <= 0) {
+            return 0;
+        }
+        
+        int level = 0;
+        
+        Queue<TreeNode> q = new LinkedList<TreeNode>();
+        q.offer(root);
+        
+        TreeNode dummy = new TreeNode(0);
+        int cnt = 0; // record the size of the level.
+        
+        q.offer(dummy);
+        while (!q.isEmpty()) {
+            TreeNode node = q.poll();
+            
+            if (node == dummy) {
+                level++;
+                if (level == k) {
+                    return cnt;
+                }
+                cnt = 0; // reset the cnt;
+                if (q.isEmpty()) {
+                    break;
+                }
+                q.offer(dummy);
+                continue;
+            }
+            
+            cnt++;
+            if (node.left != null) {
+                q.offer(node.left);
+            }
+            
+            if (node.right != null) {
+                q.offer(node.right);
+            }
+        }
+        
+        return 0;
+    }
+    
+    /*
+     *  * 6. 求二叉树第K层的节点个数：getNodeNumKthLevelRec, getNodeNumKthLevel 
+     * */
+    public static int getNodeNumKthLevelRec(TreeNode root, int k) {
+        if (root == null || k <= 0) {
+            return 0;
+        }
+        
+        if (k == 1) {
+            return 1;
+        }
+        
+        // 将左子树及右子树在K层的节点个数相加.
+        return getNodeNumKthLevelRec(root.left, k - 1) + getNodeNumKthLevelRec(root.right, k - 1);
+    }
+    
+    /*
+     * 把左子树和右子树的叶子节点加在一起即可
+     * */
+    public static int getNodeNumLeafRec(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        
+        if (root.left == null && root.right == null) {
+            return 1;
+        }
+        
+        return getNodeNumLeafRec(root.left) + getNodeNumLeafRec(root.right);
+    }
+    
+    /*
+     * 把左子树和右子树的叶子节点加在一起即可
+     * */
+    public static int getNodeNumLeaf(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        
+        if (root.left == null && root.right == null) {
+            return 1;
+        }
+        
+        return getNodeNumLeafRec(root.left) + getNodeNumLeafRec(root.right);
     }
     
     /*
