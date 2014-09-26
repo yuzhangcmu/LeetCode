@@ -43,12 +43,12 @@ public class TreeDemo {
         4   5   6      
     */  
     public static void main(String[] args) {
-//        TreeNode r1 = new TreeNode(1);
-//        TreeNode r2 = new TreeNode(2);
-//        TreeNode r3 = new TreeNode(3);
-//        TreeNode r4 = new TreeNode(4);
-//        TreeNode r5 = new TreeNode(5);
-//        TreeNode r6 = new TreeNode(6);
+        TreeNode r1 = new TreeNode(1);
+        TreeNode r2 = new TreeNode(2);
+        TreeNode r3 = new TreeNode(3);
+        TreeNode r4 = new TreeNode(4);
+        TreeNode r5 = new TreeNode(5);
+        TreeNode r6 = new TreeNode(6);
         
 /* 
        10  
@@ -59,12 +59,12 @@ public class TreeDemo {
    /
   0        
 */ 
-        TreeNode r1 = new TreeNode(10);
-        TreeNode r2 = new TreeNode(6);
-        TreeNode r3 = new TreeNode(14);
-        TreeNode r4 = new TreeNode(4);
-        TreeNode r5 = new TreeNode(8);
-        TreeNode r6 = new TreeNode(16);
+//        TreeNode r1 = new TreeNode(10);
+//        TreeNode r2 = new TreeNode(6);
+//        TreeNode r3 = new TreeNode(14);
+//        TreeNode r4 = new TreeNode(4);
+//        TreeNode r5 = new TreeNode(8);
+//        TreeNode r6 = new TreeNode(16);
         
         TreeNode r7 = new TreeNode(0);
         
@@ -72,9 +72,21 @@ public class TreeDemo {
         r1.right = r3;
         r2.left = r4;
         r2.right = r5;
-        //r3.right = r6;
+        r3.right = r6;
         
         r4.left = r7;
+        /* 
+        1  
+       / \  
+      2   3  
+     / \   \  
+    4   5   6      
+*/  
+        System.out.println(LACRec(r1, r2, r4).val);
+        System.out.println(LACRec(r1, r2, r6).val);
+        System.out.println(LACRec(r1, r4, r6).val);
+        System.out.println(LACRec(r1, r4, r4).val);
+        System.out.println(LACRec(r1, r3, r6).val);
         
         TreeNode t1 = new TreeNode(10);
         TreeNode t2 = new TreeNode(6);
@@ -95,21 +107,21 @@ public class TreeDemo {
         
         //System.out.println(isSame(r1, t1));
         
-        System.out.println(isAVLRec(r1));
-        
-        preorderTraversalRec(r1);
-        //mirrorRec(r1);
-        //TreeNode r1Mirror = mirror(r1);
-        
-        TreeNode r1MirrorCopy = mirrorCopy(r1);
-        System.out.println();
-        //preorderTraversalRec(r1Mirror);
-        preorderTraversalRec(r1MirrorCopy);
-        
-        System.out.println();
-        
-        System.out.println(isMirrorRec(r1, r1MirrorCopy));
-        System.out.println(isMirror(r1, r1MirrorCopy));
+//        System.out.println(isAVLRec(r1));
+//        
+//        preorderTraversalRec(r1);
+//        //mirrorRec(r1);
+//        //TreeNode r1Mirror = mirror(r1);
+//        
+//        TreeNode r1MirrorCopy = mirrorCopy(r1);
+//        System.out.println();
+//        //preorderTraversalRec(r1Mirror);
+//        preorderTraversalRec(r1MirrorCopy);
+//        
+//        System.out.println();
+//        
+//        System.out.println(isMirrorRec(r1, r1MirrorCopy));
+//        System.out.println(isMirror(r1, r1MirrorCopy));
         
         
         //System.out.println(getNodeNumKthLevelRec(r1, 5));
@@ -1018,13 +1030,69 @@ public class TreeDemo {
     
     /*
      * 11. 求二叉树中两个节点的最低公共祖先节点：
-     * getLastCommonParent, 
-     * getLastCommonParentRec, 
-     * getLastCommonParentRec2 
+     * Recursion Version:
+     * LACRec 
+     * 1. If found in the left tree, return the Ancestor.
+     * 2. If found in the right tree, return the Ancestor.
+     * 3. If Didn't find any of the node, return null.
+     * 4. If found both in the left and the right tree, return the root.
      * */
-    public static TreeNode getLastCommonParentRec(TreeNode root, TreeNode node1, TreeNode node2) {
+    public static TreeNode LACRec(TreeNode root, TreeNode node1, TreeNode node2) {
+        if (root == null || node1 == null || node2 == null) {
+            return null;
+        }
         
+        // If any of the node is the root, just return the root.
+        if (root == node1 || root == node2) {
+            return root;
+        }
         
+        // if no node is in the node, just recursively find it in LEFT and RIGHT tree.
+        TreeNode left = LACRec(root.left, node1, node2);
+        TreeNode right = LACRec(root.right, node1, node2);
+        
+        if (left == null) {  // If didn't found in the left tree, then just return it from right.
+            return right;
+        } else if (right == null) { // Or if didn't found in the right tree, then just return it from the left side.
+            return left;
+        } 
+        
+        // if both right and right found a node, just return the root as the Common Ancestor.
+        return root;
+    }
+    
+    /*
+     * 11. 求BST中两个节点的最低公共祖先节点：
+     * Recursive version:
+     * LCABst 
+     * 
+     * 1. If found in the left tree, return the Ancestor.
+     * 2. If found in the right tree, return the Ancestor.
+     * 3. If Didn't find any of the node, return null.
+     * 4. If found both in the left and the right tree, return the root.
+     * */
+    public static TreeNode LCABstRec(TreeNode root, TreeNode node1, TreeNode node2) {
+        if (root == null || node1 == null || node2 == null) {
+            return null;
+        }
+        
+        // If any of the node is the root, just return the root.
+        if (root == node1 || root == node2) {
+            return root;
+        }
+        
+        int min = Math.min(node1.val, node2.val);
+        int max = Math.max(node1.val, node2.val);
+        
+        // if the values are smaller than the root value, just search them in the left tree.
+        if (root.val > max) {
+            return LCABstRec(root.left, node1, node2);
+        } else if (root.val < min) {
+        // if the values are larger than the root value, just search them in the right tree.    
+            return LCABstRec(root.right, node1, node2);
+        }
+        
+        // if root is in the middle, just return the root.
         return root;
     }
 
