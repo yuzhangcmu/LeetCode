@@ -5,30 +5,32 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-/** 
- * REF: http://blog.csdn.net/fightforyourdream/article/details/16843303
- * 
- * http://blog.csdn.net/luckyxiaoqiang/article/details/7518888  轻松搞定面试中的二叉树题目 
- * http://www.cnblogs.com/Jax/archive/2009/12/28/1633691.html  算法大全（3） 二叉树 
+/**
+ * REFS:  
+ * http://blog.csdn.net/fightforyourdream/article/details/16843303 面试大总结之二：Java搞定面试中的二叉树题目
+ * http://blog.csdn.net/luckyxiaoqiang/article/details/7518888          轻松搞定面试中的二叉树题目 
+ * http://www.cnblogs.com/Jax/archive/2009/12/28/1633691.html           算法大全（3） 二叉树 
  *  
  * 1. 求二叉树中的节点个数: getNodeNumRec（递归），getNodeNum（迭代） 
  * 2. 求二叉树的深度: getDepthRec（递归），getDepth  
  * 3. 前序遍历，中序遍历，后序遍历: preorderTraversalRec, preorderTraversal, inorderTraversalRec, postorderTraversalRec 
  * (https://en.wikipedia.org/wiki/Tree_traversal#Pre-order_2) 
- * 4.分层遍历二叉树（按层次从上往下，从左往右）: levelTraversal, levelTraversalRec（递归解法！） 
+ * 4.分层遍历二叉树（按层次从上往下，从左往右）: levelTraversal, levelTraversalRec（递归解法） 
  * 5. 将二叉查找树变为有序的双向链表: convertBST2DLLRec, convertBST2DLL 
  * 6. 求二叉树第K层的节点个数：getNodeNumKthLevelRec, getNodeNumKthLevel
- *  
  * 7. 求二叉树中叶子节点的个数：getNodeNumLeafRec, getNodeNumLeaf 
- * 8. 判断两棵二叉树是否相同的树：isSameRec, isSame 
+ * 8. 判断两棵二叉树是否相同的树：isSameRec, isSame
  * 9. 判断二叉树是不是平衡二叉树：isAVLRec 
- * 10. 求二叉树的镜像（破坏和不破坏原来的树两种情况）：mirrorRec, mirrorCopyRec 
- * 10.1 判断两个树是否互相镜像：isMirrorRec 
+ * 10. 求二叉树的镜像（破坏和不破坏原来的树两种情况）：
+ *     mirrorRec, mirrorCopyRec
+ *     mirror, mirrorCopy 
+ * 10.1 判断两个树是否互相镜像：isMirrorRec isMirror
+ *  
  * 11. 求二叉树中两个节点的最低公共祖先节点：getLastCommonParent, getLastCommonParentRec, getLastCommonParentRec2 
  * 12. 求二叉树中节点的最大距离：getMaxDistanceRec 
  * 13. 由前序遍历序列和中序遍历序列重建二叉树：rebuildBinaryTreeRec 
  * 14. 判断二叉树是不是完全二叉树：isCompleteBinaryTree, isCompleteBinaryTreeRec 
- * 15. 找出二叉树中最长连续子串(即全部往左的连续节点，或是全部往右的连续节点）
+ * 15. 找出二叉树中最长连续子串(即全部往左的连续节点，或是全部往右的连续节点）findLongest
  *  
  */  
 
@@ -70,15 +72,53 @@ public class TreeDemo {
         r1.right = r3;
         r2.left = r4;
         r2.right = r5;
-        r3.right = r6;
+        //r3.right = r6;
         
         r4.left = r7;
         
-        System.out.println(getNodeNumKthLevelRec(r1, 5));
+        TreeNode t1 = new TreeNode(10);
+        TreeNode t2 = new TreeNode(6);
+        TreeNode t3 = new TreeNode(14);
+        TreeNode t4 = new TreeNode(4);
+        TreeNode t5 = new TreeNode(8);
+        TreeNode t6 = new TreeNode(16);
+        
+        TreeNode t7 = new TreeNode(0);
+        
+        t1.left = t2;
+        t1.right = t3;
+        t2.left = t4;
+        t2.right = t5;
+        t3.right = t6;
+        
+        t4.left = t7;
+        
+        //System.out.println(isSame(r1, t1));
+        
+        System.out.println(isAVLRec(r1));
+        
+        preorderTraversalRec(r1);
+        //mirrorRec(r1);
+        //TreeNode r1Mirror = mirror(r1);
+        
+        TreeNode r1MirrorCopy = mirrorCopy(r1);
+        System.out.println();
+        //preorderTraversalRec(r1Mirror);
+        preorderTraversalRec(r1MirrorCopy);
+        
+        System.out.println();
+        
+        System.out.println(isMirrorRec(r1, r1MirrorCopy));
+        System.out.println(isMirror(r1, r1MirrorCopy));
+        
+        
+        //System.out.println(getNodeNumKthLevelRec(r1, 5));
+        
+        //System.out.println(getNodeNumLeaf(r1));
         
 //      System.out.println(getNodeNumRec(null));
 //      System.out.println(getNodeNum(r1));
-//        System.out.println(getDepthRec(r1));
+        //System.out.println(getDepthRec(null));
 //        System.out.println(getDepth(r1));
 //        
 //        preorderTraversalRec(r1);
@@ -124,6 +164,7 @@ public class TreeDemo {
 //        System.out.println(findLongest(r1));
 //        System.out.println();
 //        System.out.println(findLongest2(r1));
+        
         
     }
     
@@ -180,7 +221,7 @@ public class TreeDemo {
     
     public static int getDepthRec(TreeNode root) {
         if (root == null) {
-            return 0;
+            return -1;
         }
         
         return Math.max(getDepthRec(root.left), getDepthRec(root.right)) + 1;
@@ -207,7 +248,7 @@ public class TreeDemo {
         q.offer(root);
         q.offer(dummy);
         
-        int depth = 0;
+        int depth = -1;
         while (!q.isEmpty()) {
             TreeNode curr = q.poll();
             if (curr == dummy) {
@@ -589,7 +630,7 @@ public class TreeDemo {
     }
     
     /*
-     * 把左子树和右子树的叶子节点加在一起即可
+     * 7. getNodeNumLeafRec  把左子树和右子树的叶子节点加在一起即可
      * */
     public static int getNodeNumLeafRec(TreeNode root) {
         if (root == null) {
@@ -603,22 +644,392 @@ public class TreeDemo {
         return getNodeNumLeafRec(root.left) + getNodeNumLeafRec(root.right);
     }
     
-    /*
-     * 把左子树和右子树的叶子节点加在一起即可
+    /* 7. getNodeNumLeaf
+     * 随便使用一种遍历方法都可以，比如，中序遍历。
+     * inorderTraversal，判断是不是叶子节点。
      * */
     public static int getNodeNumLeaf(TreeNode root) {
         if (root == null) {
             return 0;
         }
         
-        if (root.left == null && root.right == null) {
-            return 1;
+        int cnt = 0;
+        
+        // we can use inorderTraversal travesal to do it.
+        Stack<TreeNode> s = new Stack<TreeNode>();
+        TreeNode cur = root;
+        
+        while (true) {
+            while (cur != null) {
+                s.push(cur);
+                cur = cur.left;
+            }
+            
+            if (s.isEmpty()) {
+                break;
+            }
+            
+            // all the left child has been put into the stack, let's deal with the 
+            // current node.
+            cur = s.pop();
+            if (cur.left == null && cur.right == null) {
+                cnt++;
+            }
+            cur = cur.right;
         }
         
-        return getNodeNumLeafRec(root.left) + getNodeNumLeafRec(root.right);
+        return cnt;
     }
     
     /*
+     * 8. 判断两棵二叉树是否相同的树。 
+     * 递归解法：  
+     * （1）如果两棵二叉树都为空，返回真 
+     * （2）如果两棵二叉树一棵为空，另一棵不为空，返回假  
+     * （3）如果两棵二叉树都不为空，如果对应的左子树和右子树都同构返回真，其他返回假 
+     * */
+    public static boolean isSameRec(TreeNode r1, TreeNode r2) {
+        // both are null.
+        if (r1 == null && r2 == null) {
+            return true;
+        }
+        
+        // one is null.
+        if (r1 == null || r2 == null) {
+            return false;
+        }
+        
+        // 1. the value of the root should be the same;
+        // 2. the left tree should be the same.
+        // 3. the right tree should be the same.
+        return r1.val == r2.val && 
+                isSameRec(r1.left, r2.left) && isSameRec(r1.right, r2.right);
+    }
+    
+    /*
+     * 8. 判断两棵二叉树是否相同的树。
+     * 迭代解法 
+     * 我们直接用中序遍历来比较就好啦 
+     * */
+    public static boolean isSame(TreeNode r1, TreeNode r2) {
+        // both are null.
+        if (r1 == null && r2 == null) {
+            return true;
+        }
+        
+        // one is null.
+        if (r1 == null || r2 == null) {
+            return false;
+        }
+        
+        Stack<TreeNode> s1 = new Stack<TreeNode>();
+        Stack<TreeNode> s2 = new Stack<TreeNode>();
+        
+        TreeNode cur1 = r1;
+        TreeNode cur2 = r2;
+        
+        while (true) {
+            while (cur1 != null && cur2 != null) {
+                s1.push(cur1);
+                s2.push(cur2);
+                cur1 = cur1.left;
+                cur2 = cur2.left;
+            }
+            
+            if (cur1 != null || cur2 != null) {
+                return false;
+            }
+            
+            if (s1.isEmpty() && s2.isEmpty()) {
+                break;
+            }
+            
+            cur1 = s1.pop();
+            cur2 = s2.pop();
+            if (cur1.val != cur2.val) {
+                return false;
+            }
+            
+            cur1 = cur1.right;
+            cur2 = cur2.right;
+        }
+        
+        return true;
+    }
+    
+/*
+ * 
+ *  9. 判断二叉树是不是平衡二叉树：isAVLRec
+ *     1. 左子树，右子树的高度差不能超过1
+ *     2. 左子树，右子树都是平衡二叉树。 
+ *      
+ */
+    public static boolean isAVLRec(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        
+        // 左子树，右子树都必须是平衡二叉树。 
+        if (!isAVLRec(root.left) || !isAVLRec(root.right)) {
+            return false;
+        }
+        
+        int dif = Math.abs(getDepthRec(root.left) - getDepthRec(root.right));
+        if (dif > 1) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /** 
+     * 10. 求二叉树的镜像 递归解法：
+     * 
+     *   (1) 破坏原来的树
+     *   
+     *      1               1
+     *     /                 \
+     *    2     ----->        2
+     *     \                 /
+     *      3               3
+     * */  
+    public static TreeNode mirrorRec(TreeNode root) {  
+        if (root == null) {
+            return null;
+        }
+        
+        // 先把左右子树分别镜像,并且交换它们
+        TreeNode tmp = root.right;
+        root.right = mirrorRec(root.left);
+        root.left = mirrorRec(tmp);
+        
+        return root;
+    }  
+    
+    /** 
+     * 10. 求二叉树的镜像 Iterator解法：
+     * 
+     *   (1) 破坏原来的树
+     *   
+     *      1               1
+     *     /                 \
+     *    2     ----->        2
+     *     \                 /
+     *      3               3
+     *      
+     *  应该可以使用任何一种Traversal 方法。 
+     *  我们现在可以试看看使用最简单的前序遍历。
+     * */  
+    public static TreeNode mirror(TreeNode root) {  
+        if (root == null) {
+            return null;
+        }
+        
+        Stack<TreeNode> s = new Stack<TreeNode>();
+        s.push(root);
+        
+        while (!s.isEmpty()) {
+            TreeNode cur = s.pop();
+            
+            // 交换当前节点的左右节点
+            TreeNode tmp = cur.left;
+            cur.left = cur.right;
+            cur.right = tmp;
+            
+            // traversal 左节点，右节点。
+            if (cur.right != null) {
+                s.push(cur.right);
+            }
+            
+            if (cur.left != null) {
+                s.push(cur.left);
+            }
+        }
+        
+        return root;
+    }  
+    
+    /** 
+     * 10. 求二叉树的镜像 Iterator解法：
+     * 
+     *   (2) 创建一个新的树
+     *   
+     *      1               1
+     *     /                 \
+     *    2     ----->        2
+     *     \                 /
+     *      3               3
+     *      
+     *  应该可以使用任何一种Traversal 方法。 
+     *  我们现在可以试看看使用最简单的前序遍历。
+     *  前序遍历我们可以立刻把新建好的左右节点创建出来，比较方便 
+     * */  
+    public static TreeNode mirrorCopy(TreeNode root) {  
+        if (root == null) {
+            return null;
+        }
+        
+        Stack<TreeNode> s = new Stack<TreeNode>();
+        Stack<TreeNode> sCopy = new Stack<TreeNode>();
+        s.push(root);
+        
+        TreeNode rootCopy = new TreeNode(root.val);
+        sCopy.push(rootCopy);
+        
+        while (!s.isEmpty()) {
+            TreeNode cur = s.pop();
+            TreeNode curCopy = sCopy.pop();
+            
+            // traversal 左节点，右节点。
+            if (cur.right != null) {
+                
+                // copy 在这里做比较好，因为我们可以容易地找到它的父节点
+                TreeNode leftCopy = new TreeNode(cur.right.val);
+                curCopy.left = leftCopy;
+                s.push(cur.right);
+                sCopy.push(curCopy.left);
+            }
+            
+            if (cur.left != null) {
+                // copy 在这里做比较好，因为我们可以容易地找到它的父节点
+                TreeNode rightCopy = new TreeNode(cur.left.val);
+                curCopy.right = rightCopy;
+                s.push(cur.left);
+                sCopy.push(curCopy.right);
+            }
+        }
+        
+        return rootCopy;
+    }  
+    
+    /** 
+     * 10. 求二叉树的镜像 递归解法：
+     * 
+     *   (1) 不破坏原来的树，新建一个树 
+     *   
+     *      1               1
+     *     /                 \
+     *    2     ----->        2
+     *     \                 /
+     *      3               3
+     * */  
+    public static TreeNode mirrorCopyRec(TreeNode root) {  
+        if (root == null) {
+            return null;
+        }
+        
+        // 先把左右子树分别镜像,并且把它们连接到新建的root节点。
+        TreeNode rootCopy = new TreeNode(root.val);
+        rootCopy.left = mirrorCopyRec(root.right);
+        rootCopy.right = mirrorCopyRec(root.left);
+        
+        return rootCopy;
+    }  
+    
+    /*
+     * 10.1. 判断两个树是否互相镜像
+     *  (1) 根必须同时为空，或是同时不为空
+     * 
+     * 如果根不为空:
+     *  (1).根的值一样
+     *  (2).r1的左树是r2的右树的镜像
+     *  (3).r1的右树是r2的左树的镜像  
+     * */
+    public static boolean isMirrorRec(TreeNode r1, TreeNode r2){  
+        // 如果2个树都是空树
+        if (r1 == null && r2 == null) {
+            return true;
+        }
+        
+        // 如果其中一个为空，则返回false.
+        if (r1 == null || r2 == null) {
+            return false;
+        }
+        
+        // If both are not null, they should be:
+        // 1. have same value for root.
+        // 2. R1's left tree is the mirror of R2's right tree;
+        // 3. R2's right tree is the mirror of R1's left tree;
+        return r1.val == r2.val 
+                && isMirrorRec(r1.left, r2.right)
+                && isMirrorRec(r1.right, r2.left);
+    }
+    
+    /*
+     * 10.1. 判断两个树是否互相镜像 Iterator 做法
+     *  (1) 根必须同时为空，或是同时不为空
+     * 
+     * 如果根不为空:
+     * traversal 整个树，判断它们是不是镜像，每次都按照反向来traversal  
+     * (1). 当前节点的值相等
+     * (2). 当前节点的左右节点要镜像，
+     *    无论是左节点，还是右节点，对应另外一棵树的镜像位置，可以同时为空，或是同时不为空，但是不可以一个为空，一个不为空。      
+     * */
+    public static boolean isMirror(TreeNode r1, TreeNode r2){  
+        // 如果2个树都是空树
+        if (r1 == null && r2 == null) {
+            return true;
+        }
+        
+        // 如果其中一个为空，则返回false.
+        if (r1 == null || r2 == null) {
+            return false;
+        }
+        
+        Stack<TreeNode> s1 = new Stack<TreeNode>();
+        Stack<TreeNode> s2 = new Stack<TreeNode>();
+        
+        s1.push(r1);
+        s2.push(r2);
+        
+        while (!s1.isEmpty() && !s2.isEmpty()) {
+            TreeNode cur1 = s1.pop();
+            TreeNode cur2 = s2.pop();
+            
+            // 弹出的节点的值必须相等 
+            if (cur1.val != cur2.val) {
+                return false;
+            }
+            
+            // tree1的左节点，tree2的右节点，可以同时不为空，也可以同时为空，否则返回false.
+            TreeNode left1 = cur1.left;
+            TreeNode right1 = cur1.right;
+            TreeNode left2 = cur2.left;
+            TreeNode right2 = cur2.right;
+            
+            if (left1 != null && right2 != null) {
+                s1.push(left1);
+                s2.push(right2);
+            } else if (!(left1 == null && right2 == null)) {
+                return false;
+            }
+            
+            // tree1的左节点，tree2的右节点，可以同时不为空，也可以同时为空，否则返回false.
+            if (right1 != null && left2 != null) {
+                s1.push(right1);
+                s2.push(left2);
+            } else if (!(right1 == null && left2 == null)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }  
+    
+    /*
+     * 11. 求二叉树中两个节点的最低公共祖先节点：
+     * getLastCommonParent, 
+     * getLastCommonParentRec, 
+     * getLastCommonParentRec2 
+     * */
+    public static TreeNode getLastCommonParentRec(TreeNode root, TreeNode node1, TreeNode node2) {
+        
+        
+        return root;
+    }
+
+    /*
+     * 15. findLongest
      * 第一种解法：
      * 返回左边最长，右边最长，及左子树最长，右子树最长。
      * */
