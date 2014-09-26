@@ -89,7 +89,6 @@ public class LCA {
         System.out.println(cnt);
     }
     
-    
     public TreeNode getLCA(TreeNode root, TreeNode node1, TreeNode node2) {
         cnt++;
         if (root == null || node1 == root || root == node2) {

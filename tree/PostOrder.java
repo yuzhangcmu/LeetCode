@@ -1,7 +1,9 @@
-package Algorithms;
+package Algorithms.tree;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
+
+import Algorithms.TreeNode;
 
 
 public class PostOrder {

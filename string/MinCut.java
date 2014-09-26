@@ -1,4 +1,4 @@
-package Algorithms;
+package Algorithms.string;
 
 public class MinCut {
     public int minCut(String s) {
