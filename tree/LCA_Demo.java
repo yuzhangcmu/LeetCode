@@ -7,16 +7,16 @@ import java.util.Iterator;
 /**
  * REFS:  
  * http://blog.csdn.net/fightforyourdream/article/details/16843303 面试大总结之二：Java搞定面试中的二叉树题目
- * http://blog.csdn.net/luckyxiaoqiang/article/details/7518888          轻松搞定面试中的二叉树题目 
- * http://www.cnblogs.com/Jax/archive/2009/12/28/1633691.html           算法大全（3） 二叉树 
+ * http://blog.csdn.net/luckyxiaoqiang/article/details/7518888     轻松搞定面试中的二叉树题目 
+ * http://www.cnblogs.com/Jax/archive/2009/12/28/1633691.html      算法大全（3） 二叉树 
  
  * 1. 求二叉树中两个节点的最低公共祖先节点：
- *      LAC        求解最小公共祖先, 使用list来存储path.
+ *      (1) LAC        求解最小公共祖先, 使用list来存储path.
  *        算法复杂度是：O(n), 这里遍历2次，加一次对最高为H的list的遍历. 并且有O(h)的空间复杂度。 
- *      LCABstRec  递归求解BST树.
- *        算法复杂度: O(logN).
- *      LCARec     递归算法 .
+ *      (2) LCARec     递归算法 .
  *        算法复杂度是：O(n)
+ *      (3) LCABstRec  递归求解BST树.
+ *        算法复杂度: O(logN).
  */  
 
 public class LCA_Demo {
