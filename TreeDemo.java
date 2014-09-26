@@ -1,9 +1,11 @@
 package Algorithms;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+
 
 /**
  * REFS:  
@@ -25,8 +27,11 @@ import java.util.Stack;
  *     mirrorRec, mirrorCopyRec
  *     mirror, mirrorCopy 
  * 10.1 判断两个树是否互相镜像：isMirrorRec isMirror
- *  
- * 11. 求二叉树中两个节点的最低公共祖先节点：getLastCommonParent, getLastCommonParentRec, getLastCommonParentRec2 
+ * 11. 求二叉树中两个节点的最低公共祖先节点：
+ *      LAC        求解最小公共祖先, 使用list来存储path.
+ *      LCABstRec  递归求解BST树.
+ *      LCARec     递归算法 .
+ *      
  * 12. 求二叉树中节点的最大距离：getMaxDistanceRec 
  * 13. 由前序遍历序列和中序遍历序列重建二叉树：rebuildBinaryTreeRec 
  * 14. 判断二叉树是不是完全二叉树：isCompleteBinaryTree, isCompleteBinaryTreeRec 
@@ -50,7 +55,7 @@ public class TreeDemo {
         TreeNode r5 = new TreeNode(5);
         TreeNode r6 = new TreeNode(6);
         
-/* 
+/*                    
        10  
        / \  
       6   14  
@@ -59,6 +64,13 @@ public class TreeDemo {
    /
   0        
 */ 
+        /* 
+        1  
+       / \  
+      2   3  
+     / \   \  
+    4   5   6      
+*/  
 //        TreeNode r1 = new TreeNode(10);
 //        TreeNode r2 = new TreeNode(6);
 //        TreeNode r3 = new TreeNode(14);
@@ -75,19 +87,7 @@ public class TreeDemo {
         r3.right = r6;
         
         r4.left = r7;
-        /* 
-        1  
-       / \  
-      2   3  
-     / \   \  
-    4   5   6      
-*/  
-        System.out.println(LACRec(r1, r2, r4).val);
-        System.out.println(LACRec(r1, r2, r6).val);
-        System.out.println(LACRec(r1, r4, r6).val);
-        System.out.println(LACRec(r1, r4, r4).val);
-        System.out.println(LACRec(r1, r3, r6).val);
-        
+
         TreeNode t1 = new TreeNode(10);
         TreeNode t2 = new TreeNode(6);
         TreeNode t3 = new TreeNode(14);
@@ -104,6 +104,28 @@ public class TreeDemo {
         t3.right = t6;
         
         t4.left = t7;
+        
+        /* 
+        10  
+        / \  
+       6   14  
+      / \   \  
+     4   8   16
+    /
+   0        
+ */ 
+        System.out.println(LCABstRec(t1, t2, t4).val);
+        System.out.println(LCABstRec(t1, t2, t6).val);
+        System.out.println(LCABstRec(t1, t4, t6).val);
+        System.out.println(LCABstRec(t1, t4, t7).val);
+        System.out.println(LCABstRec(t1, t3, t6).val);
+        
+        System.out.println(LCA(t1, t2, t4).val);
+        System.out.println(LCA(t1, t2, t6).val);
+        System.out.println(LCA(t1, t4, t6).val);
+        System.out.println(LCA(t1, t4, t7).val);
+        System.out.println(LCA(t1, t3, t6).val);
+        System.out.println(LCA(t1, t6, t6).val);
         
         //System.out.println(isSame(r1, t1));
         
@@ -1094,6 +1116,73 @@ public class TreeDemo {
         
         // if root is in the middle, just return the root.
         return root;
+    }
+    
+    /*
+     * 解法1. 记录下path,并且比较之:
+     * LAC
+     * http://www.geeksforgeeks.org/lowest-common-ancestor-binary-tree-set-1/
+     * */
+    public static TreeNode LCA(TreeNode root, TreeNode r1, TreeNode r2) {
+        // If the nodes have one in the root, just return the root.
+        if (root == null || r1 == null || r2 == null) {
+            return null;
+        }
+        
+        ArrayList<TreeNode> list1 = new ArrayList<TreeNode>();
+        ArrayList<TreeNode> list2 = new ArrayList<TreeNode>();
+        
+        boolean find1 = LCAPath(root, r1, list1);
+        boolean find2 = LCAPath(root, r2, list2);
+        
+        // If didn't find any of the node, just return a null.
+        if (!find1 || !find2) {
+            return null;
+        }
+        
+        // 注意: 使用Iterator 对于linkedlist可以提高性能。
+        // 所以 统一使用Iterator 来进行操作。
+        Iterator<TreeNode> iter1 = list1.iterator();
+        Iterator<TreeNode> iter2 = list2.iterator();
+        
+        TreeNode last = null;
+        while (iter1.hasNext() && iter2.hasNext()) {
+            TreeNode tmp1 = iter1.next();
+            TreeNode tmp2 = iter2.next();
+            
+            if (tmp1 != tmp2) {
+                return last;
+            }
+            
+            last = tmp1;
+        }
+        
+        // If never find any node which is different, means Node 1 and Node 2 are the same one.
+        // so just return the last one.
+        return last;
+    }
+    
+    public static boolean LCAPath(TreeNode root, TreeNode node, ArrayList<TreeNode> path) {
+        // if didn't find, we should return a empty path.
+        if (root == null || node == null) {
+            return false;
+        }
+        
+        // First add the root node.
+        path.add(root);
+        
+        // if the node is in the left side.
+        if (root != node 
+                && !LCAPath(root.left, node, path)
+                && !LCAPath(root.right, node, path)
+                ) {
+            // Didn't find the node. should remove the node added before.
+            path.remove(root);
+            return false;
+        }
+        
+        // found
+        return true;
     }
 
     /*
