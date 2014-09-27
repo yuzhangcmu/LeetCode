@@ -1,4 +1,4 @@
-package Algorithms;
+package Algorithms.tree;
 public class TreeLinkNode {
     int val;
     TreeLinkNode left, right, next;

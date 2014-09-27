@@ -2,6 +2,8 @@ package Algorithms;
 
 import java.util.ArrayDeque;
 
+import Algorithms.tree.TreeNode;
+
 public class IsSymmetric {
     public boolean isSymmetric(TreeNode root) {
         if (root == null) {

@@ -1,4 +1,5 @@
-package Algorithms;
+@@ -1,1260 +0,0 @@
+package Algorithms.tree;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -1257,4 +1258,4 @@ public class TreeDemo {
 
         return ret;
     }
-}
+} 

@@ -1,4 +1,7 @@
 package Algorithms;
+
+import Algorithms.tree.TreeLinkNode;
+
 public class Populate2 {
     public static void main(String[] args) {
         TreeLinkNode root = new TreeLinkNode(2);

@@ -1,5 +1,7 @@
 package Algorithms;
 
+import Algorithms.tree.TreeNode;
+
 public class Recover {
     private TreeNode big = null;
     private TreeNode small = null;

@@ -1,6 +1,8 @@
 package Algorithms;
 import java.util.Stack;
 
+import Algorithms.tree.TreeNode;
+
 
 
 public class Flatten {

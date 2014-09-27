@@ -2,6 +2,8 @@ package Algorithms;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import Algorithms.tree.TreeNode;
+
 
 public class InOrderTraversal {
     public ArrayList<Integer> inorderTraversal(TreeNode root) {
