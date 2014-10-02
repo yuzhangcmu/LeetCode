@@ -66,8 +66,6 @@ public class LargestCommonSubtrees {
             return null;
         }
 
-        ArrayList<ArrayList<TreeNode>> ret = new ArrayList<ArrayList<TreeNode>>();
-        
         // store all the tree nodes to a arrayList.
         ArrayList<TreeNode> nodes = new ArrayList<TreeNode>();
         traversalTree(root, nodes);
@@ -90,11 +88,6 @@ public class LargestCommonSubtrees {
                 int num = compareTree(nodes.get(i), nodes.get(j), hash);
                 if (num > maxNum) {
                     maxNum = num;
-                    ArrayList<TreeNode> iden = new ArrayList<TreeNode>();
-                    iden.add(nodes.get(i));
-                    iden.add(nodes.get(j));
-
-                    ret.add(iden);
                     r1 = nodes.get(i);
                     r2 = nodes.get(j);
                 }
