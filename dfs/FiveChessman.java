@@ -76,6 +76,9 @@ public class FiveChessman {
     }
 
     // row, col 代表我们现在正在扫描的点的坐标 
+    // side 记录目前是哪一方的棋子
+    // direction 记录扫描方向，有四个方向扫描：右，右下，左下，下。 
+    // num: 代表扫描到第几个棋子了。
     public static Coordinate findWinHelp(int[][] in, int col, int row, int side, int direction, Visit[][] visit, int num) {
         // 扫描不可以超过范围
         if (col >= in.length || row >= in.length || row < 0 || col < 0) {
@@ -87,6 +90,7 @@ public class FiveChessman {
             return null;
         }
 
+        // 必须是同边的棋子。例如，都是1，或都是2.
         if (side != in[row][col]) {
             return null;
         }
@@ -96,10 +100,12 @@ public class FiveChessman {
             return new Coordinate(col, row);
         }
         
+        // 如果未设置标记，新建标记。
         if (visit[row][col] == null) {
             visit[row][col] = new Visit(false, false, false, false);
         }
 
+        // 对各个方向进行不同的搜索方向。 
         if (direction ==  0) {
             if (visit[row][col].right) {
                 return null;
