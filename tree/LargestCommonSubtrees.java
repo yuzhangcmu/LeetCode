@@ -89,6 +89,7 @@ public class LargestCommonSubtrees {
                 }
                 int num = compareTree(nodes.get(i), nodes.get(j), hash);
                 if (num > maxNum) {
+                    maxNum = num;
                     ArrayList<TreeNode> iden = new ArrayList<TreeNode>();
                     iden.add(nodes.get(i));
                     iden.add(nodes.get(j));
