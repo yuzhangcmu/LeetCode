@@ -122,7 +122,6 @@ public class FiveChessman {
                 return null;
             }
 
-
             visit[row][col].rightDown = true;
 
             // right down
