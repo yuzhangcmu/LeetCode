@@ -72,33 +72,6 @@ public class MergeSort {
         return ret;
     }
 
-    public static void mergeSort2(int[] data) {
-        // parameter valid judge.
-        if (data == null) {
-            return null;
-        }
-
-        // the base case.
-        int len = data.length;
-        if (len <= 1) {
-            return data;
-        }
-
-        // divide into two arrays.
-        // create left half and right half.
-        int left[] = new int[len/2];
-        int right[] = new int[len - len/2];
-
-        System.arraycopy(data, 0, left, 0, len/2);
-        System.arraycopy(data, len/2, right, 0, len - len/2);
-
-        // call itself to sort left half
-        left = mergeSort(left);
-        right = mergeSort(right);
-        
-        return merge(left, right);
-    }
-
     public static void main(String[] args) {
         int[] a = new int[SIZE];
         for (int i = 0; i < SIZE; i++)

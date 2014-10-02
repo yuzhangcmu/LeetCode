@@ -1,9 +1,9 @@
-@@ -1,1260 +0,0 @@
 package Algorithms.tree;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -32,8 +32,8 @@ import java.util.Stack;
  *      LAC        求解最小公共祖先, 使用list来存储path.
  *      LCABstRec  递归求解BST树.
  *      LCARec     递归算法 .
- *      
  * 12. 求二叉树中节点的最大距离：getMaxDistanceRec 
+ * 
  * 13. 由前序遍历序列和中序遍历序列重建二叉树：rebuildBinaryTreeRec 
  * 14. 判断二叉树是不是完全二叉树：isCompleteBinaryTree, isCompleteBinaryTreeRec 
  * 15. 找出二叉树中最长连续子串(即全部往左的连续节点，或是全部往右的连续节点）findLongest
@@ -98,6 +98,12 @@ public class TreeDemo {
         
         TreeNode t7 = new TreeNode(0);
         
+        TreeNode t8 = new TreeNode(0);
+        TreeNode t9 = new TreeNode(0);
+        TreeNode t10 = new TreeNode(0);
+        TreeNode t11 = new TreeNode(0);
+        
+        
         t1.left = t2;
         t1.right = t3;
         t2.left = t4;
@@ -105,6 +111,12 @@ public class TreeDemo {
         t3.right = t6;
         
         t4.left = t7;
+        
+        // test distance
+        t5.right = t8;
+        t8.right = t9;
+        t9.right = t10;
+        t10.right = t11;
         
         /* 
         10  
@@ -115,18 +127,20 @@ public class TreeDemo {
     /
    0        
  */ 
-        System.out.println(LCABstRec(t1, t2, t4).val);
-        System.out.println(LCABstRec(t1, t2, t6).val);
-        System.out.println(LCABstRec(t1, t4, t6).val);
-        System.out.println(LCABstRec(t1, t4, t7).val);
-        System.out.println(LCABstRec(t1, t3, t6).val);
+//        System.out.println(LCABstRec(t1, t2, t4).val);
+//        System.out.println(LCABstRec(t1, t2, t6).val);
+//        System.out.println(LCABstRec(t1, t4, t6).val);
+//        System.out.println(LCABstRec(t1, t4, t7).val);
+//        System.out.println(LCABstRec(t1, t3, t6).val);
+//        
+//        System.out.println(LCA(t1, t2, t4).val);
+//        System.out.println(LCA(t1, t2, t6).val);
+//        System.out.println(LCA(t1, t4, t6).val);
+//        System.out.println(LCA(t1, t4, t7).val);
+//        System.out.println(LCA(t1, t3, t6).val);
+//        System.out.println(LCA(t1, t6, t6).val);
         
-        System.out.println(LCA(t1, t2, t4).val);
-        System.out.println(LCA(t1, t2, t6).val);
-        System.out.println(LCA(t1, t4, t6).val);
-        System.out.println(LCA(t1, t4, t7).val);
-        System.out.println(LCA(t1, t3, t6).val);
-        System.out.println(LCA(t1, t6, t6).val);
+        System.out.println(getMaxDistanceRec(t1));
         
         //System.out.println(isSame(r1, t1));
         
@@ -1184,6 +1198,90 @@ public class TreeDemo {
         
         // found
         return true;
+    }
+    
+    /*
+     *  * 12. 求二叉树中节点的最大距离：getMaxDistanceRec
+     *  
+     *  首先我们来定义这个距离：
+     *  距离定义为：两个节点间边的数目.
+     *  如：
+     *     1
+     *    / \
+     *   2   3
+     *        \
+     *         4
+     *   这里最大距离定义为2，4的距离，为3.      
+     * 求二叉树中节点的最大距离 即二叉树中相距最远的两个节点之间的距离。 (distance / diameter) 
+     * 递归解法：
+     * 返回值设计：
+     * 返回1. 深度， 2. 当前树的最长距离  
+     * (1) 计算左子树的深度，右子树深度，左子树独立的链条长度，右子树独立的链条长度
+     * (2) 最大长度为三者之最：
+     *    a. 通过根节点的链，为左右深度+2
+     *    b. 左子树独立链
+     *    c. 右子树独立链。
+     * 
+     * (3)递归初始条件：
+     *   当root == null, depth = -1.maxDistance = -1;
+     *   
+     */  
+    public static int getMaxDistanceRec(TreeNode root) {
+        return getMaxDistanceRecHelp(root).maxDistance;
+    }
+    
+    public static Result getMaxDistanceRecHelp(TreeNode root) {
+        Result ret = new Result(-1, -1);
+        
+        if (root == null) {
+            return ret;
+        }
+        
+        Result left = getMaxDistanceRecHelp(root.left);
+        Result right = getMaxDistanceRecHelp(root.right);
+        
+        // 深度应加1， the depth from the subtree to the root.
+        ret.depth = Math.max(left.depth, right.depth) + 1;
+        
+        // 左子树，右子树与根的距离都要加1，所以通过根节点的路径为两边深度+2
+        int crossLen = left.depth + right.depth + 2;
+        
+        // 求出cross根的路径，及左右子树的独立路径，这三者路径的最大值。
+        ret.maxDistance = Math.max(left.maxDistance, right.maxDistance);
+        ret.maxDistance = Math.max(ret.maxDistance, crossLen);
+        
+        return ret;
+    }
+
+    
+    private static class Result {
+        int depth;
+        int maxDistance;
+        public Result(int depth, int maxDistance) {
+            this.depth = depth;
+            this.maxDistance = maxDistance;
+        }
+    }
+    
+    /*
+     *  13. 由前序遍历序列和中序遍历序列重建二叉树：rebuildBinaryTreeRec 
+     * */
+    public static TreeNode rebuildBinaryTreeRec(List<Integer> preOrder, List<Integer> inOrder) {
+        if (preOrder == null || inOrder == null) {
+            return null;
+        }
+        
+        // If the traversal is empty, just return a NULL.
+        if (preOrder.size() == 0 || inOrder.size() == 0) {
+            return null;
+        }
+        
+        // we can get the root from the preOrder. Because the first one is the 
+        // root.
+        TreeNode root = preOrder.get(0);
+        
+        return null;
+        
     }
 
     /*
