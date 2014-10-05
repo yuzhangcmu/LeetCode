@@ -108,15 +108,19 @@ public class TreeDemo {
         t1.right = t3;
         t2.left = t4;
         t2.right = t5;
-        t3.right = t6;
+        t3.left = t6;
+        t3.right = t7;
         
-        t4.left = t7;
+        t4.left = t8;
+        //t4.right = t9;
+        t5.right = t9;
+        
         
         // test distance
-        t5.right = t8;
-        t8.right = t9;
-        t9.right = t10;
-        t10.right = t11;
+//        t5.right = t8;
+//        t8.right = t9;
+//        t9.right = t10;
+//        t10.right = t11;
         
         /* 
         10  
@@ -140,7 +144,7 @@ public class TreeDemo {
 //        System.out.println(LCA(t1, t3, t6).val);
 //        System.out.println(LCA(t1, t6, t6).val);
         
-        System.out.println(getMaxDistanceRec(t1));
+        //System.out.println(getMaxDistanceRec(t1));
         
         //System.out.println(isSame(r1, t1));
         
@@ -215,7 +219,10 @@ public class TreeDemo {
 //        System.out.println(findLongest2(r1));
         
         // test the rebuildBinaryTreeRec.
-        test_rebuildBinaryTreeRec();
+        //test_rebuildBinaryTreeRec();
+        
+        System.out.println(isCompleteBinaryTreeRec(t1));
+        System.out.println(isCompleteBinaryTree(t1));
     }
     
     public static void test_rebuildBinaryTreeRec() {
@@ -1346,11 +1353,59 @@ public class TreeDemo {
     
     /*
      * 14. 判断二叉树是不是完全二叉树：isCompleteBinaryTree, isCompleteBinaryTreeRec
-     * 
+     * 进行level traversal, 一旦遇到一个节点的左节点为空，后面的节点的子节点都必须为空。而且不应该有下一行，其实就是队列中所有的
+     * 元素都不应该再有子元素。
      * */
     
     public static boolean isCompleteBinaryTree(TreeNode root) {
-        return false;
+        if (root == null) {
+            return false;
+        }
+        
+        TreeNode dummyNode = new TreeNode(0);
+        Queue<TreeNode> q = new LinkedList<TreeNode>();
+        
+        q.offer(root);
+        q.offer(dummyNode);
+        
+        // if this is true, no node should have any child.
+        boolean noChild = false;
+        
+        while (!q.isEmpty()) {
+            TreeNode cur = q.poll();
+            if (cur == dummyNode) {
+                if (!q.isEmpty()) {
+                    q.offer(dummyNode);
+                }
+                // Dummy node不需要处理。 
+                continue;
+            }
+            
+            if (cur.left != null) {
+                // 如果标记被设置，则Queue中任何元素不应再有子元素。
+                if (noChild) {
+                    return false;
+                }
+                q.offer(cur.left);
+            } else {
+                // 一旦某元素没有左节点或是右节点，则之后所有的元素都不应有子元素。
+                // 并且该元素不可以有右节点.
+                noChild = true;
+            }
+            
+            if (cur.right != null) {
+                // 如果标记被设置，则Queue中任何元素不应再有子元素。
+                if (noChild) {
+                    return false;
+                }
+                q.offer(cur.right);
+            } else {
+                // 一旦某元素没有左节点或是右节点，则之后所有的元素都不应有子元素。
+                noChild = true;
+            }
+        }
+        
+        return true;
     }
     
     /*
