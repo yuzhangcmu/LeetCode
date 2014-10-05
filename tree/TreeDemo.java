@@ -35,9 +35,7 @@ import java.util.Stack;
  * 12. 求二叉树中节点的最大距离：getMaxDistanceRec 
  * 13. 由前序遍历序列和中序遍历序列重建二叉树：rebuildBinaryTreeRec
  * 14. 判断二叉树是不是完全二叉树：isCompleteBinaryTree, isCompleteBinaryTreeRec
- *  
  * 15. 找出二叉树中最长连续子串(即全部往左的连续节点，或是全部往右的连续节点）findLongest
- *  
  */  
 
 public class TreeDemo {
