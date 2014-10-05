@@ -33,9 +33,9 @@ import java.util.Stack;
  *      LCABstRec  递归求解BST树.
  *      LCARec     递归算法 .
  * 12. 求二叉树中节点的最大距离：getMaxDistanceRec 
- * 
- * 13. 由前序遍历序列和中序遍历序列重建二叉树：rebuildBinaryTreeRec 
- * 14. 判断二叉树是不是完全二叉树：isCompleteBinaryTree, isCompleteBinaryTreeRec 
+ * 13. 由前序遍历序列和中序遍历序列重建二叉树：rebuildBinaryTreeRec
+ * 14. 判断二叉树是不是完全二叉树：isCompleteBinaryTree, isCompleteBinaryTreeRec
+ *  
  * 15. 找出二叉树中最长连续子串(即全部往左的连续节点，或是全部往右的连续节点）findLongest
  *  
  */  
@@ -214,7 +214,35 @@ public class TreeDemo {
 //        System.out.println();
 //        System.out.println(findLongest2(r1));
         
+        // test the rebuildBinaryTreeRec.
+        test_rebuildBinaryTreeRec();
+    }
+    
+    public static void test_rebuildBinaryTreeRec() {
+        ArrayList<Integer> list1 = new ArrayList<Integer>();
+        list1.add(1);
+        list1.add(2);
+        list1.add(4);
+        list1.add(5);
+        list1.add(3);
+        list1.add(6);
+        list1.add(7);
+        list1.add(8);
         
+        ArrayList<Integer> list2 = new ArrayList<Integer>();
+        list2.add(4);
+        list2.add(2);
+        list2.add(5);
+        list2.add(1);
+        list2.add(3);
+        list2.add(7);
+        list2.add(6);
+        list2.add(8);
+        
+        TreeNode root = rebuildBinaryTreeRec(list1, list2);
+        preorderTraversalRec(root);
+        System.out.println();
+        postorderTraversalRec(root);
     }
     
     private static class TreeNode{
@@ -1265,7 +1293,21 @@ public class TreeDemo {
     
     /*
      *  13. 由前序遍历序列和中序遍历序列重建二叉树：rebuildBinaryTreeRec 
-     * */
+     *  We assume that there is no duplicate in the trees.
+     *  For example:
+     *          1
+     *         / \
+     *        2   3
+     *       /\    \
+     *      4  5    6
+     *              /\
+     *             7  8  
+     *             
+     *  PreOrder should be: 1   2 4 5   3 6 7 8
+     *                      根   左子树    右子树  
+     *  InOrder should be:  4 2 5   1   3 7 6 8
+     *                       左子树  根  右子树
+     * */                   
     public static TreeNode rebuildBinaryTreeRec(List<Integer> preOrder, List<Integer> inOrder) {
         if (preOrder == null || inOrder == null) {
             return null;
@@ -1276,12 +1318,118 @@ public class TreeDemo {
             return null;
         }
         
-        // we can get the root from the preOrder. Because the first one is the 
-        // root.
-        TreeNode root = preOrder.get(0);
+        // we can get the root from the preOrder. 
+        // Because the first one is the root.
+        // So we just create the root node here.
+        TreeNode root = new TreeNode(preOrder.get(0));
         
-        return null;
+        List<Integer> preOrderLeft;
+        List<Integer> preOrderRight;
+        List<Integer> inOrderLeft;
+        List<Integer> inOrderRight;
         
+        // 获得在 inOrder中，根的位置
+        int rootInIndex = inOrder.indexOf(preOrder.get(0));
+        preOrderLeft = preOrder.subList(1, rootInIndex + 1);
+        preOrderRight = preOrder.subList(rootInIndex + 1, preOrder.size());
+        
+        // 得到inOrder左边的左子树
+        inOrderLeft = inOrder.subList(0, rootInIndex);
+        inOrderRight = inOrder.subList(rootInIndex + 1, inOrder.size());
+
+        // 通过 Rec 来调用生成左右子树。
+        root.left = rebuildBinaryTreeRec(preOrderLeft, inOrderLeft);
+        root.right = rebuildBinaryTreeRec(preOrderRight, inOrderRight);
+        
+        return root;        
+    }
+    
+    /*
+     * 14. 判断二叉树是不是完全二叉树：isCompleteBinaryTree, isCompleteBinaryTreeRec
+     * 
+     * */
+    
+    public static boolean isCompleteBinaryTree(TreeNode root) {
+        return false;
+    }
+    
+    /*
+     * 14. 判断二叉树是不是完全二叉树：isCompleteBinaryTreeRec
+     * 
+     * 
+     *    我们可以分解为：
+     *    CompleteBinary Tree 的条件是：
+     *    1. 左右子树均为Perfect binary tree, 并且两者Height相同
+     *    2. 左子树为CompleteBinaryTree, 右子树为Perfect binary tree，并且两者Height差1
+     *    3. 左子树为Perfect Binary Tree,右子树为CompleteBinaryTree, 并且Height 相同
+     *    
+     *    Base 条件：
+     *    (1) root = null: 为perfect & complete BinaryTree, Height -1;
+     *    
+     *    而 Perfect Binary Tree的条件：
+     *    左右子树均为Perfect Binary Tree,并且Height 相同。
+     * */
+    
+    public static boolean isCompleteBinaryTreeRec(TreeNode root) {
+        return isCompleteBinaryTreeRecHelp(root).isCompleteBT;
+    }
+    
+    private static class ReturnBinaryTree {
+        boolean isCompleteBT;
+        boolean isPerfectBT;
+        int height;
+        
+        ReturnBinaryTree(boolean isCompleteBT, boolean isPerfectBT, int height) {
+            this.isCompleteBT = isCompleteBT;
+            this.isPerfectBT = isPerfectBT;
+            this.height = height;
+        }
+    }
+    
+    /*
+     * 我们可以分解为：
+     *    CompleteBinary Tree 的条件是：
+     *    1. 左右子树均为Perfect binary tree, 并且两者Height相同
+     *    2. 左子树为CompleteBinaryTree, 右子树为Perfect binary tree，并且两者Height差1
+     *    3. 左子树为Perfect Binary Tree,右子树为CompleteBinaryTree, 并且Height 相同
+     *    
+     *    Base 条件：
+     *    (1) root = null: 为perfect & complete BinaryTree, Height -1;
+     *    
+     *    而 Perfect Binary Tree的条件：
+     *    左右子树均为Perfect Binary Tree,并且Height 相同。
+     * */
+    public static ReturnBinaryTree isCompleteBinaryTreeRecHelp(TreeNode root) {
+        ReturnBinaryTree ret = new ReturnBinaryTree(true, true, -1);
+        
+        if (root == null) {
+            return ret;
+        }
+        
+        ReturnBinaryTree left = isCompleteBinaryTreeRecHelp(root.left);
+        ReturnBinaryTree right = isCompleteBinaryTreeRecHelp(root.right);
+        
+        // 树的高度为左树高度，右树高度的最大值+1
+        ret.height = 1 + Math.max(left.height, right.height);
+        
+        // set the isPerfectBT
+        ret.isPerfectBT = false;
+        if (left.isPerfectBT && right.isPerfectBT && left.height == right.height) {
+            ret.isPerfectBT = true;
+        }
+        
+        // set the isCompleteBT.
+        /*
+         * CompleteBinary Tree 的条件是：
+         *    1. 左右子树均为Perfect binary tree, 并且两者Height相同(其实就是本树是perfect tree)
+         *    2. 左子树为CompleteBinaryTree, 右子树为Perfect binary tree，并且两者Height差1
+         *    3. 左子树为Perfect Binary Tree,右子树为CompleteBinaryTree, 并且Height 相同
+         * */
+        ret.isCompleteBT = ret.isPerfectBT 
+                || (left.isCompleteBT && right.isPerfectBT && left.height == right.height + 1)
+                || (left.isPerfectBT && right.isCompleteBT && left.height == right.height);
+        
+        return ret;
     }
 
     /*
