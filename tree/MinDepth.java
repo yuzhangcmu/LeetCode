@@ -46,17 +46,21 @@ public class MinDepth {
      *  这种递归解法更简单。因为在本层递归中不需要考虑左右子树是否为NULL的情况。因为我们直接
         把 null 设置为返回一个最大值，这样的话，如果出现空子树，它不会影响最小值。但是如果左
         右均为空，则应返回1（即是仅仅为根节点）
+        
+        而且这种做法更加合理。 因为如果是空树，应该是无法到达才是。这时就应该将值设置为最大。 
      * */
     public int minDepthHelp(TreeNode root) {
         if (root == null) {
             return Integer.MAX_VALUE;
         }
         
-        int min = Math.min(minDepthHelp(root.left), minDepthHelp(root.right));
-        if (min == Integer.MAX_VALUE) {
+        // 如果root是叶子节点，直接就可以退出咯。
+        if (root.left == null && root.right == null) {
             return 1;
         }
-        return min + 1;
+        
+        // root不是叶子节点，输出左右子树的最小值，再加上root本身
+        return 1 + Math.min(minDepthHelp(root.left), minDepthHelp(root.right));
     }
     
     /*
