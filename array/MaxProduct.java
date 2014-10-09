@@ -3,10 +3,7 @@ package Algorithms.array;
 public class MaxProduct {
     public static int maxProduct(int[] A) {
         int max = 0;
-        
-        int left = 0;
-        int right = 0;
-        
+           
         int len = A.length;
         
         int product = 1;
@@ -15,11 +12,13 @@ public class MaxProduct {
             if (A[i] <= 0) {
                 max = Math.max(max, product);
                 product = 1;
+                continue;
             }
+                        
             product *= A[i];
         }
         
-        return 0;
+        return max;
     }
     
     /*
