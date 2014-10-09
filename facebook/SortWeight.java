@@ -3,7 +3,6 @@ package Algorithms.facebook;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -14,10 +13,10 @@ public class SortWeight {
         String input3 = "pizza 500 hotdog 2.0";
         String input4 = "pizza 500 2.0";        
         
-        LinkedList<String> list1 = sortWeight(input1);
-        LinkedList<String> list2 = sortWeight(input2);
-        LinkedList<String> list3 = sortWeight(input3);
-        LinkedList<String> list4 = sortWeight(input4);
+        LinkedList<String> list1 = sortWeight2(input1);
+        LinkedList<String> list2 = sortWeight2(input2);
+        LinkedList<String> list3 = sortWeight2(input3);
+        LinkedList<String> list4 = sortWeight2(input4);
         
         System.out.println(list1.toString());
         System.out.println(list2.toString());
@@ -84,6 +83,86 @@ public class SortWeight {
         
         return ret;
     }
+    
+    public static class Pair implements Comparable<Pair> {
+        String food;
+        float weight;
+        
+        Pair (String food, float weight) {
+            this.food = food;
+            this.weight = weight;
+        }
+
+        // 注意，我们用o来减当前的重量，就能得到降序的排列
+        public int compareTo(Pair o) {
+            if (o.weight - this.weight < 0) {
+                return -1;
+            }
+            
+            return 1;
+        }
+    }
+    
+    /*
+     * 使用自定义结构体 Pair而不是hashmap来记录食物-重量对。可以简化算法。 
+     * 但这时就需要自定义一个compareTo方法 
+     * */
+    public static LinkedList<String> sortWeight2(String input) {
+        LinkedList<String> ret = new LinkedList<String>();
+        if (input == null) {
+            return ret;
+        }
+        
+        String[] strs = input.split(" ");
+        
+        float defautWeight = 5;
+        
+        // 当weight = -1，表示这一组食物-重量链还未完成 
+        String food = null;
+        float weight = 0;
+        
+        // 使用ArrayList来记录食物-重量对 
+        ArrayList<Pair> list = new ArrayList<Pair>();
+        
+        // Go through the string.
+        for (String s: strs) {
+            // 上一次的food-weight对已经结束
+            if (weight != -1) {
+                food = s;
+                weight = -1;
+            } else {
+                float tmp = stringToNumber(s);
+                // This is a float, so just add a food to the list.
+                if (tmp != -1) {
+                    weight = tmp;
+                    list.add(new Pair(food, weight));
+                } else {
+                    // This is not a float, means that there should be
+                    // a new food.
+                    list.add(new Pair(food, defautWeight));
+                    
+                    // 开始新一轮的食物-重量链
+                    food = s;
+                    weight = -1;
+                }
+            }
+        }
+        
+        //System.out.println(map.toString());
+        
+        if (weight == -1) {
+            list.add(new Pair(food, defautWeight));
+        }
+        
+        Collections.sort(list);
+        Iterator<Pair> iter = list.iterator();
+        while (iter.hasNext()) {
+            ret.add(iter.next().food);
+        }
+        
+        return ret;
+    }
+    
     
     public static void addFoodToMap(HashMap<Float, ArrayList<String>> map, String food,
              float weight) {
