@@ -1,7 +1,12 @@
 package Algorithms.Divide2;
 
 public class Pow {
-    public double pow(double x, int n) {
+    public static void main(String[] strs) {
+        System.out.println(pow(-3, -2147483648));
+        
+    }
+    
+    public static double pow(double x, int n) {
         if (x == 0) {
             return 0;
         }
@@ -10,28 +15,13 @@ public class Pow {
             return 1;
         }
         
-        if (x == -1) {
-            int left = Math.abs(n)%2;
-            if (left == 1) {
-                return -1;
-            } else {
-                return 1;
-            }
-        }
-        
+        // Because when we deal with -2147483648, we can't get right -n
+        // cause -n == n when it is -2147483648.
         // 注意 这样写是不行的，因为-n在n到最小值会出错，
         // int的最小值（负数）取-n仍然是n 这样就错了。
-        
-        // if (n < 0) {
-        //     double ret1 = pow(x, -n);
-        //     return 1/(double)ret1;
-        // }
-        
-        //should consider the case when n is below zero.
-        boolean minus = false;
         if (n < 0) {
-            minus = true;
-            n = -n;
+            double ret1 = x * pow(x, -(1 + n));
+            return 1/(double)ret1;
         }
         
         int m = n%2;
@@ -43,9 +33,6 @@ public class Pow {
             ret *= x;
         }
         
-        if (minus) {
-            return 1/ret;
-        }
         return ret;
     }
 }
