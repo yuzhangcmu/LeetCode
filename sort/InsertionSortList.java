@@ -15,7 +15,7 @@ import Algorithms.ListNode;
  */
 public class InsertionSortList {
     public ListNode insertionSortList(ListNode head) {
-        // 使用dummynode来记录新的头节点，每次把旧链找合适的位置来插入即可 
+        // 使用dummy node来记录新的头节点，每次把旧链找合适的位置来插入即可 
         if (head == null) {
             return null;
         }
