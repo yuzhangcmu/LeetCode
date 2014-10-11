@@ -38,7 +38,9 @@ public class RemoveNthFromEnd {
         }
         
         // DELTE.
-        pre.next = pre.next.next;
+        if (pre.next != null) {
+            pre.next = pre.next.next;    
+        }
         
         return dummy.next;
     }
