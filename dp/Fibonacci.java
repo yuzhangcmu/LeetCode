@@ -1,6 +1,7 @@
 package Algorithms.dp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /*************************************************************************
  *  Compilation:  javac Fibonacci.java
@@ -29,14 +30,28 @@ import java.util.ArrayList;
  *
  *************************************************************************/
 public class Fibonacci {
-	public static long fib(int n) {
+	public static long fib(int n, HashMap<Integer, Integer> map) {
 		//System.out.println("Enter rec once.");
 
 		if (n <= 2) {
 			return 1;
 		}
+		
+		long first;
+		if (map.get(n - 2) != null) {
+		    first = map.get(n - 2);
+		} else {
+		    first = fib(n - 2, map);
+		}
+		
+	    long second;
+        if (map.get(n - 1) != null) {
+            second = map.get(n - 1);
+        } else {
+            second = fib(n - 1, map);
+        }
 
-		return fib(n - 1) + fib(n - 2);
+		return second + first;
 	}
 	
 	public static ArrayList<Integer> fibDp(int n) {
@@ -57,12 +72,12 @@ public class Fibonacci {
 	public static void main(String[] args) {
 		int N = 5;
 
-		System.out.print(fib(5) + " ");
+		System.out.print(fib(10, new HashMap<Integer, Integer>()) + " ");
 //		for (int i = 1; i <= N; i++) {
 //			System.out.print(fib(i) + " ");
 //		}
 		
-		ArrayList<Integer> list = fibDp(500);
+		ArrayList<Integer> list = fibDp(10);
 		System.out.println(list.toString());
 	}
 
