@@ -13,24 +13,21 @@ public class SimplifyPath {
         }
         
         /*
-        path = "/home/", => "/home"    --> Split to : home
-        path = "/a/./b/../../c/", => "/c" --> splite to: a . b .. .. c
+        path = "/home/", => "/home"    --> Split to : 空格 home
+        path = "/a/./b/../../c/", => "/c" --> splite to: 空格 a . b .. .. c
         */
-        // 注意 split的输入是一个字符串 /+ 可以匹配1个或多个/
-        String[] strs = path.split("/+");
-        
-        
+        // 注意 split的输入是一个字符串
+        String[] strs = path.split("/");
         
         Stack<String> s = new Stack<String>();
         
         for (String str: strs) {
-            //System.out.println("Print:" + str);
-            
             if (str.equals("..")) {
                 // we should pop out a element.
                 if (!s.isEmpty()) {
                     s.pop();
                 }
+            // should skip the space and the '.'
             } else if (!str.equals(".") && !str.equals("")) {
                 s.push(str);
             }
