@@ -1,4 +1,4 @@
-package Algorithms.facebook;
+package Algorithms.algorithm.interview.facebook;
 
 import java.util.ArrayList;
 import java.util.Collections;
