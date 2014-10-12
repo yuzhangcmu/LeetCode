@@ -1,6 +1,6 @@
 package Algorithms.list;
 
-import Algorithms.others.ListNode;
+import Algorithms.algorithm.others.ListNode;
 
 public class MergeTwoLists {
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {

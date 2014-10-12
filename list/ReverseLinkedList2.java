@@ -1,6 +1,6 @@
 package Algorithms.list;
 
-import Algorithms.others.ListNode;
+import Algorithms.algorithm.others.ListNode;
 
 public class ReverseLinkedList2 {
     public static void main(String[] args) {

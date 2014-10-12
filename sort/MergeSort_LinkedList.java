@@ -2,7 +2,7 @@ package Algorithms.sort;
 
 import java.util.LinkedList;
 
-import Algorithms.others.ListNode;
+import Algorithms.algorithm.others.ListNode;
 
 public class MergeSort_LinkedList {
     public static void main(String[] args) {

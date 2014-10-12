@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import Algorithms.others.ListNode;
+import Algorithms.algorithm.others.ListNode;
 
 /**
  * Definition for singly-linked list.
