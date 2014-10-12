@@ -1,3 +1,7 @@
+package Algorithms.tree;
+
+import Algorithms.others.ListNode;
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {h
@@ -15,7 +19,7 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
-public class Solution {
+public class sortedListToBST {
     public TreeNode sortedListToBST1(ListNode head) {
         ListNode fast = head;
         ListNode slow = head;

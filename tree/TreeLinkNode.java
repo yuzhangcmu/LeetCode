@@ -1,6 +1,8 @@
 package Algorithms.tree;
 public class TreeLinkNode {
     int val;
-    TreeLinkNode left, right, next;
-    TreeLinkNode(int x) { val = x; }
+    public TreeLinkNode left;
+    public TreeLinkNode right;
+    TreeLinkNode next;
+    public TreeLinkNode(int x) { val = x; }
 }
