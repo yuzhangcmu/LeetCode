@@ -1,4 +1,4 @@
-package Algorithms.divide;
+package Algorithms.divide2;
 
 public class Pow {
     public static void main(String[] strs) {
