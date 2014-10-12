@@ -1,4 +1,4 @@
-package Algorithms.others;
+package Algorithms.list;
 
 import java.util.HashMap;
 import java.util.HashSet;
