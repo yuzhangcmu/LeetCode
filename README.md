@@ -5,7 +5,7 @@ LeetCode_algorithm
 
 目录划分：
 
-algorithm--包含除LeetCode以外的其它算法，如面经等
+algorithm  --  包含除LeetCode以外的其它算法，如面经等。除了这个目录以外都是LeetCode
 
 </br>
 &nbsp;&nbsp;--interviews 面经
