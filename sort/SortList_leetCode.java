@@ -1,6 +1,6 @@
 package Algorithms.sort;
 
-import Algorithms.ListNode;
+import Algorithms.others.ListNode;
 
 /**
  * Definition for singly-linked list.

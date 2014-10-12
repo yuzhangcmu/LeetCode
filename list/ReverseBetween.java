@@ -1,6 +1,6 @@
 package Algorithms.list;
 
-import Algorithms.ListNode;
+import Algorithms.others.ListNode;
 
 public class ReverseBetween {
     public ListNode reverseBetween(ListNode head, int m, int n) {
