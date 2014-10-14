@@ -6,14 +6,14 @@ import java.util.Arrays;
  * 给定一个未排序的数组，请给出波浪状排序：
  * Example:
  * input:   1 2 5 4 3 9
- * output:  1 4 3 2 5 9
+ * output:  1 4 3 5 2 9
  * 
  * input:   1 2 2 5 3 9
  * output:  1 5 2 3 2 9
  * */
 public class WaveSort {
 	public static void main(String[] str) {
-		int[] in = {1,2,5,4,3,9, 12};
+		int[] in = {1,2,5,4,3,9,9,9, 12};
 
 		for (int i: in) {
 			System.out.print(i + " ");	
@@ -40,12 +40,20 @@ public class WaveSort {
 	    
 	    Arrays.sort(in);
 	    
+	    for (int i: in) {
+            System.out.print(i + " ");  
+        }
+	    System.out.println();
+	    
 	    for (int i = 0; i < len; i++) {
 	        if (i % 2 == 0) {
-	            if (i + 1 < len) {
-	                int tmp = in[i];
-	                in[i] = in[i + 1];
-	                in[i + 1] = tmp;
+	            for (int j = i + 1; j < len; j++) {
+	                if (in[j] != in[i]) {
+	                    int tmp = in[i];
+	                    in[i] = in[j];
+	                    in[j] = tmp;
+	                    break;
+	                }
 	            }
 	        }
 	    }
