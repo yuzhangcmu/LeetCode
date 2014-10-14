@@ -624,7 +624,9 @@ public class ListNodeDemo {
      * 2. 有环的情况
      *   （1）. 交点在环上
      *       这样子的话，实际上我们可以求出2个交点。我们只要判断2个交点是不是相等。不相等，把2个交点返回任何一个。
-     *   （2）. 交点不在环上，则计算出环的交点，然后len1 = 起点至环的交点，len2 = 起点至环的交点，然后如方法1相同的做法。           
+     *       相等也是返回任何一个。
+     *   （2）. 交点不在环上，则计算出环的交点，然后len1 = 起点至环的交点，len2 = 起点至环的交点，然后如方法1相同的做法。
+     *       这段代码没写咯           
      */  
     public static ListNode getFirstCommonNode(ListNode head1, ListNode head2) {
         if (head1 == null || head2 == null) {
