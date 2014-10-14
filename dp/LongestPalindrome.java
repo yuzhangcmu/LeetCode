@@ -2,8 +2,11 @@ package Algorithms.dp;
 
 public class LongestPalindrome {
     public static void main(String[] args) {
-        String s = "cadfasdfsadfabaabaed";
+        String s = "9cadfasdfsadfabaabaed";
         System.out.println(longestPalindrome(s));
+        
+        System.out.println(Character.toLowerCase('9'));
+        
     }
 
     // Solution 1: Brute Force
