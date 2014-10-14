@@ -57,7 +57,8 @@ public class ListNodeDemo {
         ListNode c1 = new ListNode(1);
         ListNode c2 = new ListNode(12);
         c1.next = c2;
-        //c2.next = n1;
+        c2.next = n1;
+        //c2.next = c1;
         
         ListNode mergeNode = mergeLink(m1, c1);
         //ListNode mergeNode2 = mergeLink(m1, c1);
@@ -114,6 +115,7 @@ public class ListNodeDemo {
         
         System.out.println(isIntersect(n1, c1));
         
+        System.out.println("TEST the getFirstCommonNode:");
         ListNode cross = getFirstCommonNode(n1, c1);
         if (cross == null) {
             System.out.println("null");
@@ -650,10 +652,12 @@ public class ListNodeDemo {
                 }
             }
             
-            while (head1 != null) {
-                if (head1.next == head2.next) {
-                    return head1.next;
+            while (head1 != null && head2 != null) {
+                if (head1 == head2) {
+                    return head1;
                 }
+                head1 = head1.next;
+                head2 = head2.next;
             }
             
             return null;
