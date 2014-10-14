@@ -1,4 +1,4 @@
-package Algorithms.algorithm.dp;
+package Algorithms.dp;
 
 public class LongestPalindrome_dp1 {
     public static void main(String[] args) {
