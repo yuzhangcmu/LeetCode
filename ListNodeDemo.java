@@ -664,6 +664,7 @@ public class ListNodeDemo {
             
             return null;
         } else if (cross1 != null && cross2 != null) {
+            // 这一段没怎么写咯 
             return cross1;
         }
         
