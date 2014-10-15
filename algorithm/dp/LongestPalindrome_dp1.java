@@ -72,6 +72,7 @@ public class LongestPalindrome_dp1 {
                 max = s1.length();
             }
 
+            // 考虑偶数长度的字符串
             String s2 = expandAround(s, i, i);
             if (s2.length() > max) {
                 ret = s2;
