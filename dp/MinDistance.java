@@ -14,6 +14,12 @@ public class MinDistance {
         }
         
         System.out.println(dfs(str1, str1.length(), str2, str2.length(), record));
+        
+//        String str3 = "abc";
+//        String str4 = "abcd";
+        String str3 = "abc";
+        String str4 = "aabc";
+        System.out.println(disLessThenTwo(str3, str4));
     }
     
     /*
@@ -51,6 +57,37 @@ public class MinDistance {
         
         record[len1][len2] = ret;
         return ret;
+    }
+    
+    /*
+     * 递归解法，判断edit次数是不是小于2.
+     * */
+    public static boolean disLessThenTwo(String word1, String word2) {
+        if (word1 == null || word2 == null) {
+            return false;
+        }
+        
+        int len1 = word1.length();
+        int len2 = word2.length();
+        
+        int dis = 1;
+        
+        for (int p1 = 0, p2 = 0; p1 < len1 && p2 < len2; p1++, p2++) {
+            if (word1.charAt(p1) != word2.charAt(p2)) {
+                dis--;
+                if (dis < 0) {
+                    return false;
+                } else {
+                    if (len1 < len2) {
+                        p1--;
+                    } else if (len1 > len2) {
+                        p2--;
+                    }
+                }
+            }
+        }
+        
+        return dis >= 0;
     }
     
     public static int minDistance(String word1, String word2) {
