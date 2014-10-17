@@ -17,8 +17,8 @@ public class MinDistance {
         
 //        String str3 = "abc";
 //        String str4 = "abcd";
-        String str3 = "abc";
-        String str4 = "aabc";
+        String str3 = "febc";
+        String str4 = "afebc";
         System.out.println(disLessThenTwo(str3, str4));
     }
     
@@ -61,6 +61,7 @@ public class MinDistance {
     
     /*
      * 递归解法，判断edit次数是不是小于2.
+        也就是说，edit只能为1，或是为0
      * */
     public static boolean disLessThenTwo(String word1, String word2) {
         if (word1 == null || word2 == null) {
@@ -72,14 +73,23 @@ public class MinDistance {
         
         int dis = 1;
         
+        // 解法原理：如果2个字符串只差最多1的话，有2种情况：
+        // 1. 两个字符串相同长度，那肯定是存在replace 1一个字符。所以如果遇到不同的字符串，
+        //    两个指针都向前移动，一旦遇到不同的，就认为错误退出即可。
+        // 2. 两个字符串长度不等。那肯定是用了add/ delete操作才能使2个字符串相同。所以，
+        //    一旦遇到不同的字符，可以将长度长的字符串向后移动，如果后面出现不等的，也是错误退出。
+        
         for (int p1 = 0, p2 = 0; p1 < len1 && p2 < len2; p1++, p2++) {
             if (word1.charAt(p1) != word2.charAt(p2)) {
                 dis--;
+                // 如果不同的字母超过1了，退出
                 if (dis < 0) {
                     return false;
                 } else {
+                    // If str1 < str2, just move forward the point of STR2
                     if (len1 < len2) {
                         p1--;
+                    // If str1 > str2, just move forward the point of STR1        
                     } else if (len1 > len2) {
                         p2--;
                     }
