@@ -22,9 +22,10 @@ public class WordBreak {
         
         // D[i] 表示i长度的字符串能否被word break.
         for (int i = 1; i <= len; i++) {
-        	// 把子串划分为2部分，分别讨论
+        	// 把子串划分为2部分，分别讨论, j 表示左边的字符串的长度
+        	// 成立的条件是：左边可以break, 而右边是一个字典单词
         	D[i] = false;
-        	for (int j = 0; j <= i; j++) {
+        	for (int j = 0; j < i; j++) {
         		if (D[j] && dict.contains(s.substring(j, i))) {
         			// 只要找到任意一个符合条件，我们就可以BREAK; 表示我们检查的
         			// 这一个子串符合题意
