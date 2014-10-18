@@ -2,22 +2,12 @@ package Algorithms.dp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class WordBreak2 {
-    public static void main(String[] strs) {
-        Set<String> dict = new HashSet<String>();
-            
-        dict.add("apple");
-        dict.add("yuzhang");
-        
-        System.out.println(wordBreak("appleyuzhang", dict).toString());
-    }
-    
     // 我们用DFS来解决这个问题吧 
-    public static List<String> wordBreak(String s, Set<String> dict) {
+    public static List<String> wordBreak1(String s, Set<String> dict) {
     	HashMap<String, List<String>> map = new HashMap<String, List<String>>();
     	if (s == null || s.length() == 0 || dict == null) {
     		return null;
@@ -26,7 +16,7 @@ public class WordBreak2 {
     	return dfs(s, dict, map);
     }
 
-    // 我们用DFS来解决这个问题吧 
+    // 解法1：我们用DFS来解决这个问题吧 
     public static List<String> dfs(String s, Set<String> dict, HashMap<String, List<String>> map) {
 		if (map.containsKey(s)) {
 			return map.get(s);
@@ -39,8 +29,6 @@ public class WordBreak2 {
 			list.add("");
 		} else {
 			// i 表示左边字符串的长度
-			// 注意：i千万不要从0开始计算，否则会产生死循环。递归的要点是：你要把问题分解成更小的子问题。
-			// 如果i = 0，代表左字符串为空，我们又回到求解s本身的word break，那就是一个死循环！
 			for (int i = 1; i <= len; i++) {
 				String sub = s.substring(0, i);
 
@@ -73,5 +61,97 @@ public class WordBreak2 {
 
 		map.put(s, list);
 		return list;
+    }
+    
+    /*
+	// 解法2：我们用普通的递归模板来试一下。
+    */
+    
+    // 我们用DFS来解决这个问题吧 
+    public static List<String> wordBreak(String s, Set<String> dict) {
+        HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+        if (s == null || s.length() == 0 || dict == null) {
+            return null;
+        }
+        
+        List<String> ret = new ArrayList<String>();
+        
+        // 记录切割过程中生成的字母
+        List<String> path = new ArrayList<String>();
+            
+        dfs2(s, dict, path, ret, 0);
+        
+        return ret;
+    }
+
+    // 我们用DFS模板来解决这个问题吧 
+    public static void dfs2(String s, Set<String> dict, List<String> path, List<String> ret, int index) {
+    	int len = s.length();
+        if (index == len) {
+        	// 结束了。index到了末尾
+        	StringBuilder sb = new StringBuilder();
+        	for (String str: path) {
+        		sb.append(str);
+        		sb.append(" ");
+        	}
+        	// remove the last " "
+        	sb.deleteCharAt(sb.length() - 1);
+        	ret.add(sb.toString());
+        	return;
+        }
+        
+        // 如果不加上这一行会超时。就是说不能break的时候，可以直接返回
+        // 但这也许只是一个treak, 其实这种方法还是不大好。
+        if (!iswordBreak(s.substring(index), dict)) {
+        	return;
+        }
+
+        for (int i =  index; i < len; i++) {
+        	// 注意这些索引的取值。左字符串的长度从0到len
+        	String left = s.substring(index, i + 1);
+        	if (!dict.contains(left)) {
+        		// 如果左字符串不在字典中，不需要继续递归
+        		continue;
+        	}
+
+        	path.add(left);
+        	dfs2(s, dict, path, ret, i + 1);
+        	path.remove(path.size() - 1);
+        }
+    }
+    
+    public static boolean iswordBreak(String s, Set<String> dict) {
+        if (s == null) {
+            return false;
+        }
+        
+        int len = s.length();
+        if (len == 0) {
+            return true;
+        }
+        
+        boolean[] D = new boolean[len + 1];
+
+        // initiate the DP. 注意，这里设置为true是不得已，因为当我们划分字串为左边为0，右边为n的时候，
+        // 而右边的n是一个字典string,那么左边必然要设置为true，才能使结果为true。所以空字符串我们需要
+        // 认为true
+        D[0] = true;
+        
+        // D[i] 表示i长度的字符串能否被word break.
+        for (int i = 1; i <= len; i++) {
+        	// 把子串划分为2部分，分别讨论, j 表示左边的字符串的长度
+        	// 成立的条件是：左边可以break, 而右边是一个字典单词
+        	D[i] = false;
+        	for (int j = 0; j < i; j++) {
+        		if (D[j] && dict.contains(s.substring(j, i))) {
+        			// 只要找到任意一个符合条件，我们就可以BREAK; 表示我们检查的
+        			// 这一个子串符合题意
+        			D[i] = true;
+        			break;
+        		}
+        	}
+        }
+
+        return D[len];
     }
 }
