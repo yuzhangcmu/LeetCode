@@ -89,8 +89,8 @@ public class MinWindow {
         
         // 隐式初始化后，它们默认是0
         // http://developer.51cto.com/art/200906/128274.htm
-        int[] cntS = new int[256];
-        int[] cntT = new int[256];
+        int[] cntS = new int[128];
+        int[] cntT = new int[128];
         
         int lenS = S.length();
         int lenT = T.length();
