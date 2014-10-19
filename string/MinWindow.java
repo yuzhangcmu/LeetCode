@@ -4,10 +4,16 @@ import java.util.HashMap;
 
 public class MinWindow {
     public static void main(String[] strs) {
-        System.out.println(minWindow("aa", "aa"));
+        System.out.println(minWindow("aa", "aab"));
+        System.out.println(minWindow1("aa", "aab"));
+        
+        int a [] = new int [5] ;     
+        System.out.println("" + a[0]) ;  
     }
-    
-    public static String minWindow(String S, String T) {
+    /*
+     * Use Hashmap to do it.
+     * */
+    public static String minWindow1(String S, String T) {
         if (S == null || T == null) {
             return null;
         }
@@ -67,6 +73,71 @@ public class MinWindow {
             if (size == map.size() && len < minLen) {
                  ret = S.substring(left, right + 1);
                  minLen = len;
+            }
+        }
+        
+        return ret;
+    }
+    
+    /*
+     * Try to do it with Arrays.
+     * */
+    public static String minWindow(String S, String T) {
+        if (S == null || T == null) {
+            return null;
+        }
+        
+        // 隐式初始化后，它们默认是0
+        // http://developer.51cto.com/art/200906/128274.htm
+        int[] cntS = new int[256];
+        int[] cntT = new int[256];
+        
+        int lenS = S.length();
+        int lenT = T.length();
+        
+        // count all the characters in T.
+        int cntCharT = 0;
+        for (int i = 0; i < lenT; i++) {
+            cntT[T.charAt(i)]++;
+            if (cntT[T.charAt(i)] == 1) {
+                // 计算T中不同字母的个数 
+                cntCharT++;
+            }
+        }
+        
+        // 从左至右扫描 S
+        int left = 0; // LEFT set to the left and move right.
+        int cnt = 0;
+        int minLen = Integer.MAX_VALUE;
+        
+        String ret = "";
+        for (int i = 0; i < lenS; i++) {
+            char c = S.charAt(i);
+            if (cntT[c] != 0) {
+                cntS[c]++;
+                //c字母全部出现了
+                if (cntS[c] == cntT[c]) {
+                   cnt++; 
+                }
+            }
+            
+            while (cnt == cntCharT) {
+                // 更新最小长度
+                if (i - left + 1 < minLen) {
+                    minLen = i - left + 1;
+                    ret = S.substring(left, i + 1);
+                }
+                
+                // 从左边移除一个字符
+                if (cntT[c] != 0) {
+                    cntS[c]--;
+                }
+                
+                // 如果某个字符被减到小于预定值，cnt要减少。
+                if (cntS[c] < cntT[c]) {
+                    cnt--;
+                }
+                left++;
             }
         }
         
