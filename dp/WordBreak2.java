@@ -27,23 +27,23 @@ public class WordBreak2 {
         
         System.out.println("Test");
 
-        Algorithms.permutation.Stopwatch timer1 = new Algorithms.permutation.Stopwatch();
-        
-        // 递归模板，加剪枝 
-        List<String> list = wordBreak(s, dict);
-        
-        System.out
-        .println("Computing time with dfs and cut branch used as Queue/Deque: "
-                + timer1.elapsedTime() + " millisec.");
-        
         Algorithms.permutation.Stopwatch timer2 = new Algorithms.permutation.Stopwatch();
         
         // HASH保存记忆
         wordBreak1(s, dict);
         
         System.out
-        .println("Computing time with ArrayDeque used as Queue/Deque: "
+        .println("Computing time with DFS1: "
                 + timer2.elapsedTime() + " millisec.");
+        
+        Algorithms.permutation.Stopwatch timer1 = new Algorithms.permutation.Stopwatch();
+        
+        // 递归模板，加剪枝 
+        wordBreak(s, dict);
+        
+        System.out
+        .println("Computing time with DFS2: "
+                + timer1.elapsedTime() + " millisec.");
         
         Algorithms.permutation.Stopwatch timer3 = new Algorithms.permutation.Stopwatch();
         
@@ -52,7 +52,7 @@ public class WordBreak2 {
         wordBreak3(s, dict);
         
         System.out
-        .println("Computing time with ArrayDeque used as Queue/Deque: "
+        .println("Computing time with DFS3: "
                 + timer3.elapsedTime() + " millisec.");
 
         //System.out.println(list.toString());
@@ -207,32 +207,6 @@ public class WordBreak2 {
         return D[len];
     }
     
-    /*
-    // 解法3：重新剪枝。
-    */
-    
-    // 我们用DFS来解决这个问题吧 
-    public static List<String> wordBreak3(String s, Set<String> dict) {
-        if (s == null || s.length() == 0 || dict == null) {
-            return null;
-        }
-        
-        List<String> ret = new ArrayList<String>();
-        
-        // 记录切割过程中生成的字母
-        List<String> path = new ArrayList<String>();
-        
-        int len = s.length();
-        boolean canBreak[] = new boolean[len];
-        for (int i = 0; i < len; i++) {
-            canBreak[i] = true;
-        }
-            
-        dfs3(s, dict, path, ret, 0, canBreak);
-        
-        return ret;
-    }
-
     // 我们用DFS模板来解决这个问题吧 
     public static void dfs3(String s, Set<String> dict, 
             List<String> path, List<String> ret, int index,
@@ -256,23 +230,25 @@ public class WordBreak2 {
             return;
         }
 
-        boolean flag = false;
         for (int i =  index; i < len; i++) {
             // 注意这些索引的取值。左字符串的长度从0到len
             String left = s.substring(index, i + 1);
-            if (!dict.contains(left)) {
+            if (!dict.contains(left) || !canBreak[i + 1]) {
                 // 如果左字符串不在字典中，不需要继续递归
                 continue;
             }
             
             // if can't find any solution, return false, other set it 
             // to be true;
-            flag = true;
             path.add(left);
+            
+            int beforeChange = ret.size();
             dfs3(s, dict, path, ret, i + 1, canBreak);
+            // 注意这些剪枝的代码. 关键在于此以减少复杂度
+            if (ret.size() == beforeChange) {
+                canBreak[i + 1] = false;    
+            }
             path.remove(path.size() - 1);
         }
-        
-        canBreak[index] = flag;
     }
 }
