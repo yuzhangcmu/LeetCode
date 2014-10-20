@@ -88,16 +88,15 @@ public class Partition {
         boolean[][] D = new boolean[len][len];
 
         for (int j = 0; j < len; j++) {
-            for (int i = 0; i <= j; i++) {
-                if (j == 0) {
-                    D[i][j] = true;
-                    continue;
-                } 
+        	for (int i = 0; i <= j; i++) {
+        		if (j == 0) {
+        			D[i][j] = true;
+        			continue;
+        		} 
 
-                // 注意，这里要加上j - i <= 2否则会越界 
-                D[i][j] = s.charAt(i) == s.charAt(j) 
-                    && (j - i <= 2 || D[i + 1][j - 1]);
-            }
+        		D[i][j] = s.charAt(i) == s.charAt(j) 
+        		    && (j - i <= 2 || D[i + 1][j - 1]);
+        	}
         }
 
         return D;

@@ -39,11 +39,21 @@ public class WordBreak2 {
         Algorithms.permutation.Stopwatch timer2 = new Algorithms.permutation.Stopwatch();
         
         // HASH保存记忆
-        List<String> list2 = wordBreak1(s, dict);
+        wordBreak1(s, dict);
         
         System.out
         .println("Computing time with ArrayDeque used as Queue/Deque: "
                 + timer2.elapsedTime() + " millisec.");
+        
+        Algorithms.permutation.Stopwatch timer3 = new Algorithms.permutation.Stopwatch();
+        
+        // DFS+ 剪枝 3: 设置Flag 变量
+        //http://fisherlei.blogspot.com/2013/11/leetcode-wordbreak-ii-solution.html
+        wordBreak3(s, dict);
+        
+        System.out
+        .println("Computing time with ArrayDeque used as Queue/Deque: "
+                + timer3.elapsedTime() + " millisec.");
 
         //System.out.println(list.toString());
     }
@@ -126,7 +136,8 @@ public class WordBreak2 {
     }
 
     // 我们用DFS模板来解决这个问题吧 
-    public static void dfs2(String s, Set<String> dict, List<String> path, List<String> ret, int index) {
+    public static void dfs2(String s, Set<String> dict, 
+            List<String> path, List<String> ret, int index) {
     	int len = s.length();
         if (index == len) {
         	// 结束了。index到了末尾
@@ -194,5 +205,74 @@ public class WordBreak2 {
         }
 
         return D[len];
+    }
+    
+    /*
+    // 解法3：重新剪枝。
+    */
+    
+    // 我们用DFS来解决这个问题吧 
+    public static List<String> wordBreak3(String s, Set<String> dict) {
+        if (s == null || s.length() == 0 || dict == null) {
+            return null;
+        }
+        
+        List<String> ret = new ArrayList<String>();
+        
+        // 记录切割过程中生成的字母
+        List<String> path = new ArrayList<String>();
+        
+        int len = s.length();
+        boolean canBreak[] = new boolean[len];
+        for (int i = 0; i < len; i++) {
+            canBreak[i] = true;
+        }
+            
+        dfs3(s, dict, path, ret, 0, canBreak);
+        
+        return ret;
+    }
+
+    // 我们用DFS模板来解决这个问题吧 
+    public static void dfs3(String s, Set<String> dict, 
+            List<String> path, List<String> ret, int index,
+            boolean canBreak[]) {
+        int len = s.length();
+        if (index == len) {
+            // 结束了。index到了末尾
+            StringBuilder sb = new StringBuilder();
+            for (String str: path) {
+                sb.append(str);
+                sb.append(" ");
+            }
+            // remove the last " "
+            sb.deleteCharAt(sb.length() - 1);
+            ret.add(sb.toString());
+            return;
+        }
+        
+        // if can't break, we exit directly.
+        if (!canBreak[index]) {
+            return;
+        }
+
+        boolean flag = false;
+        for (int i =  index; i < len; i++) {
+            // 注意这些索引的取值。左字符串的长度从0到len
+            String left = s.substring(index, i + 1);
+            if (!dict.contains(left)) {
+                // 如果左字符串不在字典中，不需要继续递归
+                continue;
+            }
+            
+            // if can't find any solution, return false, other set it 
+            // to be true;
+            flag = true;
+            path.add(left);
+            dfs3(s, dict, path, ret, i + 1, canBreak);
+            path.remove(path.size() - 1);
+        }
+        
+        canBreak[index] = flag;
     }
 }
