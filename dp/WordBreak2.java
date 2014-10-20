@@ -207,6 +207,33 @@ public class WordBreak2 {
         return D[len];
     }
     
+    /*
+    // 解法3：重新剪枝。
+    */
+    // 我们用DFS来解决这个问题吧 
+    public static List<String> wordBreak3(String s, Set<String> dict) {
+        if (s == null || s.length() == 0 || dict == null) {
+            return null;
+        }
+        
+        List<String> ret = new ArrayList<String>();
+        
+        // 记录切割过程中生成的字母
+        List<String> path = new ArrayList<String>();
+        
+        int len = s.length();
+        
+        // 注意：一定要分配 Len+1 否则会爆哦.
+        boolean canBreak[] = new boolean[len + 1];
+        for (int i = 0; i < len + 1; i++) {
+            canBreak[i] = true;
+        }
+            
+        dfs3(s, dict, path, ret, 0, canBreak);
+        
+        return ret;
+    }
+
     // 我们用DFS模板来解决这个问题吧 
     public static void dfs3(String s, Set<String> dict, 
             List<String> path, List<String> ret, int index,
