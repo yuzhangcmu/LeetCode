@@ -1,11 +1,53 @@
 package Algorithms.dp;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class WordBreak2 {
+    public static void main(String[] strs) {
+        String s = "aaaaaaaaaaaaaaaaaaaaaaa";
+        Set<String> dict = new HashSet<String>();
+        dict.add("bin");
+        dict.add("apple");
+        dict.add("app");
+        dict.add("le");
+        dict.add("aaaaaa");
+        dict.add("aaaaa");
+        dict.add("aaaa");
+        dict.add("aaa");
+        dict.add("aa");
+        dict.add("a");
+        dict.add("aaaaaaa");
+        dict.add("aaaaaaaa");
+        dict.add("aaaaaaaaa");
+        
+        System.out.println("Test");
+
+        Algorithms.permutation.Stopwatch timer1 = new Algorithms.permutation.Stopwatch();
+        
+        // 递归模板，加剪枝 
+        List<String> list = wordBreak(s, dict);
+        
+        System.out
+        .println("Computing time with dfs and cut branch used as Queue/Deque: "
+                + timer1.elapsedTime() + " millisec.");
+        
+        Algorithms.permutation.Stopwatch timer2 = new Algorithms.permutation.Stopwatch();
+        
+        // HASH保存记忆
+        List<String> list2 = wordBreak1(s, dict);
+        
+        System.out
+        .println("Computing time with ArrayDeque used as Queue/Deque: "
+                + timer2.elapsedTime() + " millisec.");
+
+        //System.out.println(list.toString());
+    }
+    
     // 我们用DFS来解决这个问题吧 
     public static List<String> wordBreak1(String s, Set<String> dict) {
     	HashMap<String, List<String>> map = new HashMap<String, List<String>>();
@@ -69,7 +111,6 @@ public class WordBreak2 {
     
     // 我们用DFS来解决这个问题吧 
     public static List<String> wordBreak(String s, Set<String> dict) {
-        HashMap<String, List<String>> map = new HashMap<String, List<String>>();
         if (s == null || s.length() == 0 || dict == null) {
             return null;
         }
