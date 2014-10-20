@@ -12,6 +12,11 @@ public class FirstMissingPositive {
             return 0;
         }
         
+        /*
+        使用桶排序，将数字放置在正确的位置，如果最后发现在某个位置不存在正确的数字，说明这个数字是缺失的。
+        在排序过程中，因为要不断交换直到不能再交换为止，所以遇到目标位置已经有正确数字时，不要再交换，以
+        免发生死循环。
+        */
         int len = A.length;
         for (int i = 0; i < len; i++) {
             // 1. The number should be in the range.
