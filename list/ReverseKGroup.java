@@ -16,22 +16,13 @@ import Algorithms.algorithm.others.ListNode;
 public class ReverseKGroup {
     // Solution 1:
     // recursion.
+    // 思路是先反转，如果发现长度不够K，再翻回来
     public ListNode reverseKGroup1(ListNode head, int k) {
         if (head == null) {
             return null;
         }
         
         return rec(head, k);
-    }
-    
-    public class ReturnType{
-        ListNode head;
-        ListNode tail;
-        
-        ReturnType(ListNode head, ListNode tail) {
-            this.head = head;
-            this.tail = tail;
-        }
     }
     
     public ListNode rec(ListNode head, int k) {
@@ -70,4 +61,66 @@ public class ReverseKGroup {
         
         return dummy.next;
     }
+    
+    /*
+     * Solution 2:
+     * 使用区间反转的办法, iteration.
+     * */
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null) {
+            return null;
+        }
+        
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        
+        ListNode cur = head;
+        ListNode pre = dummy;
+        
+        int cnt = 0;
+        
+        while (cur != null) {
+            cnt++;
+            if (cnt == k) {
+                cnt = 0;
+                pre = reverse(pre, cur.next);
+            }
+            cur = cur.next;
+        }
+        
+        return dummy.next;
+    }
+    
+    /**
+     * Reverse a link list between pre and next exclusively
+     * an example:
+     * a linked list:
+     * 0->1->2->3->4->5->6
+     * |           |   
+     * pre        next
+     * after call pre = reverse(pre, next)
+     * 
+     * 0->3->2->1->4->5->6
+     *          |  |
+     *          pre next
+     * @param pre 
+     * @param next
+     * @return the reversed list's last node, which is the precedence of parameter next
+     */
+    private static ListNode reverse(ListNode pre, ListNode next){
+        ListNode cur = pre.next;
+        
+        // record the new tail.
+        ListNode last = cur;
+        while (cur != next) {
+            ListNode tmp = cur.next;
+            cur.next = pre.next;
+            pre.next = cur;
+            cur = tmp;
+        }
+        
+        last.next = next;
+        return last;
+    }
+
 }
