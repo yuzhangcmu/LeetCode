@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Partition {
-    public List<List<String>> partition(String s) {
+    public List<List<String>> partition1(String s) {
         List<List<String>> ret = new ArrayList<List<String>>();
         List<String> path = new ArrayList<String>();
 
@@ -64,13 +64,63 @@ public class Partition {
             path.remove(path.size() - 1);
         }
     }
+
+    public List<List<String>> partition(String s) {
+        List<List<String>> ret = new ArrayList<List<String>>();
+        List<String> path = new ArrayList<String>();
+
+        if (s == null) {
+            return ret;
+        }
+
+        boolean[][] isPalindrom = buildPalindromDP(s);
+
+        dfs2(s, path, ret, 0, isPalindrom);
+
+        return ret;
+    }
     
     /*
      * Solution 2: Use DP to reduce the duplicate count.
      * */
-    boolean[][] isPalindromDP(String s) {
+    boolean[][] buildPalindromDP(String s) {
         int len = s.length();
-        boolean[][] ret = new boolean[len][len];
+        boolean[][] D = new boolean[len][len];
+
+        for (int j = 0; j < len; j++) {
+            for (int i = 0; i <= j; i++) {
+                if (j == 0) {
+                    D[i][j] = true;
+                    continue;
+                } 
+
+                // 注意，这里要加上j - i <= 2否则会越界 
+                D[i][j] = s.charAt(i) == s.charAt(j) 
+                    && (j - i <= 2 || D[i + 1][j - 1]);
+            }
+        }
+
+        return D;
     }
-    
+
+    /*
+      we use a map to store the solutions to reduce the times of computing.
+    */
+    public void dfs2(String s, List<String> path, List<List<String>> ret, int index, boolean[][] isPalindromDP) {
+        if (index == s.length()) {
+            ret.add(new ArrayList<String>(path));
+            return;
+        }
+
+        for (int i = index; i < s.length(); i++) {
+            String sub = s.substring(index, i + 1);
+            if (!isPalindromDP[index][i]) {
+                continue;
+            }
+
+            path.add(sub);
+            dfs2(s, path, ret, i + 1, isPalindromDP);
+            path.remove(path.size() - 1);
+        }
+    }
 }
