@@ -54,13 +54,15 @@ public class WordBreak2 {
         System.out
         .println("Computing time with DFS3: "
                 + timer3.elapsedTime() + " millisec.");
+        
+        Algorithms.permutation.Stopwatch timer4 = new Algorithms.permutation.Stopwatch();
 
         // DP + DFS
         wordBreak4(s, dict);
         
         System.out
         .println("Computing time with DFS4: "
-                + timer3.elapsedTime() + " millisec.");
+                + timer4.elapsedTime() + " millisec.");
 
         //System.out.println(list.toString());
     }
