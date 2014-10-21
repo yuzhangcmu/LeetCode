@@ -12,7 +12,10 @@ import java.util.Queue;
  * }
  */
 public class Connect {
-    public void connect(TreeLinkNode root) {
+    /*
+     * 使用level traversal来做。
+     * */
+    public void connect1(TreeLinkNode root) {
         if (root == null) {
             return;
         }
@@ -45,5 +48,31 @@ public class Connect {
                 q.offer(cur.right);
             }
         }
+    }
+    
+    /* 试一下 recursion */
+    public void connect(TreeLinkNode root) {
+        if (root == null) {
+            return;
+        }
+        
+        rec(root);
+    }
+
+    public void rec(TreeLinkNode root) {
+        if (root == null) {
+            return;
+        }
+
+        if (root.left != null) {
+            root.left.next = root.right;            
+        }
+
+        if (root.right != null) {
+            root.right.next = root.next.left;
+        }
+        
+        rec(root.left);
+        rec(root.right);
     }
 }
