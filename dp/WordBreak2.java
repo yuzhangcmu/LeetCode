@@ -39,7 +39,7 @@ public class WordBreak2 {
         Algorithms.permutation.Stopwatch timer1 = new Algorithms.permutation.Stopwatch();
         
         // 递归模板，加剪枝 
-        wordBreak(s, dict);
+        wordBreak2(s, dict);
         
         System.out
         .println("Computing time with DFS2: "
@@ -53,6 +53,13 @@ public class WordBreak2 {
         
         System.out
         .println("Computing time with DFS3: "
+                + timer3.elapsedTime() + " millisec.");
+
+        // DP + DFS
+        wordBreak4(s, dict);
+        
+        System.out
+        .println("Computing time with DFS4: "
                 + timer3.elapsedTime() + " millisec.");
 
         //System.out.println(list.toString());
@@ -92,10 +99,6 @@ public class WordBreak2 {
 				// 字符串划分为2边，计算右边的word break.
 				List<String> listRight = dfs(s.substring(i, len), dict, map);
 
-				// 右边不能break的时候，我们跳过.
-				if (listRight.size() == 0) {
-					continue;
-				}
 
 				// 把左字符串加到右字符串中，形成新的解.
 				for (String r: listRight) {
@@ -120,7 +123,7 @@ public class WordBreak2 {
     */
     
     // 我们用DFS来解决这个问题吧 
-    public static List<String> wordBreak(String s, Set<String> dict) {
+    public static List<String> wordBreak2(String s, Set<String> dict) {
         if (s == null || s.length() == 0 || dict == null) {
             return null;
         }
@@ -257,10 +260,12 @@ public class WordBreak2 {
             return;
         }
 
+        // cut branch.
+        int beforeChange = ret.size();
         for (int i =  index; i < len; i++) {
             // 注意这些索引的取值。左字符串的长度从0到len
             String left = s.substring(index, i + 1);
-            if (!dict.contains(left) || !canBreak[i + 1]) {
+            if (!dict.contains(left)) {
                 // 如果左字符串不在字典中，不需要继续递归
                 continue;
             }
@@ -268,14 +273,88 @@ public class WordBreak2 {
             // if can't find any solution, return false, other set it 
             // to be true;
             path.add(left);
-            
-            int beforeChange = ret.size();
             dfs3(s, dict, path, ret, i + 1, canBreak);
-            // 注意这些剪枝的代码. 关键在于此以减少复杂度
-            if (ret.size() == beforeChange) {
-                canBreak[i + 1] = false;    
-            }
+
             path.remove(path.size() - 1);
         }
+
+        // 注意这些剪枝的代码. 关键在于此以减少复杂度
+        if (ret.size() == beforeChange) {
+            canBreak[index] = false;    
+        }
+    }
+
+    /*
+    // 解法4：先用DP来求解，然后再做 
+    */
+    // 我们用DFS来解决这个问题吧 
+    public static List<String> wordBreak4(String s, Set<String> dict) {
+        if (s == null || s.length() == 0 || dict == null) {
+            return null;
+        }
+        
+        List<String> ret = new ArrayList<String>();
+        
+        List<String> path = new ArrayList<String>();
+        
+        int len = s.length();
+        
+        // i: 表示从i索引开始的字串可以word break.
+        boolean[] D = new boolean[len + 1];
+        D[len] = true;
+        for (int i = len - 1; i >= 0; i--) {
+            for (int j = i; j <= len - 1; j++) {
+                // 左边从i 到 j
+                D[i] = false;
+                if (D[j + 1] && dict.contains(s.substring(i, j + 1))) {
+                    D[i] = true;
+                    break;
+                }
+            }
+        }
+
+        dfs4(s, dict, path, ret, 0, D);
+        
+        return ret;
+    }
+
+    // 我们用DFS模板来解决这个问题吧 
+    public static void dfs4(String s, Set<String> dict, 
+            List<String> path, List<String> ret, int index,
+            boolean canBreak[]) {
+        int len = s.length();
+        if (index == len) {
+            // 结束了。index到了末尾
+            StringBuilder sb = new StringBuilder();
+            for (String str: path) {
+                sb.append(str);
+                sb.append(" ");
+            }
+            // remove the last " "
+            sb.deleteCharAt(sb.length() - 1);
+            ret.add(sb.toString());
+            return;
+        }
+        
+        // if can't break, we exit directly.
+        if (!canBreak[index]) {
+            return;
+        }
+
+        for (int i =  index; i < len; i++) {
+            // 注意这些索引的取值。左字符串的长度从0到len
+            String left = s.substring(index, i + 1);
+            if (!dict.contains(left)) {
+                // 如果左字符串不在字典中，不需要继续递归
+                continue;
+            }
+            
+            // if can't find any solution, return false, other set it 
+            // to be true;
+            path.add(left);
+            dfs4(s, dict, path, ret, i + 1, canBreak);
+            path.remove(path.size() - 1);
+        }
+
     }
 }
