@@ -289,7 +289,6 @@ public class WordBreak2 {
     /*
     // 解法4：先用DP来求解某些字段是否能word break，然后再做 
     */
-    // 我们用DFS来解决这个问题吧 
     public static List<String> wordBreak4(String s, Set<String> dict) {
         if (s == null || s.length() == 0 || dict == null) {
             return null;
