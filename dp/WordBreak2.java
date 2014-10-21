@@ -287,7 +287,7 @@ public class WordBreak2 {
     }
 
     /*
-    // 解法4：先用DP来求解，然后再做 
+    // 解法4：先用DP来求解某些字段是否能word break，然后再做 
     */
     // 我们用DFS来解决这个问题吧 
     public static List<String> wordBreak4(String s, Set<String> dict) {
@@ -320,7 +320,6 @@ public class WordBreak2 {
         return ret;
     }
 
-    // 我们用DFS模板来解决这个问题吧 
     public static void dfs4(String s, Set<String> dict, 
             List<String> path, List<String> ret, int index,
             boolean canBreak[]) {
