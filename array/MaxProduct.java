@@ -2,20 +2,29 @@ package Algorithms.array;
 
 public class MaxProduct {
     public static int maxProduct(int[] A) {
-        int max = 0;
-           
-        int len = A.length;
+        if (A == null || A.length == 0) {
+            return 0;
+        }
         
-        int product = 1;
+        // record the max value in the last node.
+        int DMax = A[0];
         
-        for (int i = 0; i < len; i++) {
-            if (A[i] <= 0) {
-                max = Math.max(max, product);
-                product = 1;
-                continue;
-            }
-                        
-            product *= A[i];
+        // record the min value in the last node.
+        int DMin = A[0];
+        
+        // This is very important, should recode the A[0] as the initial value.
+        int max = A[0];
+        
+        for (int i = 1; i < A.length; i++) {
+            int n1 = DMax * A[i];
+            int n2 = DMin * A[i];
+            
+            // we can select the former nodes, or just discade them.
+            DMax = Math.max(A[i], Math.max(n1, n2));
+            max = Math.max(max, DMax);
+            
+            // we can select the former nodes, or just discade them.
+            DMin = Math.min(A[i], Math.min(n1, n2));
         }
         
         return max;
