@@ -6,29 +6,26 @@ public class Candy {
             return 0;
         }
         
+        
         int len = ratings.length;
-        int[] candys = new int[len];
+        int[] num = new int[len];
         
-        // go from the left side to the right side and give them candys.
-        candys[0] = 1;
-        for (int i = 1; i < len; i++) {
-            if (ratings[i] > ratings[i - 1]) {
-                candys[i] = candys[i - 1] + 1;
+        // go from left to right;
+        for (int i = 0; i < len; i++) {
+            if (i > 0 && ratings[i] > ratings[i - 1]) {
+                num[i] = num[i - 1] + 1;
             } else {
-                candys[i] = 1;
+                num[i] = 1;
             }
         }
         
-        for (int i = len - 2; i >= 0; i--) {
-            if (ratings[i] > ratings[i + 1]) {
-                int num = candys[i + 1] + 1;
-                candys[i] = Math.max(candys[i], num);
-            }
-        }
-        
+        // go from right to left;
         int sum = 0;
-        for (int i: candys) {
-            sum += i;
+        for (int i = len - 1; i >= 0; i--) {
+            if (i < len - 1 && ratings[i] > ratings[i + 1]) {
+                num[i] = Math.max(num[i], num[i + 1] + 1);
+            }
+            sum += num[i];
         }
         
         return sum;
