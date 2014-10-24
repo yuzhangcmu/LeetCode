@@ -1,6 +1,8 @@
 package Algorithms.binarySearch;
+
 public class FindMin {
-    public int findMin(int[] num) {
+    // Solution 1:
+    public int findMin1(int[] num) {
         if (num == null || num.length == 0) {
             return 0;
         }
@@ -37,5 +39,40 @@ public class FindMin {
         }
         
         return 0;
+    }
+    
+    // solution 2:
+    public int findMin(int[] A) {
+        if (A == null || A.length == 0) {
+            return 0;
+        }
+        
+        if (A.length == 1) {
+            return A[0];
+        } else if (A.length == 2) {
+            return Math.min(A[0], A[1]);
+        }
+        
+        // 至少有3个元素，才有讨论的价值 
+        int l = 0;
+        int r = A.length - 1;
+        
+        while (l < r - 1) {
+            int m = l + (r - l) / 2;
+            
+            // means that there is no rotate.
+            if (A[r] > A[l]) {
+                return A[0];
+            }
+            
+            // left side is sorted.
+            if (A[m] > A[l]) {
+                l = m;
+            } else {
+                r = m;
+            }
+        }
+        
+        return A[r];
     }
 }
