@@ -1,9 +1,11 @@
 package Algorithms.hash;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class LongestConsecutive {
-    public int longestConsecutive(int[] num) {
+    // Solution 1: use hashmap.
+    public int longestConsecutive1(int[] num) {
         if (num == null) {
             return 0;
         }
@@ -50,6 +52,42 @@ public class LongestConsecutive {
             map.put(right, left);
             
             max = Math.max(max, right - left + 1);
+        }
+        
+        return max;
+    }
+    
+    // solution 2: use Hashset.
+    public int longestConsecutive(int[] num) {
+        if (num == null) {
+            return 0;
+        }
+        
+        HashSet<Integer> set = new HashSet<Integer>();
+        for (int i: num) {
+            set.add(i);
+        }
+        
+        int max = 0;
+        for (int i: num) {
+            int cnt = 1;
+            set.remove(i);
+            
+            int tmp = i - 1;
+            while (set.contains(tmp)) {
+                set.remove(tmp);
+                cnt++;
+                tmp--;
+            }
+            
+            tmp = i + 1;
+            while (set.contains(tmp)) {
+                set.remove(tmp);
+                cnt++;
+                tmp++;
+            }
+            
+            max = Math.max(max, cnt);
         }
         
         return max;
