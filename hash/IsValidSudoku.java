@@ -43,7 +43,7 @@ public class IsValidSudoku {
                 // clear the set at every block.
                 set.clear();
                 for (int k = 0; k < 9; k++) {
-                    if (!isValidChar(board[i + k / 3][j + k % 3], set)) {
+                    if (!isValidChar(board[i*3 + k / 3][j*3 + k % 3], set)) { // here is a bug
                         return false;
                     }    
                 }
