@@ -19,7 +19,7 @@ public class RestoreIpAddresses {
     
     public void dfs(String s, int index, ArrayList<String> path, ArrayList<String> ret) {
         if (path.size() == 4) {
-            if (index == s.length() && path.size() == 4) {
+            if (index == s.length()) {
                 StringBuilder sb = new StringBuilder();
                 for (String str: path) {
                     sb.append(str);
@@ -35,12 +35,13 @@ public class RestoreIpAddresses {
         
         int len = s.length();
         for (int i = index; i < index + 3 && i < len; i++) {
+            // 不可以有005这样子的IP地址。
             if (s.charAt(index) == '0' && i > index) {
                 break;
             }
             
             String pre = s.substring(index, i + 1);
-            // 过滤Number > 255的情况。
+            // 过滤num > 255的情况。
             int num = Integer.parseInt(pre);
             if (num > 255) {
                 continue;
