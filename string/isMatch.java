@@ -18,14 +18,8 @@ public class isMatch {
             return indexS == lenS;
         }
         
-        // only 1 match character left.
-        if (indexP == lenP - 1) {
-            // String should also have 1 character left.
-            return indexS == lenS - 1 && isMatchChar(s.charAt(indexS), p.charAt(indexP));
-        }
-        
         // At lease 2 match character left
-        if (p.charAt(indexP + 1) == '*') {
+        if (indexP < lenP - 1 && p.charAt(indexP + 1) == '*') {
             // match 0;
             if (isMatchRec(s, p, indexS, indexP + 2)) {
                 return true;
@@ -64,5 +58,7 @@ public class isMatch {
         
         return false;
     }
+    
+}
     
 }
