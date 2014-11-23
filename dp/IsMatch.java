@@ -114,6 +114,11 @@ public class IsMatch {
             }
         }
         
+        // 跳过末尾的所有的*.
+        while (indexP < lenP && p.charAt(indexP) == '*') {
+            indexP++;
+        }
+        
         if (indexS == lenS && indexP == lenP) {
             return true;
         }
