@@ -14,7 +14,13 @@ import Algorithms.algorithm.others.ListNode;
  * }
  */
 public class RotateList {
-    public ListNode rotateRight(ListNode head, int n) {
+    public static void main(String[] strs) {
+        ListNode node1 = new ListNode(1);
+        ListNode ret = rotateRight(node1, 0);
+        System.out.println(ret.toString());
+    }
+    
+    public static ListNode rotateRight(ListNode head, int n) {
         if (head == null) {
             return null;
         }
@@ -51,7 +57,7 @@ public class RotateList {
     }
     
     // get the list lenght.
-    public int getlen(ListNode head) {
+    public static int getlen(ListNode head) {
         int len = 0;
         while (head != null) {
             len++;
