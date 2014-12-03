@@ -19,7 +19,7 @@ public class PermuteUnique {
         return ret;
     }
     
-    public void dfs(int[] num, ArrayList<Integer> path, List<List<Integer>> ret, boolean[] visit) {
+    public void dfs1(int[] num, ArrayList<Integer> path, List<List<Integer>> ret, boolean[] visit) {
         int len = num.length;
         if (path.size() == len) {
             ret.add(new ArrayList<Integer>(path));
@@ -37,6 +37,33 @@ public class PermuteUnique {
             // 递归以及回溯
             visit[i] = true;
             path.add(num[i]);
+            dfs(num, path, ret, visit);
+            path.remove(path.size() - 1);
+            visit[i] = false;
+        }
+    }
+    
+    // SOLUTION 2:
+    //  使用一个pre来记录。只取第一个可以取的位置
+    public void dfs(int[] num, ArrayList<Integer> path, List<List<Integer>> ret, boolean[] visit) {
+        int len = num.length;
+        if (path.size() == len) {
+            ret.add(new ArrayList<Integer>(path));
+            return;
+        }
+
+        long pre = Long.MIN_VALUE;
+        for (int i = 0; i < len; i++) {
+            int n = num[i];
+            // 只取第一个可取的位置，因为别的位置取到的也没有区别
+            if (visit[i] || pre == n) {
+                continue;
+            }
+            pre = n;
+            
+            // 递归以及回溯
+            visit[i] = true;
+            path.add(n);
             dfs(num, path, ret, visit);
             path.remove(path.size() - 1);
             visit[i] = false;

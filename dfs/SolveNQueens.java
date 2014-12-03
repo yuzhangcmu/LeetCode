@@ -9,9 +9,15 @@ public class SolveNQueens {
         
         for (String[] strss: list) {
             for (String s: strss) {
-                System.out.println(s);
+                //System.out.println(s);
             }
             
+        }
+        
+        Long ret = Long.MAX_VALUE;
+        int a = Integer.MAX_VALUE;
+        if (ret == a) {
+            System.out.println(true);
         }
         
         //System.out.println(solveNQueens(4).toString());
