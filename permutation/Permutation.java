@@ -13,7 +13,7 @@ public class Permutation {
         
         permute(num);
         System.out
-                .println("Computing time with ArrayDeque used as Queue/Deque: "
+                .println("Computing time with HASHMAP: "
                         + timer1.elapsedTime() + " millisec.");
         
         System.out.printf("Test size:%d \n", num.length);
@@ -22,7 +22,7 @@ public class Permutation {
         
         permute2(num);
         System.out
-                .println("Computing time with ArrayDeque used as Queue/Deque: "
+                .println("Computing time with list: "
                         + timer2.elapsedTime() + " millisec.");
     }
     
