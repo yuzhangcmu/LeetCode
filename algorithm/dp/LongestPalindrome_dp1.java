@@ -15,7 +15,7 @@ public class LongestPalindrome_dp1 {
         int len = s.length();
 
         // Record i-j is a palindrome.
-        boolean[][] D = new int[len][len];
+        boolean[][] D = new boolean[len][len];
         for (int i = 0; i < len; i++) {
         	for (int j = 0; j < len; j++) {
         		D[i][j] = false;
@@ -25,9 +25,6 @@ public class LongestPalindrome_dp1 {
         int max = 0;
         int retB = 0;
         int retE = 0;
-        // 这样写的目的是，从前往后扫描时，被记录的DP值可以被复用
-        // 因为D[i][j] 要用到i + 1, j - 1，所以每一次计算j时，把j对应的i全部计算完，这样
-        // 下一次计算i,j的时候，可以有i+1, j-1可以用。
         for (int j = 0; j < len; j++) {
         	for (int i = 0; i <= j; i++) {
         	    if (s.charAt(i) == s.charAt(j)
@@ -48,8 +45,8 @@ public class LongestPalindrome_dp1 {
         return s.substring(retB, retE + 1);
     }
 
-    // solution 2: 中心展开法。从头扫到尾部，每一个字符以它为中心向两边扩展，找最长回文。
-    // 复杂度为N^2 并且是inplace，空间复杂度O(1)
+    // solution 2: ���������������������������������������������������������������������������������������������������������
+    // ������������N^2 ���������inplace������������������O(1)
     public static String longestPalindrome(String s) {
         if (s == null) {
             return null;
@@ -65,14 +62,14 @@ public class LongestPalindrome_dp1 {
         String ret = "";
 
         for (int i = 0; i < len; i++) {
-            // 考虑奇数字符串
+            // ���������������������
             String s1 = expandAround(s, i, i);
             if (s1.length() > max) {
                 ret = s1;
                 max = s1.length();
             }
 
-            // 考虑偶数长度的字符串
+            // ������������������������������
             String s2 = expandAround(s, i, i);
             if (s2.length() > max) {
                 ret = s2;
@@ -95,7 +92,7 @@ public class LongestPalindrome_dp1 {
             c2--;
         }
         
-        // 注意，根据 substring的定义，c2不要减1
+        // ��������������� substring������������c2���������1
         return s.substring(c1 + 1, c2);
     }
 }

@@ -7,7 +7,7 @@ public class LongestValidParentheses {
         System.out.println(longestValidParentheses("(()()())"));
     }
     
-    public int longestValidParentheses(String s) {
+    public static int longestValidParentheses(String s) {
         if (s == null) {
             return 0;
         }    
