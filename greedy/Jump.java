@@ -22,6 +22,7 @@ public class Jump {
                     sum++;
                     des = i; // 更新dest位置，下一步就是计算要几步能调到当前i的位置
                     //break; // 没必要再继续找，因为越早找到的i肯定越靠前，说明这一跳的距离越远
+                             // 这一行可以去掉， des = i，不符合for的条件，会自动break.
                     System.out.println("sum:" + sum);
                     System.out.println("des:" + des);
                 }
