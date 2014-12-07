@@ -3,14 +3,9 @@ package Algorithms.dp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Generate {
+public class Solution {
     public List<List<Integer>> generate(int numRows) {
         List<List<Integer>> ret = new ArrayList<List<Integer>>();
-        
-        if (numRows <= 0) {
-            return ret;
-        }
-        
         for (int i = 0; i < numRows; i++) {
             ArrayList<Integer> list = new ArrayList<Integer>();
             for (int j = 0; j < i + 1; j++) {
