@@ -1,6 +1,10 @@
 package Algorithms.string;
 
 public class StrStr {
+    public static void main(String[] strs) {
+        System.out.println(findPattern("ppa","pp"));
+    }
+    
     public String strStr(String haystack, String needle) {
         if (haystack == null || needle == null) {
             return null;
@@ -29,5 +33,32 @@ public class StrStr {
 
         // didn't find the needle.
         return null;
+    }
+    
+    public static int findPattern(String base, String pattern) {
+        if (base == null || pattern == null) {
+            return -1;
+        }
+        
+        int len1 = base.length();
+        int len2 = pattern.length();
+        
+        for (int i = 0; i <= len1 - len2; i++) {
+            int j = 0;
+            for (; j < len2; j++) {
+                if (base.charAt(i + j) != pattern.charAt(j)) {
+                    break;
+                }
+                
+                
+                if (j == len2 - 1) {
+                    return i;
+                }
+            }
+        
+        }
+
+        // did not find pattern.
+        return -1;
     }
 }

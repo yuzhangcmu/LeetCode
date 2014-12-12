@@ -10,7 +10,7 @@ public class MinAdjustmentCost_Class {
         A.add(2);
         A.add(3);
         
-        System.out.println(MinAdjustmentCost(A, 1));
+        System.out.println(MinAdjustmentCost1(A, 1));
     }
     
     /**
@@ -23,7 +23,12 @@ public class MinAdjustmentCost_Class {
             return 0;
         }
         
-        return rec(A, new ArrayList<Integer>(A), target, 0);
+        ArrayList<Integer> B = new ArrayList<Integer>();
+        for (int i = 0; i < A.size(); i++) {
+            B.add(0);
+        }
+        
+        return rec(A, B, target, 0);
     }
     
     /*
@@ -53,7 +58,7 @@ public class MinAdjustmentCost_Class {
             min = Math.min(min, dif);
             
             // 回溯
-            B.set(index, A.get(index));
+            //B.set(index, A.get(index));
         }
         
         return min;
