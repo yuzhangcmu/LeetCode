@@ -63,8 +63,6 @@ public class QuickSort {
 
     // partition the array and return the new pivot position.
     private static int partition(int[] arr, int left, int right, int pivot) {
-        int len = arr.length;
-
         // set the pivot.
         int l = left ;
         int r = right - 1;
