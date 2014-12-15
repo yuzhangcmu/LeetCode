@@ -5,12 +5,12 @@ import java.util.ArrayList;
  * LintCode Version 1: Use arrays to solve it.
  * */
 
-class KthLargestElement {
+class KthLargestElement_lintCode_v1 {
     //param k : description of k
     //param numbers : array of numbers
     //return: description of return
     public static void main(String[] strs) {
-        KthLargestElement Kth = new KthLargestElement();
+        KthLargestElement_lintCode_v1 Kth = new KthLargestElement_lintCode_v1();
         ArrayList<Integer> numbers = new ArrayList<Integer>();
         numbers.add(9);
         numbers.add(3);
