@@ -1,6 +1,10 @@
-package Algorithms.algorithm.NChapter;
+package Algorithms.algorithm.NChapter.findKthNumber;
 
 import java.util.Arrays;
+
+/*
+ * Version 1: The pivot is in the left.
+ * */
 
 public class FindKthNumber {
     public static void main(String[] strs) {

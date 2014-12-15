@@ -1,18 +1,15 @@
-package Algorithms.algorithm.others;
+package Algorithms.algorithm.NChapter.findKthNumber;
 
 
-public class FindKthNumber {
+public class FindMedianSortedArrays {
     public static void main(String[] str) {
         int A[] = {1,2,3,3};
         int B[] = {3,3,7,8};
-        FindKthNumber fn = new FindKthNumber();
-        double ret = fn.findMedianSortedArrays(A, B);
+        double ret = findMedianSortedArrays(A, B);
         System.out.println(ret);
     }
     
-    public double findMedianSortedArrays(int A[], int B[]) {
-        int len = A.length + B.length;
-        
+    public static double findMedianSortedArrays(int A[], int B[]) {
         double ret = findKth(A, 0, B, 0, 6);
         return ret;
         

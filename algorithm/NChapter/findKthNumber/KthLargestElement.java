@@ -1,6 +1,9 @@
-package Algorithms.algorithm.others;
+package Algorithms.algorithm.NChapter.findKthNumber;
 import java.util.ArrayList;
-import java.util.Collections;
+
+/*
+ * LintCode Version 1: Use arrays to solve it.
+ * */
 
 class KthLargestElement {
     //param k : description of k
@@ -23,7 +26,6 @@ class KthLargestElement {
         // write your code here
         Integer[] num = new Integer[numbers.size()];
         numbers.toArray(num);
-        //Integer[] num = numbers.toArray(new Integer[0]);
         
         return findKthNumberHelp(num, num.length + 1 - k, 0, num.length - 1);
     }

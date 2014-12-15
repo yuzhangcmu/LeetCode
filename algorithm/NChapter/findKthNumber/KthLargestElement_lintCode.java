@@ -1,11 +1,12 @@
-package Algorithms.algorithm.NChapter;
+package Algorithms.algorithm.NChapter.findKthNumber;
 
 import java.util.ArrayList;
 
 // The link: 
+
 // http://www.lintcode.com/en/problem/kth-largest-element/
 
-class Solution {
+class KthLargestElement_lintCode {
     //param k : description of k
     //param numbers : array of numbers
     //return: description of return
