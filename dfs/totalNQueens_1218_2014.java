@@ -44,7 +44,7 @@ public class TotalNQueens_1218_2014 {
             }
             
             // diagonally lines.
-            // Bug 2: forget to add a ')'
+            // Bug 2: forget to add a ')' 
             if (size - i == Math.abs(col - path.get(i))) {
                 return false;
             }
