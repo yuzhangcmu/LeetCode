@@ -1,11 +1,47 @@
 package Algorithms.string;
 
+import java.util.ArrayList;
+
 public class StrStr {
     public static void main(String[] strs) {
-        System.out.println(findPattern("ppa","pp"));
+        System.out.println(strStr("ppa","pa"));
+        System.out.println(findPattern("ppa","pax"));
+        
+        System.out.println(findAllStrings("xxisxhis"));
+        
     }
     
-    public String strStr(String haystack, String needle) {
+    public static boolean isAWord(String s) {
+        if (s.equals("is")) {
+            return true;
+        } else if (s.equals("his")){
+            return true;
+        }
+        return false;
+    }
+    
+    public static ArrayList<String> findAllStrings(String s) {
+        ArrayList<String> ret = new ArrayList<String>();
+        
+        if (s == null || s.length() == 0) {
+            return ret;    
+        }
+        
+        int len = s.length();
+        
+        for (int i = 0; i < len; i++) {
+            for (int j = i; j < len; j++) {
+                String sub = s.substring(i, j + 1);
+                if (isAWord(sub)) {
+                    ret.add(sub);
+                }
+            }
+        }
+        
+        return ret;
+    }
+    
+    public static String strStr(String haystack, String needle) {
         if (haystack == null || needle == null) {
             return null;
         }
@@ -49,7 +85,6 @@ public class StrStr {
                 if (base.charAt(i + j) != pattern.charAt(j)) {
                     break;
                 }
-                
                 
                 if (j == len2 - 1) {
                     return i;
