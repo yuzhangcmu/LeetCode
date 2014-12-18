@@ -2,7 +2,7 @@ package Algorithms.dfs;
 
 import java.util.ArrayList;
 
-public class totalNQueens_1218_2014 {
+public class TotalNQueens_1218_2014 {
     public int totalNQueens(int n) {
         if (n == 0) {
             return 0;
