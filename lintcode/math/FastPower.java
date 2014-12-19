@@ -6,7 +6,7 @@ class FastPower {
         
         //System.out.println(Math.pow(2, 2147483647));
         
-        //System.out.println(-9 % 2);
+        System.out.println(9 % (-2));
     }
     
     /*
