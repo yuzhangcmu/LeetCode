@@ -1,4 +1,4 @@
-package Algorithms.math;
+package Algorithms.lintcode.math;
 
 class FastPower {
     public static void main(String[] strs) {
