@@ -46,7 +46,7 @@ public class MajorityNumber {
         for (int num: nums) {
             if (num == n1) {
                 cnt1++;
-            } else {
+            } else if (num == n2) {
                 cnt2++;
             }
         }
@@ -58,4 +58,6 @@ public class MajorityNumber {
         return n1;
     }
 }
+
+
 
