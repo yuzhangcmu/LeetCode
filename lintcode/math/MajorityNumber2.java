@@ -1,8 +1,8 @@
-package Algorithms.lintcode.array;
+package Algorithms.lintcode.math;
 
 import java.util.ArrayList;
 
-public class MajorityNumber {
+public class MajorityNumber2 {
     /**
      * @param nums: A list of integers
      * @return: The majority number that occurs more than 1/3
