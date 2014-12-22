@@ -61,9 +61,51 @@ public class SortColors {
         }
     }
     
+    // Solution 3: use switch
+    public void sortColors3(int[] A) {
+        if (A == null || A.length == 0) {
+            return;
+        }
+        
+        int left = 0;
+        
+        // Bug 1: right is wrong.
+        int right = A.length - 1;
+        
+        int cur = 0;
+        
+        // left: the first one which is not 0
+        // right: the first one which is not 2
+        // So we should use <= because right may be not dealed with.
+        while (cur <= right) {
+            switch (A[cur]) {
+                case 0:
+                    // Bug 0: Forget to add A.
+                    swap(A, left, cur);
+                    left++;
+                    cur++;
+                    break;
+                case 1:
+                    cur++;
+                    break;
+                case 2:
+                    swap(A, cur, right);
+                    right--;
+                    // 这里不cur++的原因是，有可能从右边换过来有0，1还要继续处理
+                    break;
+                
+                default:
+                    cur++;
+                    break;
+            }
+        }
+    }
+    
     public void swap(int[] A, int n1, int n2) {
         int tmp = A[n1];
         A[n1] = A[n2];
         A[n2] = tmp;
     }
+    
+    
 }

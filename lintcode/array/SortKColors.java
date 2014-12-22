@@ -92,6 +92,8 @@ class SortKColors {
                 } else if (colors[num - 1] == 0) {
                     // 3. The bucket is empty.
                     colors[num - 1] = -1;
+                    // delete the A[i];
+                    colors[i] = 0;
                 }
             }
         }
