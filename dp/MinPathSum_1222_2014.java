@@ -1,6 +1,6 @@
-package Algorithms.algorithm.dp;
+package Algorithms.dp;
 
-public class MinPathSum {
+public class MinPathSum_1222_2014 {
     // Solution 1: DP
     public int minPathSum1(int[][] grid) {
         if (grid == null || grid.length == 0 || grid[0].length == 0) {
