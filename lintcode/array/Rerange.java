@@ -3,11 +3,18 @@ package Algorithms.lintcode.array;
 class Rerange {
     public static void main(String[] strs) {
         int A[] = {1,2,3,4,-1, 2, 5, 5, -5, 6, -7,-8,843,6,1};
-        //int A[] = {1,2,-3,-4,-1, -2, -5, -5, -5, 6, -7,-8,843,6,1};
+        int B[] = {1,2,-3,-4,-1, -2, -5, -5, -5, 6, -7,-8,843,6,1};
         rerange(A);
 
         for (int i = 0; i < A.length; i++) {
             System.out.print(A[i] + " ");
+        }
+        
+        rerange(B);
+        System.out.println();
+
+        for (int i = 0; i < B.length; i++) {
+            System.out.print(B[i] + " ");
         }
     }
    
@@ -197,7 +204,7 @@ class Rerange {
    /*
    Solution 3:
    */
-   public static int[] rerange(int[] A) {
+   public static int[] rerange3(int[] A) {
         // write your code here
         
         // Check the input parameter.
@@ -238,6 +245,76 @@ class Rerange {
                 int tmp = A[left];
                 A[left] = A[right];
                 A[right] = tmp;
+                left++;
+                right--;
+            }
+        }
+        
+        // Reorder the negative and the positive numbers.
+        while (true) {
+            // Should move if it is in the range.
+            while (posPointer < len && A[posPointer] > 0) {
+                posPointer += 2;
+            }
+            
+            // Should move if it is in the range.
+            while (negPointer < len && A[negPointer] < 0) {
+                negPointer += 2;
+            }
+            
+            if (posPointer >= len || negPointer >= len) {
+                break;
+            }
+            
+            swap(A, posPointer, negPointer);
+        }
+        
+        return A;
+   }
+   
+   /*
+   Solution 4:
+   把reverse的步骤简化了一下
+   */
+   public static int[] rerange(int[] A) {
+        // write your code here
+        
+        // Check the input parameter.
+        if (A == null || A.length <= 2) {
+            return A;
+        }
+        
+        int len = A.length;
+        
+        int cntPositive = 0;
+        
+        // store the positive numbers index.
+        int i1 = 0;
+        
+        for (int i2 = 0; i2 < len; i2++) {
+            if (A[i2] > 0) {
+                cntPositive++;
+                
+                // Put all the positive numbers at in the left part.
+                swap(A, i1++, i2);
+            }
+        }
+        
+        // If positive numbers are more than negative numbers,
+        // Put the positive numbers at first.
+        int posPointer = 1;
+        int negPointer = 0;
+        
+        if (cntPositive > A.length / 2) {
+            // Have more Positive numbers;
+            posPointer = 0;
+            negPointer = 1;
+            
+            // Reverse the array.
+            int left = 0;
+            int right = len -1;
+            while (right >= cntPositive) {
+                swap(A, left, right);
                 left++;
                 right--;
             }
