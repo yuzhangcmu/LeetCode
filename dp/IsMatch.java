@@ -19,7 +19,6 @@ public class IsMatch {
         int lens = s.length();
         int lenp = p.length();
         
-        // 创建一个Dp二维数组
         boolean[][] D = new boolean[lens + 1][lenp + 1];
         
         boolean flag = false;
@@ -52,7 +51,6 @@ public class IsMatch {
                     flag = true;
                 }
                 
-                // Greedy. 在此即可以退出，因为* 可以匹配余下的所有的字符串。    
                 if (D[i][j] && p.charAt(j - 1) == '*' && j == lenp) {
                     return true;
                 }
@@ -95,12 +93,10 @@ public class IsMatch {
                     indexP++;
                 }
                 
-                //P的最后一个是 *，表示可以匹配任何字符串
                 if (indexP == lenP) {
                     return true;
                 }
                 
-                // 记录下这个匹配位置。
                 back = true;
                 preS = indexS;
                 preP = indexP;
@@ -114,7 +110,6 @@ public class IsMatch {
             }
         }
         
-        // 跳过末尾的所有的*.
         while (indexP < lenP && p.charAt(indexP) == '*') {
             indexP++;
         }
