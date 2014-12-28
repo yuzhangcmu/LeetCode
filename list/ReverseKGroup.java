@@ -16,7 +16,6 @@ import Algorithms.algorithm.others.ListNode;
 public class ReverseKGroup {
     // Solution 1:
     // recursion.
-    // 思路是先反转，如果发现长度不够K，再翻回来
     public ListNode reverseKGroup1(ListNode head, int k) {
         if (head == null) {
             return null;
@@ -63,8 +62,7 @@ public class ReverseKGroup {
     }
     
     /*
-     * Solution 2:
-     * 使用区间反转的办法, iteration.
+     * Solution 2: iteration.
      * */
     public ListNode reverseKGroup(ListNode head, int k) {
         if (head == null) {

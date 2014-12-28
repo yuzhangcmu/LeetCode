@@ -1,4 +1,3 @@
-
 public class LengthOfLastWord {
 	public static void main(String[] strs) {
 		System.out.println(lengthOfLastWord(" a"));
