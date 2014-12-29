@@ -32,7 +32,7 @@ public class LargestRectangleArea {
                 // Stack is not empty, and the current node is smaller than the one in the stack.
                 // When we come to the end of the array, we will also should count all the solutions.
                 // BUG 3: should use height[s.pop] instead of s.pop
-                // 在i到达末尾的时候，也会重新计算一次.
+                // When the i come to the end, the rectangle will be counted again.
                 int h = height[s.pop()];
                 int width = s.isEmpty() ? i: i - s.peek() - 1;
                 max = Math.max(max, h * width);
