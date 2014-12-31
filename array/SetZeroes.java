@@ -41,7 +41,6 @@ public class SetZeroes {
         // cells whether or not set to 0.
         for (int i = 1; i < rows; i++) {
             for (int j = 1; j < cols; j++) {
-                // 注意了，这个矩阵是0和非0，并不是0和1.
                 if (matrix[i][j] == 0) {
                     // set the flag in the first line and the first column                
                     matrix[i][0] = 0;
@@ -76,5 +75,65 @@ public class SetZeroes {
         }
         
         return;
+    }
+    
+    // solution 2: combine the first 3 loop.
+    public void setZeroes2(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return;
+        }
+        
+        boolean row1 = false;
+        boolean col1 = false;
+        
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        
+        // set flags.
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (matrix[i][j] != 0) {
+                    continue;
+                }
+                
+                // set the flag of a column and a row.
+                matrix[0][j] = 0;
+                matrix[i][0] = 0;
+                
+                //  get flag of first row.
+                if (i == 0) {
+                    row1 = true;
+                }
+                
+                // get flag of first column.
+                if (j == 0) {
+                    col1 = true;
+                }
+            }
+        }
+        
+        // set the matrix.
+        for (int i = 1; i < rows; i++) {
+            for (int j = 1; j < cols; j++) {
+                if (matrix[0][j] == 0 || matrix[i][0] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        
+        // set first column
+        if (col1) {
+            for (int i = 0; i < rows; i++) {
+                // bug 1: can't use matrix[i][j]
+                matrix[i][0] = 0;
+            }    
+        }
+        
+        // set first row.
+        if (row1) {
+            for (int i = 0; i < cols; i++) {
+                matrix[0][i] = 0;
+            }    
+        }
     }
 }
