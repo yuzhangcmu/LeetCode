@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetRow {
-    public List<Integer> getRow(int rowIndex) {
+    public List<Integer> getRow1(int rowIndex) {
         List<Integer> pre = new ArrayList<Integer>();
         List<Integer> cur = new ArrayList<Integer>();
         
@@ -12,10 +12,10 @@ public class GetRow {
             return cur;
         }
         
-        // 注意这里的rowIndex跟上一题的意义不一样！这个是索引，orz...
-        // 所以我们要用<=
+        // 娉ㄦ剰杩欓噷鐨剅owIndex璺熶笂涓�鐨勬剰涔変笉涓�牱锛佽繖涓槸绱㈠紩锛宱rz...
+        // 鎵�互鎴戜滑瑕佺敤<=
         for (int i = 0; i <= rowIndex; i++) {
-            // 第i行有i + 1个元素
+            // 绗琲琛屾湁i + 1涓厓绱�
             cur = new ArrayList<Integer>(); 
             for (int j = 0; j < i + 1; j++) {
                 if (j == 0 || j == i) {
@@ -28,5 +28,24 @@ public class GetRow {
         }
         
         return cur;
+    }
+    
+    // SOLUTION 2: DO IT just inplace
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> ret = new ArrayList<Integer>();
+        
+        for (int i = 0; i <= rowIndex; i++) {
+            for (int j = i; j >= 0; j--) {
+                if (j == i) {
+                    ret.add(1);
+                } else if (j != 0) {
+                    // ERROR: use add instead of set
+                    //ret.add(ret.get(j) + ret.get(j - 1));
+                    ret.set(j, ret.get(j) + ret.get(j - 1));
+                }
+            } 
+        }
+        
+        return ret;
     }
 }
