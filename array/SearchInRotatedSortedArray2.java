@@ -55,6 +55,92 @@ public class SearchInRotatedSortedArray2 {
         
         return false;
     }  
-      
+     
+    /*
+     * 2015.1.1 Redo:
+     * */
+    public boolean search1(int[] A, int target) {
+        if (A == null || A.length == 0) {
+            return false;
+        }
+        
+        int l = 0;
+        int r = A.length - 1;
+        
+        while (l < r - 1) {
+            int mid = l + (r - l) / 2;
+            
+            if (A[mid] == target) {
+                return true;
+            }
+            
+            // left sort
+            if (A[mid] > A[l]) {
+                // out of range.
+                if (target > A[mid] || target < A[l]) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            // right sort.    
+            } else if (A[mid] < A[l]) {
+                // out of range.
+                if (target < A[mid] || target > A[r]) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            } else {
+                // move one node.
+                l++;
+            }
+        }
+        
+        if (A[l] == target || A[r] == target) {
+            return true;
+        }
+        
+        return false;
+    }
     
+    // Version 2:
+    public boolean search2(int[] A, int target) {
+        if (A == null || A.length == 0) {
+            return false;
+        }
+        
+        int l = 0;
+        int r = A.length - 1;
+        
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            
+            if (A[mid] == target) {
+                return true;
+            }
+            
+            // left sort
+            if (A[mid] > A[l]) {
+                // out of range.
+                if (target > A[mid] || target < A[l]) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            // right sort.    
+            } else if (A[mid] < A[l]) {
+                // out of range.
+                if (target < A[mid] || target > A[r]) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            } else {
+                // move one node.
+                l++;
+            }
+        }
+        
+        return false;
+    }
 }
