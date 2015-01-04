@@ -16,4 +16,20 @@ public class MaxProfit {
         
         return maxProfit;
     }
+    
+    public int maxProfit2(int[] prices) {
+        if (prices == null) {
+            return 0;
+        }
+        
+        int maxProfit = 0;
+        int minValue = Integer.MAX_VALUE;
+        
+        for (int i: prices) {
+            minValue = Math.min(minValue, i);
+            maxProfit = Math.max(maxProfit, i - minValue);
+        }
+        
+        return maxProfit;
+    }
 }
