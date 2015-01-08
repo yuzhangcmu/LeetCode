@@ -1,5 +1,8 @@
 package Algorithms.tree;
 
+import java.util.ArrayList;
+import java.util.Stack;
+
 /**
  * Definition for binary tree
  * public class TreeNode {
@@ -14,6 +17,24 @@ public class RecoverTree {
     TreeNode first = null;
     TreeNode second = null;
     
+    public static class Function {
+        int reference;
+        
+        Function () {
+            super();
+        }
+    }
+    
+    public static void main(String[] strs) {
+        ArrayList<Object> list = new ArrayList<Object>();
+        
+        list.add("string");
+        list.add(1);
+        
+        Function fuc = new Function();
+        
+        
+    }
     
     public void recoverTree(TreeNode root) {
         inOrder(root);
@@ -66,5 +87,54 @@ public class RecoverTree {
 
         // inorder traverse.
         inOrder(root.right);
+    }
+    
+    public void recoverTree1(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        
+        TreeNode node1 = null;
+        TreeNode node2 = null;
+        
+        TreeNode pre = null; 
+        
+        Stack<TreeNode> s = new Stack<TreeNode>();
+        TreeNode cur = root;
+        
+        while (true) {
+            while (cur != null) {
+                s.push(cur);
+                cur = cur.left;
+            }
+            
+            if (s.isEmpty()) {
+                break;
+            }
+            
+            TreeNode node = s.pop();
+            
+            if (pre != null) {
+                // invalid order
+                if (pre.val > node.val) {
+                    if (node1 == null) {
+                        node1 = pre;
+                        node2 = node;
+                    } else {
+                        node2 = node;
+                    }
+                }
+            }
+            
+            pre = node;
+            
+            cur = node.right;
+        }
+        
+        int tmp = node1.val;
+        node1.val = node2.val;
+        node2.val = tmp;
+        
+        return;
     }
 }

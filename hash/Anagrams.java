@@ -49,4 +49,42 @@ public class Anagrams {
         
         return ret;
     }
+    
+    public static void main(String[] strs1) {
+    	String[] strs = {"str1", "str2", "s1tr"};
+    	System.out.println(anagrams2(strs));
+    }
+    
+    public static List<String> anagrams2(String[] strs) {
+        List<String> ret = new ArrayList<String>();
+        if (strs == null) {
+            return ret;
+        }
+        
+        HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+        for (int i = 0; i < strs.length; i++) {
+            String s = strs[i];
+            char[] chars = s.toCharArray();
+            
+            Arrays.sort(chars);
+            String sSort = new String(chars);
+            
+            if (map.containsKey(sSort)) {
+                map.get(sSort).add(s);
+            } else {
+                List<String> list = new ArrayList<String>();
+                list.add(s);
+                map.put(sSort, list);
+            }
+        }
+        
+        for (Map.Entry<String, List<String>> entry: map.entrySet()) {
+            List<String> list = entry.getValue();
+            if (list.size() > 1) {
+                ret.addAll(list);
+            }
+        }
+        
+        return ret;
+    }
 }

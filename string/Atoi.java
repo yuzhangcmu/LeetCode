@@ -42,4 +42,45 @@ public class Atoi {
         
         return (int)num;
     }
+    
+    // SOLUTION 2: the Leetcode test case is improved.
+    public int atoi2(String str) {
+        long ret = 0;
+        
+        // ___+1234__
+        // Delete the leading and tailing spaces.
+        String sNew = str.trim();
+        
+        if (sNew.length() == 0) {
+            return 0;
+        }
+        
+        boolean positive = true;
+        for (int i = 0; i < sNew.length(); i++) {
+            char c = sNew.charAt(i);
+            if (i == 0 && c == '+') {
+                continue;
+            } else if (i == 0 && c == '-') {
+                positive = false;
+                continue;
+            }
+            
+            if (!(c <= '9' && c >= '0')) {
+                break;
+            }
+            
+            int dig = positive ? c - '0': '0' - c;
+            
+            ret = ret * 10 + dig;
+            
+            // bug 2: should consider the out of range.
+            if (ret > Integer.MAX_VALUE) {
+                return Integer.MAX_VALUE;
+            } else if (ret < Integer.MIN_VALUE) {
+                return Integer.MIN_VALUE;
+            }
+        }
+        
+        return (int)ret;
+    }
 }
