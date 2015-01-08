@@ -167,4 +167,77 @@ public class Example {
     	
     	return dp[m];
     }
+    // find the most plights in the sky
+    /*
+     	class Point{
+			int x; // start time
+			int y; // end time
+
+			public Point(int x, int y){
+				this.x = x;
+				this.y = y;
+			}
+     	}
+     */
+    public int findPeak(List<Point> flights){
+    	if (flights == null || flights.size() == 0){
+    		return 0;
+    	}
+    	int max = 0,i,curr = 0;
+    	int k = flights.size();
+    	PriorityQueue<Integer> startheap = new PriorityQueue<Integer>(k,new Comparator<Integer>(){
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				// TODO Auto-generated method stub
+				return o1-o2;
+			}
+    	});
+    	PriorityQueue<Integer> endheap = new PriorityQueue<Integer>(k,new Comparator<Integer>(){
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				// TODO Auto-generated method stub
+				return o1-o2;
+			}
+    	});
+    	for (i=0;i<flights.size();i++){
+    		if (flights.get(i).x > flights.get(i).y){// edge case for the input
+    			continue;
+    		}
+    		startheap.offer(flights.get(i).x);
+    		endheap.offer(flights.get(i).y);
+    	}
+    	// get peak points via loop scan
+    	int curr1,curr2;
+    	while (startheap.size() > 0 && endheap.size() > 0){
+    		curr1 = startheap.peek();
+    		curr2 = endheap.peek();
+    		
+    		if (curr1 < curr2){
+				while (startheap.size() > 0 && startheap.peek() == curr1){
+					curr++;
+					startheap.poll();
+				}
+				
+			}
+			else if (curr2 < curr1){
+				while (endheap.size() > 0 && endheap.peek() == curr2){
+					curr--;
+					endheap.poll();
+				}
+			}
+			else{// curr1 == curr2
+				while (startheap.size() > 0 && startheap.peek() == curr1){
+					curr++;
+					startheap.poll();
+				}
+				while (endheap.size() > 0 && endheap.peek() == curr2){
+					curr--;
+					endheap.poll();
+				}
+			}
+			max = Math.max(max, curr);
+		}
+    	
+    	return max;
+    }
 }
