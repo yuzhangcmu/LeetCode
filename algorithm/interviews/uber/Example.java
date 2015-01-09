@@ -2,9 +2,26 @@ package Algorithms.algorithm.interviews.uber;
 
 import java.util.*;
 public class Example {
+    public static void main(String[] strs) {
+        printArray(sqrt2(100));
+        printArray(sqrt2(300));
+        printArray(sqrt2(400));
+        printArray(sqrt2(1));
+        printArray(sqrt2(0));
+        printArray(sqrt2(-4));
+    }
+    
+    public static void printArray(int[] in) {
+        for (int i = 0; i < in.length; i++) {
+            System.out.print(in[i] + " ");
+        }
+        
+        System.out.println();
+    }
+    
 	/* sqrt(100) => 10,1 , sqrt(300) => 10,3   300 = 10^2 * 3 */
 	// Running time: O(sqrt(n)) 
-	public int[] sqrt(int num){
+	public static int[] sqrt(int num){
 		int[] rst = {-1,-1};
 		
 		if (num < 0){// edge case
@@ -21,6 +38,38 @@ public class Example {
 			n--;
 		}
 		return rst;
+	}
+	
+	// Author: Yu Zhang.
+	public static int[] sqrt2(int n) {
+	    int[] rst = {-1, -1};
+
+	    if (n < 0) {
+	        return rst;
+	    }
+	    
+	    if (n == 0) {
+	        rst[0] = 0;
+	        rst[1] = 0;
+	        return rst;
+	    }
+	    
+	    int sqrNum = (int) Math.sqrt(n);
+	    
+	    //System.out.println("sqrNum:" + sqrNum);
+	    
+	    while (sqrNum >= 1) {
+	        if (n % (sqrNum * sqrNum) == 0) {
+	            rst[0] = n;
+	            rst[1] = n / (sqrNum * sqrNum);
+	            // bug: forget to return.
+	            return rst;
+	        }
+	        
+	        sqrNum--;
+	    }
+	    
+	    return rst;
 	}
 	
 	/* given a number, find the next prime which is bigger than it */
