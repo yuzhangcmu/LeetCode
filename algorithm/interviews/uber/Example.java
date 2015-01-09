@@ -95,6 +95,7 @@ public class Example {
 		}
 		return true;
 	}
+	
 	/* given many logs <username,log_time,logout_time>, output <time,number_of_users> */
 	// use two priorityqueue: O(2nlogn) ; just sort: O(2nlog2n) 
 	public List<result> countRecord(List<record> records){
@@ -109,6 +110,7 @@ public class Example {
 				return o1.log_time - o2.log_time;
 			}
 		});
+		
 		PriorityQueue<Integer> endheap = new PriorityQueue<Integer>(records.size(),new Comparator<Integer>(){
 			@Override
 			public int compare(Integer o1, Integer o2) {
@@ -116,6 +118,7 @@ public class Example {
 				return o1-o2;
 			}
 		});
+		
 		PriorityQueue<Integer> startheap = new PriorityQueue<Integer>(records.size(),new Comparator<Integer>(){
 			@Override
 			public int compare(Integer o1, Integer o2) {
@@ -123,7 +126,9 @@ public class Example {
 				return o1-o2;
 			}
 		});
+		
 		int curr,i;
+		
 		for (i=0;i<records.size();i++){
 			record tmp = records.get(i);
 			startheap.offer(tmp.log_time);
@@ -163,6 +168,7 @@ public class Example {
 		
 		return rst;
 	}
+	
 	// decode ways: 1-26 => 'A'-'Z'
     public int numDecodings(String s){
     	if (s == null || s.length() == 0){
@@ -216,6 +222,7 @@ public class Example {
     	
     	return dp[m];
     }
+    
     // find the most plights in the sky
     /*
      	class Point{
@@ -357,6 +364,7 @@ public class Example {
 		
 		return rst;
 	}
+	
 	// spiral matrix
     public List<Integer> spiralMatrix(int[][] matrix){
     	if (matrix == null || matrix.length == 0){
@@ -407,6 +415,7 @@ public class Example {
     	
     	return rst;
     }
+    
     // find the index of array in which A[i] = i, sorted array
     /* problem1: no duplicate inside */
     public int findIndex(int[] num){
@@ -431,6 +440,7 @@ public class Example {
     	}
     	return -1;
     }
+    
     /* problem2: duplicate exists */
     public int findIndex2(int[] num){
     	if (num == null || num.length == 0){
@@ -438,6 +448,7 @@ public class Example {
     	}
     	return findMagic(num,0,num.length-1);
     }
+    
     public int findMagic(int[] num, int left, int right){
     	if (left < 0 || right >= num.length || left > right){
     		return -1;
@@ -460,6 +471,7 @@ public class Example {
     		return rightIndex;
     	}
     }
+    
     /* string shift */
     public String stringShift(String s,int shift){
     	if (s == null || s.length() == 0 || shift%26 <= 0){
