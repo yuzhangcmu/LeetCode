@@ -3,12 +3,43 @@ package Algorithms.algorithm.interviews.uber;
 import java.util.*;
 public class Example {
     public static void main(String[] strs) {
-        printArray(sqrt2(100));
-        printArray(sqrt2(300));
-        printArray(sqrt2(400));
-        printArray(sqrt2(1));
-        printArray(sqrt2(0));
-        printArray(sqrt2(-4));
+//        printArray(sqrt2(100));
+//        printArray(sqrt2(300));
+//        printArray(sqrt2(400));
+//        printArray(sqrt2(1));
+//        printArray(sqrt2(0));
+//        printArray(sqrt2(-4));
+
+//        int start = 1;
+//        for (int i = 0; i < 1000; i++) {
+//            System.out.print(start + " ");
+//            start = getNextPrime2(start);
+//        }
+        
+//        List<Record> records = new ArrayList<Record>();
+//        records.add(new Record("a", 0, 2));
+//        records.add(new Record("a", 1, 3));
+//        records.add(new Record("a", 3, 5));
+//        records.add(new Record("a", 2, 4));
+//        records.add(new Record("a", 3, 5));
+//        records.add(new Record("a", 4, 8));
+//        records.add(new Record("a", 5, 10));
+//        
+//        List<LogResult> ret = countRecord2(records);
+//        
+//        for (LogResult logRet: ret) {
+//            System.out.println(logRet.time + " " + logRet.number_of_users);
+//        }
+//        
+//        System.out.println(findPeak2(records));
+        
+        int[] A = {-1,0,1,2,3,5,8,9};
+        System.out.println(findIndex2(A));
+        
+        int[] A3 = {0,0,1,2,3,5,8,9};
+        System.out.println(findIndex3(A3));
+        
+        System.out.println(stringShift2("abC", 24));
     }
     
     public static void printArray(int[] in) {
@@ -74,18 +105,28 @@ public class Example {
 	
 	/* given a number, find the next prime which is bigger than it */
 	// Running time: O(nlogm) => m is an average recursion depth for each number, how to optimize it?
-	public int getNextPrime(int value){
+	public static int getNextPrime(int value){
 		if (value <= 1){
 			return 2;
 		}
-		int target = value+1;
+		
+		int target = value + 1;
+		
+		// Yu Zhang optimize. Odds will not be prime.
+		if (target % 2 == 0) {
+		    target++;
+		}
+		
 		while (!isPrime(target)){
-			target++;
+		    // Yu Zhang optimize 1: target += 2.
+		    target += 2;
+			//target++;
 		}
 		
 		return target;
 	}
-	public boolean isPrime(int target){
+	
+	public static boolean isPrime(int target){
 		int n = 2;
 		while (n*n <= target){// may overflow here!
 			if (target % n == 0){
@@ -96,16 +137,81 @@ public class Example {
 		return true;
 	}
 	
+	// Yu Zhang solution:
+	//http://stackoverflow.com/questions/6654671/whats-the-built-in-function-that-finds-next-largest-prime-number-in-java
+	//https://www.youtube.com/watch?v=nkIt8M9asaM
+	public static int getNextPrime2 (int val) {
+	    if (val <= 1) {
+	        return 2;
+	    }
+	    
+	    val++;
+	    if (val % 2 == 0) {
+	        val++;
+	    }
+	    
+	    while (!isPrime2(val)) {
+	        val += 2;
+	        if (val < 0) {
+	            return -1;
+	        }
+	    }
+	    
+	    return val;
+	}
+	
+	public static boolean isPrime2(int target){
+	    int n = 3;
+	    
+	    // yu zhang: use / to avoid overflow.
+	    
+	    int sqrt = (int)Math.sqrt(target);
+	    while (n <= sqrt) {
+	        if (target % n == 0) {
+	            return false;
+	        }
+	        
+	        // bug: should addup n;
+	        // Yu Zhang optimize: target will never be divided by odd.
+	        n += 2;
+	    }
+	    
+	    return true;
+    }
+	
+	public static class Record {
+	    String username;
+	    int log_time;
+	    int logout_time;
+        public Record(String username, int log_time, int logout_time) {
+            super();
+            this.username = username;
+            this.log_time = log_time;
+            this.logout_time = logout_time;
+        }
+	}
+	
+	public static class LogResult {
+	    int time;
+	    int number_of_users;
+	    
+	    LogResult (int time, int number_of_users) {
+	        this.time = time;
+	        this.number_of_users = number_of_users;
+	    }
+	}
+	
 	/* given many logs <username,log_time,logout_time>, output <time,number_of_users> */
-	// use two priorityqueue: O(2nlogn) ; just sort: O(2nlog2n) 
-	public List<result> countRecord(List<record> records){
+	// use two priority queue: O(2nlogn) ; just sort: O(2nlog2n) 
+	public List<LogResult> countRecord(List<Record> records){
 		if (records == null || records.size() == 0){
-			return new ArrayList<result>();
+			return new ArrayList<LogResult>();
 		}
-		List<result> rst = new ArrayList<result>();
-		Collections.sort(records, new Comparator<record>(){
+		
+		List<LogResult> rst = new ArrayList<LogResult>();
+		Collections.sort(records, new Comparator<Record>(){
 			@Override
-			public int compare(record o1, record o2) {
+			public int compare(Record o1, Record o2) {
 				// TODO Auto-generated method stub
 				return o1.log_time - o2.log_time;
 			}
@@ -130,10 +236,11 @@ public class Example {
 		int curr,i;
 		
 		for (i=0;i<records.size();i++){
-			record tmp = records.get(i);
+		    Record tmp = records.get(i);
 			startheap.offer(tmp.log_time);
 			endheap.offer(tmp.logout_time);
 		}
+		
 		// output
 		curr = 0;
 		while (startheap.size() > 0 || endheap.size() > 0){
@@ -144,14 +251,14 @@ public class Example {
 					curr--;
 					endheap.poll();
 				}
-				rst.add(new result(curr2,curr));
+				rst.add(new LogResult(curr2,curr));
 			}
 			else if (curr2 < 0 || curr1 < curr2){// go with start time
 				while (startheap.size() > 0 && startheap.peek() == curr1){
 					curr++;
 					startheap.poll();
 				}
-				rst.add(new result(curr1,curr));
+				rst.add(new LogResult(curr1,curr));
 			}
 			else{// curr1 == curr2
 				while (endheap.size() > 0 && endheap.peek() == curr2){
@@ -162,12 +269,49 @@ public class Example {
 					curr++;
 					startheap.poll();
 				}
-				rst.add(new result(curr1,curr));
+				rst.add(new LogResult(curr1,curr));
 			}
 		}
 		
 		return rst;
 	}
+	
+	/* given many logs <username,log_time,logout_time>, output <time,number_of_users> */
+    // use two priority queue: O(2nlogn) ; just sort: O(2nlog2n) 
+	
+	// Yu Zhang solution.
+    public static List<LogResult> countRecord2(List<Record> records){
+        ArrayList<LogResult> ret = new ArrayList<LogResult>();
+        
+        if (records == null || records.size() == 0){
+            return new ArrayList<LogResult>();
+        }
+        
+        ArrayList<LogResult> timeList = new ArrayList<LogResult>();
+        for (Record record: records) {
+            timeList.add(new LogResult(record.log_time, 1));
+            timeList.add(new LogResult(record.logout_time, -1));
+        }
+        
+        // bug: forget the right way to write comparator.
+        Collections.sort(timeList, new Comparator<LogResult>(){
+            public int compare(LogResult o1, LogResult o2) {
+                return o1.time - o2.time;
+            }
+        });
+        
+        int num = 0;
+        for (int i = 0; i < timeList.size(); i++) {
+            num += timeList.get(i).number_of_users;
+            
+            if (i == timeList.size() - 1 
+                    || (timeList.get(i).time != timeList.get(i + 1).time)) {
+                ret.add(new LogResult(timeList.get(i).time, num));
+            }
+        }
+        
+        return ret;
+    }
 	
 	// decode ways: 1-26 => 'A'-'Z'
     public int numDecodings(String s){
@@ -197,7 +341,75 @@ public class Example {
     	
     	return next;
     }
-    // wordbreak => [lock,locker, erning] ; lockerning : true, lockern : false
+    
+    // Yu Zhang solution.
+    public int numDecodings2(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        
+        int len = s.length();
+        int[] D = new int[len + 1];
+        for (int i = 0; i <= len; i++) {
+            if (i == 0) {
+                D[i] = 1;
+            } else {
+                D[i] = 0;
+                if (isValidSingle(s.charAt(i - 1))) {
+                    D[i] += D[i - 1];
+                }
+                
+                if (i >= 2 && isValidTwo(s.substring(i - 2, i))) {
+                    D[i] += D[i - 2];
+                }
+            }
+        }
+        
+        return D[len];
+    }
+    
+    public boolean isValidSingle(char c) {
+        return c != '0';
+    }
+    
+    public boolean isValidTwo(String s) {
+        int num = Integer.parseInt(s);
+        return num <= 26 && num >= 10;
+    }
+    
+    // solution 3:
+    public int numDecodings3(String s) {
+        // bug 1: return 0 when len is 0.
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        
+        int len = s.length();
+        
+        // The result of first i digits.
+        int pre = 1;
+        int prepre = 0;
+        
+        for (int i = 1; i <= len; i++) {
+            // i >= 1
+            int cur = 0;
+            if (i >= 2 && isValidTwo(s.substring(i - 2, i))) {
+                cur += prepre;
+            }
+            
+            // The digit should not be 0.
+            if (s.charAt(i - 1) != '0') {
+                cur += pre;
+            }
+            
+            prepre = pre;
+            pre = cur;
+        }
+        
+        return pre;
+    }
+    
+    // Wordbreak => [lock,locker, erning] ; lockerning : true, lockern : false
     public boolean wordBreak(String s, Set<String> dict){
     	if (dict == null || s == null || s.length() == 0 || dict.size() == 0){
     		return false;
@@ -223,18 +435,44 @@ public class Example {
     	return dp[m];
     }
     
+    // yu zhang solution.
+    public boolean wordBreak2(String s, Set<String> dict) {
+        if(s == null || dict == null) {
+            return false;
+        }
+        
+        // bug 2: length()
+        int len = s.length();
+        // bug 1: use boolean not int.
+        boolean[] D = new boolean[len + 1];
+        
+        for (int i = 0; i <= len; i++) {
+            if (i == 0) {
+                D[i] = true;
+            } else {
+                for (int j = 0; j < i; j++) {
+                    if (D[j] && dict.contains(s.substring(j, i))) {
+                        D[i] = true;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return D[len];
+    }
+    
     // find the most plights in the sky
-    /*
-     	class Point{
-			int x; // start time
-			int y; // end time
+ 	class Point{
+		int x; // start time
+		int y; // end time
 
-			public Point(int x, int y){
-				this.x = x;
-				this.y = y;
-			}
-     	}
-     */
+		public Point(int x, int y){
+			this.x = x;
+			this.y = y;
+		}
+ 	}
+    
     public int findPeak(List<Point> flights){
     	if (flights == null || flights.size() == 0){
     		return 0;
@@ -296,74 +534,112 @@ public class Example {
     	
     	return max;
     }
+    
+ // Yu Zhang solution.
+    public static int findPeak2(List<Record> records){
+        ArrayList<LogResult> ret = new ArrayList<LogResult>();
+        
+        if (records == null || records.size() == 0){
+            return 0;
+        }
+        
+        ArrayList<LogResult> timeList = new ArrayList<LogResult>();
+        for (Record record: records) {
+            timeList.add(new LogResult(record.log_time, 1));
+            timeList.add(new LogResult(record.logout_time, -1));
+        }
+        
+        // bug: forget the right way to write comparator.
+        Collections.sort(timeList, new Comparator<LogResult>(){
+            public int compare(LogResult o1, LogResult o2) {
+                return o1.time - o2.time;
+            }
+        });
+        
+        int num = 0;
+        int max = 0;
+        for (int i = 0; i < timeList.size(); i++) {
+            num += timeList.get(i).number_of_users;
+            
+            if (i == timeList.size() - 1 
+                    || (timeList.get(i).time != timeList.get(i + 1).time)) {
+                ret.add(new LogResult(timeList.get(i).time, num));
+            }
+            
+            max = Math.max(max, num);
+        }
+        
+        return max;
+    }
+    
     /* given many logs <username,log_time,logout_time>, output <time,number_of_users> */
 	// use two priorityqueue: O(2nlogn) ; just sort: O(2nlog2n) 
-	public List<result> countRecord(List<record> records){
-		if (records == null || records.size() == 0){
-			return new ArrayList<result>();
-		}
-		List<result> rst = new ArrayList<result>();
-		Collections.sort(records, new Comparator<record>(){
-			@Override
-			public int compare(record o1, record o2) {
-				// TODO Auto-generated method stub
-				return o1.log_time - o2.log_time;
-			}
-		});
-		PriorityQueue<Integer> endheap = new PriorityQueue<Integer>(records.size(),new Comparator<Integer>(){
-			@Override
-			public int compare(Integer o1, Integer o2) {
-				// TODO Auto-generated method stub
-				return o1-o2;
-			}
-		});
-		PriorityQueue<Integer> startheap = new PriorityQueue<Integer>(records.size(),new Comparator<Integer>(){
-			@Override
-			public int compare(Integer o1, Integer o2) {
-				// TODO Auto-generated method stub
-				return o1-o2;
-			}
-		});
-		int curr,i;
-		for (i=0;i<records.size();i++){
-			record tmp = records.get(i);
-			startheap.offer(tmp.log_time);
-			endheap.offer(tmp.logout_time);
-		}
-		// output
-		curr = 0;
-		while (startheap.size() > 0 || endheap.size() > 0){
-			int curr1 = startheap.size() > 0 ? startheap.peek() : -1;
-			int curr2 = endheap.size() > 0 ? endheap.peek() : -1;
-			if (curr1 < 0 || curr1 > curr2){// only end time left
-				while (endheap.size() > 0 && endheap.peek() == curr2){
-					curr--;
-					endheap.poll();
-				}
-				rst.add(new result(curr2,curr));
-			}
-			else if (curr2 < 0 || curr1 < curr2){// go with start time
-				while (startheap.size() > 0 && startheap.peek() == curr1){
-					curr++;
-					startheap.poll();
-				}
-				rst.add(new result(curr1,curr));
-			}
-			else{// curr1 == curr2
-				while (endheap.size() > 0 && endheap.peek() == curr2){
-					curr--;
-					endheap.poll();
-				}
-				while (startheap.size() > 0 && startheap.peek() == curr1){
-					curr++;
-					startheap.poll();
-				}
-				rst.add(new result(curr1,curr));
-			}
-		}
-		
-		return rst;
-	}
+//	public List<result> countRecord(List<record> records){
+//		if (records == null || records.size() == 0){
+//			return new ArrayList<result>();
+//		}
+//		List<result> rst = new ArrayList<result>();
+//		Collections.sort(records, new Comparator<record>(){
+//			@Override
+//			public int compare(record o1, record o2) {
+//				// TODO Auto-generated method stub
+//				return o1.log_time - o2.log_time;
+//			}
+//		});
+//		PriorityQueue<Integer> endheap = new PriorityQueue<Integer>(records.size(),new Comparator<Integer>(){
+//			@Override
+//			public int compare(Integer o1, Integer o2) {
+//				// TODO Auto-generated method stub
+//				return o1-o2;
+//			}
+//		});
+//		PriorityQueue<Integer> startheap = new PriorityQueue<Integer>(records.size(),new Comparator<Integer>(){
+//			@Override
+//			public int compare(Integer o1, Integer o2) {
+//				// TODO Auto-generated method stub
+//				return o1-o2;
+//			}
+//		});
+//		int curr,i;
+//		for (i=0;i<records.size();i++){
+//			record tmp = records.get(i);
+//			startheap.offer(tmp.log_time);
+//			endheap.offer(tmp.logout_time);
+//		}
+//		// output
+//		curr = 0;
+//		while (startheap.size() > 0 || endheap.size() > 0){
+//			int curr1 = startheap.size() > 0 ? startheap.peek() : -1;
+//			int curr2 = endheap.size() > 0 ? endheap.peek() : -1;
+//			if (curr1 < 0 || curr1 > curr2){// only end time left
+//				while (endheap.size() > 0 && endheap.peek() == curr2){
+//					curr--;
+//					endheap.poll();
+//				}
+//				rst.add(new result(curr2,curr));
+//			}
+//			else if (curr2 < 0 || curr1 < curr2){// go with start time
+//				while (startheap.size() > 0 && startheap.peek() == curr1){
+//					curr++;
+//					startheap.poll();
+//				}
+//				rst.add(new result(curr1,curr));
+//			}
+//			else{// curr1 == curr2
+//				while (endheap.size() > 0 && endheap.peek() == curr2){
+//					curr--;
+//					endheap.poll();
+//				}
+//				while (startheap.size() > 0 && startheap.peek() == curr1){
+//					curr++;
+//					startheap.poll();
+//				}
+//				rst.add(new result(curr1,curr));
+//			}
+//		}
+//		
+//		return rst;
+//	}
 	
 	// spiral matrix
     public List<Integer> spiralMatrix(int[][] matrix){
@@ -416,6 +692,56 @@ public class Example {
     	return rst;
     }
     
+    // Solution 4: Use Four corners.
+    // Author: Yu Zhang.
+    // spiral matrix
+    public List<Integer> spiralOrder4(int[][] matrix) {
+        List<Integer> ret = new ArrayList<Integer>();
+        if (matrix == null ||matrix.length == 0) {
+            // 注意在非法的时候，应该返回空解，而不是一个NULL值
+            return ret;
+        }
+        
+        // Record how many rows and cols we still have.
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        
+        // The four corners.
+        int top = 0;
+        int left = 0;
+        int bottom = rows - 1;
+        int right = cols - 1;
+        
+        // every time we go through two rows and two cols.
+        for (; rows > 0 && cols > 0; rows -= 2, cols -= 2, top++, left++, bottom--, right--) {
+            // the first line.
+            for (int i = left; i <= right; i++) {
+                ret.add(matrix[top][i]);
+            } 
+            
+            // the right column.
+            for (int i = top + 1; i < bottom; i++) {
+                ret.add(matrix[i][right]);
+            }
+            
+            // the down line;
+            if (rows > 1) {
+                for (int j = right; j >= left; j--) {
+                    ret.add(matrix[bottom][j]);
+                }
+            }
+            
+            // the left column.
+            if (cols > 1) {
+                for (int i = bottom - 1; i > top; i --) {
+                    ret.add(matrix[i][left]);
+                }
+            }
+        }
+        
+        return ret;
+    }
+    
     // find the index of array in which A[i] = i, sorted array
     /* problem1: no duplicate inside */
     public int findIndex(int[] num){
@@ -442,11 +768,11 @@ public class Example {
     }
     
     /* problem2: duplicate exists */
-    public int findIndex2(int[] num){
+    public static int findIndex2(int[] num){
     	if (num == null || num.length == 0){
     		return -1;
     	}
-    	return findMagic(num,0,num.length-1);
+    	return findMagic2(num,0,num.length-1);
     }
     
     public int findMagic(int[] num, int left, int right){
@@ -470,6 +796,67 @@ public class Example {
     		int rightIndex = findMagic(num,curr,right);
     		return rightIndex;
     	}
+    }
+    
+    // Yu Zhang solution:
+    
+    public static ArrayList<Integer> findIndex3(int[] num){
+        if (num == null || num.length == 0){
+            return null;
+        }
+        
+        ArrayList<Integer> ret = new ArrayList<Integer>(); 
+        findMagic3(num,0,num.length-1, ret);
+        return ret;
+    }
+    
+    public static int findMagic2(int[] num, int left, int right){
+        if (left > right) {
+            return -1;
+        }
+        
+        int mid = left + (right - left) / 2;
+        
+        if (num[mid] == mid) {
+            return mid;
+        }
+        
+        if (num[mid] >= left) {
+            int ret = findMagic2(num, left, mid - 1);
+            if (ret != -1) {
+                return ret;
+            }
+        }
+        
+        if (num[mid] <= right) {
+            int ret = findMagic2(num, mid + 1, right);
+            if (ret != -1) {
+                return ret;
+            }
+        }
+        
+        return -1;
+    }
+    
+    // There are duplicate solutions.
+    public static void findMagic3(int[] num, int left, int right, ArrayList<Integer> ret){
+        if (left > right) {
+            return;
+        }
+        
+        int mid = left + (right - left) / 2;
+        
+        if (num[mid] == mid) {
+            ret.add(mid);
+        }
+        
+        if (num[mid] >= left) {
+            findMagic3(num, left, mid - 1, ret);
+        }
+        
+        if (num[mid] <= right) {
+            findMagic3(num, mid + 1, right, ret);
+        }
     }
     
     /* string shift */
@@ -498,4 +885,36 @@ public class Example {
     	return sb.toString();
     }
     
+    /* string shift */
+    public static String stringShift2(String s,int shift){
+        if (s == null || s.length() == 0 || shift%26 <= 0){
+            return s;
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        
+        shift = shift % 26;
+        
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            int num = 0;
+            if (c <= 'z' && c >= 'a') {
+                num = c - 'a';
+                num += shift;
+                num %= 26;
+                num += 'a';
+            } else if (c <= 'Z' && c >= 'A') {
+                num = c - 'A';
+                num += shift;
+                num %= 26;
+                num += 'A';
+            }
+            
+            char c1 = (char)num;
+            sb.append(c1);
+        }
+
+        
+        return sb.toString();
+    }
 }

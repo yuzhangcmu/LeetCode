@@ -229,4 +229,53 @@ public class SpiralOrder {
         
         return ret;
     }
+    
+    // Solution 4.2: don't use rows and cols.
+    public List<Integer> spiralOrder3(int[][] matrix) {
+        List<Integer> ret = new ArrayList<Integer>();
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return ret;
+        }
+        
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        
+        int left = 0;
+        int right = cols - 1;
+        int top = 0;
+        int bottom = rows - 1;
+        
+        while (left <= right && top <= bottom) {
+            // line top.
+            for (int i = left; i <= right; i++) {
+                ret.add(matrix[top][i]);
+            }
+            
+            // line right;
+            for (int i = top + 1; i <= bottom - 1; i++) {
+                ret.add(matrix[i][right]);
+            }
+            
+            // line bottom.
+            if (top != bottom) {
+                for (int i = right; i >= left; i--) {
+                    ret.add(matrix[bottom][i]);
+                }    
+            }
+            
+            // line left;
+            if (left != right) {
+                for (int i = bottom - 1; i >= top + 1; i--) {
+                    ret.add(matrix[i][left]);
+                }    
+            }
+            
+            left++;
+            right--;
+            top++;
+            bottom--;
+        }
+        
+        return ret;
+    }
 }
