@@ -31,4 +31,37 @@ public class Subsets {
             path.remove(path.size() - 1);
         }
     }
+    
+    public List<List<Integer>> subsets2(int[] S) {
+        List<List<Integer>> ret = new ArrayList<List<Integer>>();
+        if (S == null || S.length == 0) {
+            return ret;
+        }
+        
+        int len = S.length;
+        Arrays.sort(S);
+        
+        // forget to add (long).
+        long numOfSet = (long)Math.pow(2, len);
+        
+        for (int i = 0; i < numOfSet; i++) {
+            // bug 3: should use tmp - i.
+            long tmp = i;
+            
+            ArrayList<Integer> list = new ArrayList<Integer>();
+            while (tmp != 0) {
+                // bug 2: use error NumberOfTrailingZeros. 
+                int indexOfLast1 = Long.numberOfTrailingZeros(tmp);
+                list.add(S[indexOfLast1]);
+                
+                // clear the bit.
+                tmp ^= (1 << indexOfLast1);
+            }
+            
+            ret.add(list);
+        }
+        
+        return ret;
+    }
 }
+
