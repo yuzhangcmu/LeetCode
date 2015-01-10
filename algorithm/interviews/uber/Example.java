@@ -1,8 +1,12 @@
 package Algorithms.algorithm.interviews.uber;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
+
+import Algorithms.tree.TreeNode;
 public class Example {
-    public static void main(String[] strs) {
+    public static void main(String[] strs) throws NoSuchAlgorithmException {
 //        printArray(sqrt2(100));
 //        printArray(sqrt2(300));
 //        printArray(sqrt2(400));
@@ -33,14 +37,52 @@ public class Example {
 //        
 //        System.out.println(findPeak2(records));
         
-        int[] A = {-1,0,1,2,3,5,8,9};
-        System.out.println(findIndex2(A));
+//        int[] A = {-1,0,1,2,3,5,8,9};
+//        System.out.println(findIndex2(A));
+//        
+//        int[] A3 = {0,0,1,2,3,5,8,9};
+//        System.out.println(findIndex3(A3));
+//        
+//        System.out.println(stringShift2("abC", 24));
+//        
+//        ArrayList<String> list = new ArrayList<String>();
+//        list.add("cba");
+//        list.add("abc");
+//        list.add("bcd");
+//        list.add("dogs");
+//        list.add("xyz");
+//        list.add("zab");
+//        list.add("c");
+//        list.add("d");
+//        getSame(list);
+        System.out.println(getShort("www.uber.com"));
         
-        int[] A3 = {0,0,1,2,3,5,8,9};
-        System.out.println(findIndex3(A3));
+        System.out.println(getFullUrl("f626cf"));
         
-        System.out.println(stringShift2("abC", 24));
+        TreeNode root = new TreeNode(1);
+        TreeNode node1 = new TreeNode(5);
+        TreeNode node2 = new TreeNode(6);
+        TreeNode node3 = new TreeNode(4);
+        
+        TreeNode node4 = new TreeNode(3);
+        TreeNode node5 = new TreeNode(2);
+        TreeNode node6 = new TreeNode(1);
+        
+        root.left = node1;
+        root.right = node2;
+        
+        root.left.left = node3;
+        
+        node2.left = node4;
+        node2.right = node5;
+        
+        node5.right = node6;
+        
+        System.out.println(getPath(root, 10));
     }
+    
+    static HashMap<String, String> map = new HashMap<String, String>();
+    static HashMap<String, String> mapFull = new HashMap<String, String>();
     
     public static void printArray(int[] in) {
         for (int i = 0; i < in.length; i++) {
@@ -916,5 +958,134 @@ public class Example {
 
         
         return sb.toString();
+    }
+    
+    public static void getSame(ArrayList<String> input) {
+        ArrayList<ArrayList<String>> ret = new ArrayList<ArrayList<String>>();
+        if (input == null) {
+            return;
+        }
+        
+        HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>(); 
+        
+        for (String str: input) {
+            char c1 = str.charAt(0);
+            
+            int shift = c1 - 'a';
+            
+            int len = str.length();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < len; i++) {
+                char c = str.charAt(i);
+                int num = c - 'a';
+                
+                num -= shift;
+                if (num < 0) {
+                    num += 26;
+                }
+                
+                num += 'a';
+                sb.append((char)num);
+            }
+            
+            String strNew = sb.toString();
+            if (map.containsKey(strNew)) {
+                map.get(strNew).add(str);
+            } else {
+                ArrayList<String> list = new ArrayList<String>();
+                list.add(str);
+                map.put(strNew, list);
+            }
+        }
+        
+        System.out.println(map.toString());
+    }
+    
+    public static String getShort(String url) throws NoSuchAlgorithmException {
+        if (url == null) {
+            return "";
+        }
+        
+        if (mapFull.containsKey(url)) {
+            return mapFull.get(url);
+        }
+        
+        String original = url;
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(original.getBytes());
+        byte[] digest = md.digest();
+        StringBuffer sb = new StringBuffer();
+        for (byte b : digest) {
+            sb.append(String.format("%02x", b & 0xff));
+        }
+
+        System.out.println("original:" + original);
+        System.out.println("digested(hex):" + sb.toString());
+        
+        String md5 = sb.toString();
+
+        String shortUrl = md5.substring(0, 6);        
+        if (map.containsKey(shortUrl)) {
+            for (int i = 0; i < shortUrl.length(); i++) {
+                StringBuilder sbChange = new StringBuilder(shortUrl);
+                for (char c = 'a'; c <= 'z'; c++) {
+                    sbChange.setCharAt(i, c);
+                    shortUrl = sbChange.toString();
+                    if (!map.containsKey(shortUrl)) {
+                        break;
+                    }
+                }
+            }
+            map.put(shortUrl, url);
+        } else {
+            map.put(shortUrl, url);
+        }
+        
+        mapFull.put(url, shortUrl);
+        
+        return "http://uber.gl/" + shortUrl;
+    }
+    
+    public static String getFullUrl(String url){
+        if (url == null) {
+            return "";
+        }
+        
+        if (map.containsKey(url)) {
+            return map.get(url);
+        } else {
+            return "";
+        }
+    }
+    
+    public static ArrayList<ArrayList<Integer>> getPath(TreeNode root, int target) {
+        ArrayList<ArrayList<Integer>> ret = new ArrayList<ArrayList<Integer>>();
+        
+        getPath(root, new ArrayList<Integer>(), target, ret);
+        return ret;
+    }
+    
+    public static void getPath(TreeNode root, ArrayList<Integer> path, int target,
+            ArrayList<ArrayList<Integer>> ret) {
+        if (root == null) {
+            return;
+        }
+        
+        path.add(root.val);
+        target -= root.val;
+        if (target == 0 && root.left == null && root.right == null) {
+            ret.add(new ArrayList<Integer>(path));
+            path.remove(path.size() - 1);
+            return;
+        }
+        
+        if (target < 0) {
+            path.remove(path.size() - 1);
+            return;
+        }
+        
+        getPath(root.left, path, target, ret);
+        getPath(root.right, path, target, ret);
+        path.remove(path.size() - 1);
     }
 }
