@@ -6,7 +6,7 @@ public class Jump {
         System.out.println(jump(A));
     }
     
-    public static int jump(int[] A) {
+    public static int jump1(int[] A) {
         if (A == null || A.length == 0) {
             return 0;
         }
@@ -30,5 +30,49 @@ public class Jump {
         }
 
         return sum;
+    }
+    
+    // solution 2: one pass greedy.
+    public static int jump(int[] A) {
+        if (A == null || A.length == 0) {
+            return 0;    
+        }
+        
+        // bug:
+        /*
+        Input:  [1]
+        Output: 1
+        Expected:   0
+        */
+        if (A.length == 1) {
+            return 0;
+        }
+        
+        int len = A.length;
+        
+        int start = 0;
+        int end = 0;
+        
+        int steps = 0;
+        while (end < len - 1) {
+            int max = 0;
+            steps++;
+            for (int i = start; i <= end; i++) {
+                max = Math.max(max, i + A[i]);
+                
+                if (max >= len - 1) {
+                    return steps;
+                }
+            }
+            
+            start = end + 1;
+            end = max;
+            
+            if (start > end) {
+                break;
+            }
+        }
+        
+        return Integer.MAX_VALUE;
     }
 }

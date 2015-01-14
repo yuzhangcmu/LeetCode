@@ -1,5 +1,7 @@
 package Algorithms.string;
 
+import java.util.HashMap;
+
 public class RomanToInt {
     public int romanToInt(String s) {
         if (s == null) {
@@ -57,6 +59,38 @@ public class RomanToInt {
             default:
                 num = 0;
                 break;
+        }
+        
+        return num;
+    }
+    
+    /*
+     * Solution 2: use map to solve it.
+     * */
+    public int romanToInt2(String s) {
+        if (s == null) {
+            return 0;
+        }
+        
+        // bug 1: forget new.
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+        
+        int len = s.length();
+        int num = 0;
+        for (int i = len - 1; i >= 0; i--) {
+            int cur = map.get(s.charAt(i));
+            if (i < len - 1 && cur < map.get(s.charAt(i + 1))) {
+                num -= cur;
+            } else {
+                num += cur;
+            }
         }
         
         return num;
