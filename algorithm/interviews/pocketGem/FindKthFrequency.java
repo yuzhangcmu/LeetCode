@@ -21,6 +21,7 @@ public class FindKthFrequency {
     public static void main(String[] strs) {
         int[] A = {1, 1, 2, 3, 3, 3, 4, 4, 4, 4, 4, 5, 7, 2};
         System.out.println(findKthFrenquency(A, 3).toString());
+        System.out.println(findKthFrenquency4(A, 3).toString());
     }
 
     /*
@@ -66,7 +67,7 @@ public class FindKthFrequency {
     
     /*
      * Solution 3:
-     * Use The priority queue.
+     * Use The priority queue. Complexity: NlogK
      * */
     public static List<Integer> findKthFrenquency(int[] input, int k) {
         LinkedList<Integer> list = new LinkedList<Integer>();
@@ -103,5 +104,77 @@ public class FindKthFrequency {
         }
         
         return list;
+    }
+    
+    /*
+     * Solution 4:
+     * Use The partition.
+     * */
+    public static List<Integer> findKthFrenquency4(int[] input, int k) {
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int num: input) {
+            if (map.containsKey(num)) {
+                map.put(num, map.get(num) + 1);
+            } else {
+                map.put(num, 1);
+            }
+        }
+        
+        ArrayList<Entry<Integer, Integer>> entryList = new ArrayList<Entry<Integer, Integer>>(map.entrySet());
+        
+        // Find the start index of the top K.
+        int k1 = entryList.size() - k + 1;
+        int kthIndex = getTopKIndex(entryList, 0, entryList.size() - 1, k1);
+        
+        for (int i = kthIndex; i < entryList.size(); i++) {
+            list.add(entryList.get(i).getKey());
+        }
+        
+        return list;
+    }
+    
+    // Find the Kth frequent of the list.
+    public static int getTopKIndex(ArrayList<Entry<Integer, Integer>> entryList, int start, int end, int k) {
+        int index = partition(entryList, start, end, entryList.get(end));
+        
+        if (index + 1 == k) {
+            return index;
+        } else if (index + 1 > k) {
+            // Find the result in the left side 
+            return partition(entryList, start, index - 1, entryList.get(end));
+        } else {
+            // Find in the right side. 
+            return partition(entryList, index + 1, end, entryList.get(end));
+        }
+    }
+    
+    public static int partition(ArrayList<Entry<Integer, Integer>> entryList, int start, int end, Entry<Integer, Integer> pivot) {
+        int l = start - 1;
+        int r = end;
+        
+        while (true) {
+            // move the left pointer to right.
+            while (entryList.get(++l).getValue() < pivot.getValue());
+            
+            while (r > l && entryList.get(--r).getValue() >= pivot.getValue());
+            
+            if (l >= r) {
+                break;
+            }
+            
+            swap(entryList, l, r);
+        }
+        
+        swap(entryList, l, end);
+        
+        return l;
+    }
+    
+    public static void swap(ArrayList<Entry<Integer, Integer>> entryList, int l, int r) {
+        Entry<Integer, Integer> tmp = entryList.get(l);
+        entryList.set(l, entryList.get(r));
+        entryList.set(r, tmp);
     }
 }

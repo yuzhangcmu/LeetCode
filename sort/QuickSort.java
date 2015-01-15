@@ -13,17 +13,19 @@ import java.util.*;
 
 public class QuickSort {
     //private static final int SIZE = 100000;
-    private static final int SIZE = 10000;
+    private static final int SIZE = 10;
     private static Random rand = new Random();
 
     public static void main(String args[]) {
         int[] array = new int[SIZE];
 
         for (int i = 0; i < SIZE; i++)
-            //array[i] = rand.nextInt();
-            array[i] = i;
+            array[i] = rand.nextInt();
+            //array[i] = i;
         
-        //int[] array = {3, 4, 6, 1, 7, 8, 6};
+        //int[] array = {3, 4, 6, 1, 7, 8, 6, 7, 6, 6};
+        //int[] array1 = {6,6,1,3,2,5,6,6};
+        int[] array1 = {6,6,6,6};
 
         // reversely ordered
         /*
@@ -35,15 +37,15 @@ public class QuickSort {
         // to make sure sorting works.
         // add "-ea" vm argument
         assert isSorted(array);
-        
+        System.out.println(partition(array1, 0, array1.length - 1, array1[array1.length - 1]));
         System.out.println(isSorted(array));
-        //printArray(array);
+        printArray(array1);
     }
     
     public static void printArray(int[] arr) {
         System.out.println();
         for(int i: arr) {
-            System.out.println(i + " ");
+            System.out.print(i + " ");
         }
     }
 
@@ -106,7 +108,9 @@ public class QuickSort {
 
             // Find the first element which does not fulfill the rule
             // Don't need to move r to be left of LEFT.
-            while (r > l && arr[--r] > pivot);
+            
+            // use >= to keep elements >= pivot in the right.
+            while (r > l && arr[--r] >= pivot);
 
             // If r <= l, means that all the elements is in the right place.
             if (r <= l) {
@@ -115,6 +119,7 @@ public class QuickSort {
 
             // Swap the first two elements that does not fit the rule.
             swap(arr, r, l);
+            //printArray(arr);
         }
         
         // The l pointer point to the first element which is bigger than the pivot.
