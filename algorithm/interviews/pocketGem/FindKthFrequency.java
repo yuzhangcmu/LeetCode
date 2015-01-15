@@ -143,10 +143,10 @@ public class FindKthFrequency {
             return index;
         } else if (index + 1 > k) {
             // Find the result in the left side 
-            return partition(entryList, start, index - 1, entryList.get(end));
+            return getTopKIndex(entryList, start, index - 1, k);
         } else {
             // Find in the right side. 
-            return partition(entryList, index + 1, end, entryList.get(end));
+            return getTopKIndex(entryList, index + 1, end, k);
         }
     }
     
