@@ -16,7 +16,7 @@ public class SolveSudoku {
         solveSudoku(board);  
         for(int i=0; i<9; i++){  
             for(int j=0; j<9; j++){  
-                System.out.print(board[i][j]);  
+                //System.out.print(board[i][j]);  
             }  
             System.out.println();  
         }  
@@ -108,6 +108,14 @@ public class SolveSudoku {
         }
         
         if (x >= 9) {
+            for(int i=0; i<9; i++){  
+                for(int j=0; j<9; j++){  
+                    System.out.print(board[i][j]);  
+                }  
+                System.out.println();  
+            }
+            
+            System.out.println(); 
             return true;
         }
         
@@ -117,11 +125,18 @@ public class SolveSudoku {
         }
         
         // solve the current node.
-        for (char c = '0'; c <= '9'; c++) {
+        for (char c = '1'; c <= '9'; c++) {
             board[x][y] = c;
-            if (isValid(board, x, y, c) && dfs(board, x, y + 1)) {
-                return true;
+//            if (isValid(board, x, y, c) && dfs(board, x, y + 1)) {
+//                return true;
+//            }
+            
+            if (!isValid(board, x, y, c)) {
+                board[x][y] = '.';
+                continue;
             }
+            
+            dfs(board, x, y + 1);
             board[x][y] = '.';
         }
         

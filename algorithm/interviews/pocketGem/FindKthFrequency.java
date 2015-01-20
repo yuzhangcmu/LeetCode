@@ -19,9 +19,80 @@ import java.util.Set;
 
 public class FindKthFrequency {
     public static void main(String[] strs) {
-        int[] A = {1, 1, 2, 3, 3, 3, 4, 4, 4, 4, 4, 5, 7, 2};
+        int[] A = {1, 1, 2, 3, 3, 3, 4, 4, 4, 4, 4, 9, 9, 9, 9, 5, 7, 2};
         System.out.println(findKthFrenquency(A, 3).toString());
         System.out.println(findKthFrenquency4(A, 3).toString());
+        
+        int[] A1 = {1, 0, 0, 1, 0, 0, 1, 0};
+        
+        //int[] A2 = {1, 0, 0, 1, 0, 0, 1};
+        
+        int[] A2 = {1, 1, 1};
+        
+        //int[] A2 = {1};
+        //int[] A2 = {0, 0};
+        //int[] A2 = {0, 0, 1, 1};
+        //int[] A2 = {0, 1, 1, 1, 1};
+        //int[] A2 = {1, 0, 0, 0, 0};
+        //int[] A2 = {0,0,0, 1};
+        //int[] A2 = {0};
+        //int[] A2 = {1};
+        //int[] A2 = {1, 1, 1};
+        System.out.println(findMax(A2));
+        
+    }
+    
+    public static int findMax(int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return 0;
+        }
+        
+        int max = Integer.MIN_VALUE;
+        int sum = 0;
+        
+        int len = arr.length;
+        
+        int curStart = 0;
+        int end = 0;
+        
+        int start = 0;
+        
+        for (int i = 0; i < len; i++) {
+            if (sum < 0) {
+                sum = 0;
+                curStart = i;
+            }
+            
+            if (arr[i] == 1) {
+                sum --;
+            } else {
+                sum++;
+            }
+            
+            if (sum > max) {
+                max = sum;
+                start = curStart;
+                end = i;
+            }
+        }
+        
+        int ret = 0;
+        for (int i = 0; i < len; i++) {
+            if (i <= end && i >= start) {
+                if (arr[i] != 1) {
+                    ret++;
+                }
+            } else {
+                if (arr[i] == 1) {
+                    ret++;
+                }
+            }
+        }
+        
+        System.out.println("start: " + start + " end:" + end);
+        System.out.println("ret: " + ret);
+        
+        return ret;
     }
 
     /*
