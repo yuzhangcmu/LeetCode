@@ -1,7 +1,11 @@
 package Algorithms.string;
 
 public class IsNumber {
-    public boolean isNumber(String s) {
+    public static void main(String[] strs) {
+        System.out.println(isNumber("e"));
+    }
+    
+    public boolean isNumber1(String s) {
         if (s == null) {
             return false;
         }
@@ -45,6 +49,55 @@ public class IsNumber {
                 }
             } else {
                 // invalid character.
+                return false;
+            }
+        }
+        
+        return num;
+    }
+    
+    public boolean isNumber(String s) {
+        if (s == null) {
+            return false;
+        }
+        
+        boolean exp = false;
+        boolean num = false;
+        boolean point = false;
+        
+        s = s.trim();
+        
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c <= '9' && c >= '0') {
+                num = true;
+            } else if (c == 'e') {
+                // "2e10" => true
+                // "ee10" => false
+                // e10 => false;
+                
+                // 1.0e => false;
+                if (exp || !num) {
+                    return false;
+                }
+                
+                // reset the num.because we need number after the exp.
+                num = false;
+                exp = true;
+            } else if (c == '.') {
+                // .. false.
+                // e. false;
+                if (point || exp) {
+                    return false;
+                }
+                
+                point = true;
+            } else if (c == '+' || c == '-') {
+                // +3e+3 is ok.
+                if (i != 0 && s.charAt(i - 1) != 'e') {
+                    return false;
+                }
+            } else {
                 return false;
             }
         }
