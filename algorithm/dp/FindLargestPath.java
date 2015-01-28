@@ -1,34 +1,32 @@
 package Algorithms.algorithm.dp;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FindLargestPath {
     public static void main(String[] args) throws IOException {
         /*
          * Example matrix:
- 
-----------
-| 2 | -3 |
-----------
-| 0 |  1 |
-----------
- 
-Inputmatrix file:
- 
-2 -3
-0 1
- 
-Output:
- 
--3
-2 -> 0 -> 1
+            ----------
+            | 2 | -3 |
+            ----------
+            | 0 |  1 |
+            ----------
+             
+            Inputmatrix file:
+             
+            2 -3
+            0 1
+             
+            Output:
+             
+            -3
+            2 -> 0 -> 1
          * */
         int[][] matrix = new int[2][2];
         matrix[0][0] = 2;
@@ -52,8 +50,9 @@ Output:
         findLargstPath(matrix);
         System.out.println();
         findLargstPath(matrix2);
-        
         findLargstPathMain("input.txt");
+        
+        LinkedList<Integer> list = new LinkedList<Integer>();
     }
     
     /*

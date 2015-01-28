@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestoreIpAddresses {
-    public List<String> restoreIpAddresses(String s) {
+    public static void main(String[] strs) {
+        System.out.println(restoreIpAddresses("0000"));
+    }
+    
+    public List<String> restoreIpAddresses1(String s) {
         if (s == null) {
             return null;
         }
@@ -102,8 +106,57 @@ public class RestoreIpAddresses {
         }
     }
     
-    public boolean isValid(String s) {
+    // 2015.1.20.
+    public boolean isValid1(String s) {
         int num = Integer.parseInt(s);
         return num >= 0 && num <= 255;
+    }
+    
+    public static List<String> restoreIpAddresses(String s) {
+        // 1850
+        List<String> ret = new ArrayList<String>();
+        if (s == null) {
+            return ret;
+        }
+        
+        dfs(s, 0, new ArrayList<String>(), ret);
+        return ret;
+    }
+    
+    public static void dfs(String s, int index, List<String> path, List<String> ret) {
+        int len = s.length();
+        if (index == len && path.size() == 4) {
+            StringBuilder sb = new StringBuilder();
+            for (String str: path) {
+                sb.append(str + ".");
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            ret.add(sb.toString());
+            return;
+        } else if (index == len || path.size() == 4) {
+            // base case. out of range.
+            return;
+        }
+        
+        // bug 2: should use i < len to avoid overflow.
+        for (int i = index; i < index + 3 && i < len; i++) {
+            // Bug 1: Line 29: error: cannot find symbol: method sub(int,int)
+            String sub = s.substring(index, i + 1);
+            if (!isValid(sub)) {
+                continue;
+            }
+            path.add(sub);
+            dfs(s, i + 1, path, ret);
+            path.remove(path.size() - 1);
+        }
+    }
+    
+    public static boolean isValid(String s) {
+        if (s.length() != 1 && s.charAt(0) == '0') {
+            return false;
+        }
+        
+        int num = Integer.parseInt(s);
+        return num <= 255 && num >= 0;
     }
 }

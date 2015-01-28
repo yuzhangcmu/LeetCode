@@ -10,7 +10,14 @@ package Algorithms.tree;
  * }
  */
 public class BuildTree2 {
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
+    public static void main(String[] strs) {
+        int[] inorder = {2, 1};
+        int[] postorder = {1, 2};
+        
+        buildTree(inorder, postorder);
+    }
+    
+    public TreeNode buildTree1(int[] inorder, int[] postorder) {
         if (inorder == null || postorder == null) {
             return null;
         }
@@ -38,6 +45,37 @@ public class BuildTree2 {
         
         root.left = dfs(inorder, postorder, inL, pos - 1, postL, postL + leftNum - 1);
         root.right = dfs(inorder, postorder, pos + 1, inR, postL + leftNum, postR - 1);
+        
+        return root;
+    }
+    
+    public static TreeNode buildTree(int[] inorder, int[] postorder) { 
+        // 1952
+        if (inorder == null || postorder == null) {
+            return null;
+        }
+        
+        return rec(inorder, postorder, 0, inorder.length - 1, 0, postorder.length - 1);
+    }
+    
+    public static TreeNode rec(int[] inorder, int[] postorder, int inStart, int inEnd, int postStart, int postEnd) {
+        if (inStart > inEnd) {
+            return null;
+        }    
+        
+        TreeNode root = new TreeNode(postorder[postEnd]);
+        int rootIndex = 0;
+        for (int i = inStart; i < inEnd; i++) {
+            if (inorder[i] == root.val) {
+                rootIndex = i;
+                break;
+            }
+        }
+        
+        int leftNum = rootIndex - inStart;
+        
+        root.left = rec(inorder, postorder, inStart, rootIndex - 1, postStart, postStart + leftNum - 1);
+        root.right = rec(inorder, postorder, rootIndex + 1, inEnd, postStart + leftNum, postEnd - 1);
         
         return root;
     }

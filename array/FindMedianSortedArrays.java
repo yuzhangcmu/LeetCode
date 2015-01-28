@@ -2,13 +2,13 @@ package Algorithms.array;
 
 public class FindMedianSortedArrays {
     public static void main(String[] strs) {
-        int A[] = {100000};
-        int B[] = {100001};
+        int A[] = {1, 2};
+        int B[] = {1, 2};
         
         System.out.println(findMedianSortedArrays(A, B));
     }
     
-    public static double findMedianSortedArrays(int A[], int B[]) {
+    public static double findMedianSortedArrays1(int A[], int B[]) {
         if (A == null || B == null) {
             return 0;
         }
@@ -58,5 +58,51 @@ public class FindMedianSortedArrays {
         } else {
             return findKth(A, B, indexA, indexB + k / 2, kNew);
         }
+    }
+    
+    public static double findMedianSortedArrays(int A[], int B[]) {
+        //2257
+        if (A == null || B == null) {
+            return 0;
+        }
+        
+        int len = A.length + B.length;
+        if (len % 2 == 0) {
+            return (double)(dfs(A, B, 0, 0, len / 2) + dfs(A, B, 0, 0, len / 2 + 1)) / 2.0;
+        } else {
+            return dfs(A, B, 0, 0, len / 2 + 1);
+        }
+    }
+    
+    public static double dfs(int A[], int B[], int aStart, int bStart, int k) {
+        if (aStart >= A.length) {
+            return B[bStart + k - 1];
+        } else if (bStart >= B.length) {
+            return A[aStart + k - 1];
+        }
+        
+        if (k == 1) {
+            return Math.min(A[aStart], B[bStart]);
+        }
+        
+        // k = 4;
+        // mid = 1;
+        int mid = k / 2 - 1;
+        
+        if (aStart + mid >= A.length) {
+            // drop the left side of B.
+            return dfs(A, B, aStart, bStart + k / 2, k - k / 2);
+        } else if (bStart + mid >= B.length) {
+            // drop the left side of A.
+            return dfs(A, B, aStart + k / 2, bStart, k - k / 2);
+        } else if (A[aStart + mid] > B[bStart + mid]) {
+            // drop the left side of B.
+            return dfs(A, B, aStart, bStart + k / 2, k - k / 2);
+        } else if (A[aStart + mid] < B[bStart + mid]) {
+            // drop the left side of A.
+            return dfs(A, B, aStart + k / 2, bStart, k - k / 2);
+        }
+        
+        return A[aStart + mid];        
     }
 }
