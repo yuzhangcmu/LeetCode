@@ -1,4 +1,4 @@
-LeetCode_algorithm
+LeetCode
 ==================
 Java Solution of Leetcode
 
