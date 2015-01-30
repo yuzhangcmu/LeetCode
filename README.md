@@ -1,6 +1,6 @@
 LeetCode
 ==================
-Java Solution of Leetcode
+Leetcode solution writtern in Java.
 
 包括LeetCode的解答 </br>
 
