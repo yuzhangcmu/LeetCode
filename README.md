@@ -1,7 +1,8 @@
 LeetCode_algorithm
 ==================
+Java Solution of Leetcode
 
-包括LeetCode的解答（目前还不完整，大概有一半左右）</br>
+包括LeetCode的解答 </br>
 
 目录划分：
 
