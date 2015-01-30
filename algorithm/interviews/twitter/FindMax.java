@@ -34,6 +34,9 @@ public class FindMax {
         //int[] A2 = {1, 1, 1};
         
         System.out.println(findMax(A2));
+        
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        list.add(1);
     }
     
     public static int findMax(int[] arr) {

@@ -22,6 +22,11 @@ public class FindKthFrequency {
         int[] A = {1, 1, 2, 3, 3, 3, 4, 4, 4, 4, 4, 9, 9, 9, 9, 5, 7, 2};
         System.out.println(findKthFrenquency(A, 3).toString());
         System.out.println(findKthFrenquency4(A, 3).toString());
+        
+        FindKthFrequency find = new FindKthFrequency();
+        if (find) {
+            System.out.println();
+        }
     }
     
     /*
@@ -108,7 +113,10 @@ public class FindKthFrequency {
     
     /*
      * Solution 4:
-     * Use The partition.
+     * Use The partition. This is the best solution. 
+     * Complexity: O(n).
+     * Worst case: O(N^2).
+     * 
      * */
     public static List<Integer> findKthFrenquency4(int[] input, int k) {
         LinkedList<Integer> list = new LinkedList<Integer>();
