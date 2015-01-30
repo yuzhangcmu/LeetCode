@@ -1,6 +1,7 @@
 package Algorithms.string;
 
 public class isMatch_2014_1228 {
+    // Solution 2: DFS.
 	public boolean isMatch1(String s, String p) {
         if (s == null || p == null) {
             return false;
@@ -59,7 +60,7 @@ public class isMatch_2014_1228 {
         return p == '.' || c == p;
     }
     
-    // solution2: dfs + memory
+    // solution3: dfs + memory
     public boolean isMatch2(String s, String p) {
         if (s == null || p == null) {
             return false;
