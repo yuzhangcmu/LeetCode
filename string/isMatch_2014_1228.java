@@ -2,7 +2,7 @@ package Algorithms.string;
 
 public class isMatch_2014_1228 {
     // Solution 2: DFS.
-	public boolean isMatch1(String s, String p) {
+    public boolean isMatch1(String s, String p) {
         if (s == null || p == null) {
             return false;
         }
