@@ -15,6 +15,6 @@ combination -- leetcode 组合相关
 三、相关网页：  
 1. 微博解题报告： http://www.weibo.com/3948019741/profile?topnav=1&wvr=6  
 2. 微博园解题报告：http://www.cnblogs.com/yuzhangcmu/  
-3. 算法辅导：http://goo.gl/zgA2Dn
-4. Leetcode在线答案：http://goo.gl/12jBTx
+3. 算法辅导：http://goo.gl/zgA2Dn  
+4. Leetcode在线答案：http://goo.gl/12jBTx  
 5. 刷新题网站 ：http://www.lintcode.com/en/daily/  
