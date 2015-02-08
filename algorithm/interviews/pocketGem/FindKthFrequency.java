@@ -24,7 +24,7 @@ public class FindKthFrequency {
         System.out.println(findKthFrenquency4(A, 3).toString());
         
         FindKthFrequency find = new FindKthFrequency();
-        if (find) {
+        if (find != null) {
             System.out.println();
         }
     }
