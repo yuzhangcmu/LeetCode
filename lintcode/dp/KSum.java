@@ -4,6 +4,9 @@ public class KSum {
     public static void main(String[] strs) {
         int[] A = {1,2,3,4};
         //kSum(A, 2, 5);
+        
+        System.out.println(-3%2);
+        System.out.println(-14%10);
     }
     /**
      * @param A: an integer array.

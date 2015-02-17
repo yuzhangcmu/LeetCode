@@ -10,6 +10,12 @@ package Algorithms.tree;
  * }
  */
 public class IsBalanced {
+    public static void main(String[] strs) {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        //System.out.println(isBalanced(root));
+    }
+    
     // Solution 1:
     public boolean isBalanced1(TreeNode root) {
         return dfs(root).isBalanced;
@@ -50,17 +56,28 @@ public class IsBalanced {
     public boolean isBalanced(TreeNode root) {
         if (root == null) {
             return true;
-        }        
-        
-        return isBalanced(root.left) && isBalanced(root.right)
-            && Math.abs(getDepth(root.left) - getDepth(root.right)) <= 1;
-    }
-    
-    public int getDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
         }
         
-        return Math.max(getDepth(root.left), getDepth(root.right)) + 1;
+        boolean cut = false;
+        if (root.right == null || root.left == null) {
+            cut = true;
+        }
+        
+        return isBalanced(root.left) && isBalanced(root.right)
+            && Math.abs(getDepth(root.left, cut) - getDepth(root.right, cut)) <= 1;
+    }
+    
+    public int getDepth(TreeNode root, boolean cut) {
+        if (root == null) {
+            return -1;
+        }
+        
+        if (cut && (root.left != null || root.right != null)) {
+            // if another tree is not deep, just cut and return fast.
+            // Improve the performance.
+            return 2;
+        }
+        
+        return 1 + Math.max(getDepth(root.left, false), getDepth(root.right, false));
     }
 }
