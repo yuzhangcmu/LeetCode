@@ -3,12 +3,11 @@ package Algorithms.algorithm.others;
 import java.util.ArrayList;
 
 public class GraphDemo {
-    private static int M = Integer.MAX_VALUE;  // ?????????????????????
+    private static int M = Integer.MAX_VALUE; 
     
     // http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-algorithm/
-    // ???????????????????????????C???????????????
     public static void main(String[] args) {
-        int[][] w = {  // ????????????????????????????????????
+        int[][] w = {  
                 {0, 3, 2000, 7, M},
                 {3, 0, 4, 2, M},
                 {M, 4, 0, 5, 4},
@@ -16,7 +15,7 @@ public class GraphDemo {
                 {M, M , 4, 6, 0}
         };
         
-        int[][] w2 = {  // ????????????????????????????????????
+        int[][] w2 = { 
                 {0, 10, M, 30, 100},
                 {M, 0, 50, M, M},    
                 {M, M, 0, M, 10},    
@@ -24,7 +23,7 @@ public class GraphDemo {
                 {M, M, M, M, 0}
         };
         
-        int start = 0;
+        int start = 1;
         
         int[] shortPath = dijkstra(w2, start);
         
@@ -56,8 +55,8 @@ public class GraphDemo {
         }
         
         // setup the source vertex;
-        visit[0] = true;
-        pathLen[0] = 0;
+        visit[src] = true;
+        pathLen[src] = 0;
         
         // stop when all the vertices has been added into the result set.
         for (int i = 0; i < v - 1; i++) {
