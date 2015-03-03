@@ -44,7 +44,7 @@ public class Snack {
         helper(num, rst, list, i + 1, j);
         helper(num, rst, list, i, j - 1);
         helper(num, rst, list, i, j + 1);
-        num[i][j] = list.add(list.size() - 1);
+        //num[i][j] = list.add(list.size() - 1);
         list.remove(list.size() - 1);
         
     }
