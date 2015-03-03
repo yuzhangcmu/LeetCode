@@ -9,12 +9,13 @@ public class Register {
     static HashMap<Integer, Student> students = new HashMap<Integer, Student>();
     
     public static void main(String[] strs) {
-        System.out.println(addClass(1, 1, 1));
-        System.out.println(addStudent(1, 1, 1, 1));
-        System.out.println(removeClass(1));
-        System.out.println(addClass(2, 1, 1));
-        System.out.println(enrollStudent(1, 2));
+//        System.out.println(addClass(1, 1, 1));
+//        System.out.println(addStudent(1, 1, 1, 1));
+//        System.out.println(removeClass(1));
+//        System.out.println(addClass(2, 1, 1));
+//        System.out.println(enrollStudent(1, 2));
         
+        // test 2
 //        System.out.println(addStudent(1, 1, 1, 1));
 //        System.out.println(addClass(1, 1, 1));
 //        System.out.println(enrollStudent(1, 1));
@@ -23,6 +24,7 @@ public class Register {
 //        System.out.println(removeClass(1));
 //        System.out.println(infoStudent(1));
 //        
+//        // test 3
 //        System.out.println(addClass(1, 1, 1));
 //        
 //        System.out.println(enrollStudent(1, 1));
@@ -50,8 +52,8 @@ public class Register {
 //        System.out.println(addClass(2, 1, 1));
 //        System.out.println(enrollStudent(1, 2));
   
-//        System.out.println(addStudent(987654321, 123456789, 1, 999999999));
-//        System.out.println(addClass(999999999, 912345678, 853945));      
+        System.out.println(addStudent(987654321, 123456789, 1, 999999999));
+        System.out.println(addClass(999999999, 912345678, 853945));      
         
     }
 
@@ -181,7 +183,7 @@ public class Register {
                 // unenroll that student.
                 course.students.remove(id);
 
-                // increase the capcity of that class.
+                // increase the capacity of that class.
                 course.remainCapacity++;
             }
         }
