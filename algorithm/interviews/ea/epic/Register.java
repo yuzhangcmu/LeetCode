@@ -7,6 +7,53 @@ import java.util.TreeSet;
 public class Register {
     static HashMap<Integer, Course> courses = new HashMap<Integer, Course>();
     static HashMap<Integer, Student> students = new HashMap<Integer, Student>();
+    
+    public static void main(String[] strs) {
+        System.out.println(addClass(1, 1, 1));
+        System.out.println(addStudent(1, 1, 1, 1));
+        System.out.println(removeClass(1));
+        System.out.println(addClass(2, 1, 1));
+        System.out.println(enrollStudent(1, 2));
+        
+//        System.out.println(addStudent(1, 1, 1, 1));
+//        System.out.println(addClass(1, 1, 1));
+//        System.out.println(enrollStudent(1, 1));
+//        
+//        System.out.println(infoStudent(1));
+//        System.out.println(removeClass(1));
+//        System.out.println(infoStudent(1));
+//        
+//        System.out.println(addClass(1, 1, 1));
+//        
+//        System.out.println(enrollStudent(1, 1));
+//        
+//        System.out.println(infoClass(1));
+//        
+//        System.out.println(removeStudent(1));
+//        
+//        System.out.println(infoClass(1));
+//        System.out.println(addClass(1, 1, 1));
+        
+//        System.out.println(addClass(1, 1, 1));
+//        System.out.println(addStudent(1, 1, 1, 1));
+//        System.out.println(enrollStudent(1, 1));
+//        System.out.println(removeStudent(1));
+//        System.out.println(infoClass(1));
+//        System.out.println(addStudent(1, 1, 1, 1));
+//        System.out.println(infoClass(1));
+//        System.out.println(enrollStudent(1, 1));
+//        
+//        System.out.println(addClass(1, 1, 1));
+//        System.out.println(addStudent(1, 1, 1, 1));
+//        System.out.println(enrollStudent(1, 1));
+//        System.out.println(removeClass(1));
+//        System.out.println(addClass(2, 1, 1));
+//        System.out.println(enrollStudent(1, 2));
+  
+//        System.out.println(addStudent(987654321, 123456789, 1, 999999999));
+//        System.out.println(addClass(999999999, 912345678, 853945));      
+        
+    }
 
     private static class Course {
         int remainCapacity;
@@ -23,10 +70,17 @@ public class Register {
 
     private static class Student {
         TreeSet<Integer> courses = new TreeSet<Integer>();
-        HashSet<Integer> timeSlots = new HashSet<Integer>();
-
-        public Student() {
+        HashSet<Integer> takeTimeSlots = new HashSet<Integer>();
+        
+        int capacity;
+        int startTime;
+        int endTime;
+        
+        public Student(int capacity, int startTime, int endTime) {
             super();
+            this.capacity = capacity;
+            this.startTime = startTime;
+            this.endTime = endTime;
         }
     }
 
@@ -42,7 +96,7 @@ public class Register {
         return "Successfully added class " + id;
     }
 
-    public String removeClass(int id) {
+    public static String removeClass(int id) {
         // If the class is removed successfully,
         // return "Successfully removed class ID".
         // Otherwise, return "Error removing class ID".
@@ -58,7 +112,8 @@ public class Register {
                 student.courses.remove(id);
 
                 // Free the time slot
-                student.timeSlots.remove(course.time);
+                student.takeTimeSlots.remove(course.time);
+                student.capacity++;
             }
         }
 
@@ -66,7 +121,7 @@ public class Register {
         return "Successfully removed class " + id;
     }
 
-    public String infoClass(int id) {
+    public static String infoClass(int id) {
         // If the class does not
         // return "Class ID does
         // If the class is empty,
@@ -95,7 +150,7 @@ public class Register {
                 + studList.toString();
     }
 
-    public String addStudent(int id, int capacity, int start, int end) {
+    public static String addStudent(int id, int capacity, int start, int end) {
         // If the student is added successfully,
         // return "Successfully added student ID".
         // Otherwise, return "Error adding student ID".
@@ -103,16 +158,14 @@ public class Register {
             return "Error adding student " + id;
         }
 
-        Student student = new Student();
-        HashSet<Integer> timeSlots = student.timeSlots;
-        for (int i = start; i <= end; i++) {
-            timeSlots.add(i);
-        }
+        Student student = new Student(capacity, start, end);
+        
+        students.put(id, student);
 
         return "Successfully added student " + id;
     }
 
-    public String removeStudent(int id) {
+    public static String removeStudent(int id) {
         // If the student is removed successfully,
         // return "Successfully removed student ID".
         // Otherwise, return "Error removing student ID".
@@ -137,7 +190,7 @@ public class Register {
         return "Successfully removed student " + id;
     }
 
-    public String infoStudent(int id) {
+    public static String infoStudent(int id) {
         // If the student does not
         // return "Student ID does
         // If the student is not taking any classes,
@@ -156,13 +209,17 @@ public class Register {
         for (Integer courseId : student.courses) {
             courseList.append(courseId + ",");
         }
+        
+        if (courseList.length() == 0) {
+            return "Student " + id + " is not taking any classes";
+        }
 
         courseList.deleteCharAt(courseList.length() - 1);
         return "Student " + id + " is taking the following classes: "
                 + courseList.toString();
     }
 
-    public String enrollStudent(int studentId, int classId) {
+    public static String enrollStudent(int studentId, int classId) {
         // If enrollment of the student in the class succeeded,
         // return "Number of free spots left in class CLASSID: FREESPOTS"
         // where FREESPOTS is the number of free spots left
@@ -177,14 +234,24 @@ public class Register {
 
         Student student = students.get(studentId);
         Course course = courses.get(classId);
-        if (student.courses.contains(classId) || student.timeSlots.size() == 0
-                || course.remainCapacity <= 0
-                || !student.timeSlots.contains(course.time)) {
+        if (course.remainCapacity <= 0) {
+            return "Number of free spots left in class " + classId + ":0";
+        }
+        
+        if (student.courses.contains(classId) 
+                || student.capacity == 0
+                || student.takeTimeSlots.contains(course.time)
+                || (course.time < student.startTime && course.time > student.endTime)
+                ) {
             return errorString;
         }
 
         course.remainCapacity--;
-        student.timeSlots.remove(course.time);
+        course.students.add(studentId);
+        
+        student.takeTimeSlots.add(course.time);
+        student.courses.add(classId);
+        student.capacity--;
 
         return "Number of free spots left in class " + classId + ": "
                 + course.remainCapacity;
@@ -199,17 +266,20 @@ public class Register {
 
         Student student = students.get(studentId);
         Course course = courses.get(classId);
-        if (!student.courses.contains(classId)) {
+        if (student.courses.contains(classId)) {
             // remove the course from the student's enroll course.
             student.courses.remove(classId);
             
             // add back the time of the class to the student.
-            student.timeSlots.add(course.time);
+            student.takeTimeSlots.remove(course.time);
+            student.capacity++;
             
             course.students.remove(studentId);
             
             // increase the capacity of the course by one.
             course.remainCapacity++;
+        } else {
+            return errorString;
         }
         
         return "Number of free spots left in class " + classId + ": " + course.remainCapacity;
