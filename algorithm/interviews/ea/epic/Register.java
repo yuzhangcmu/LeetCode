@@ -102,7 +102,17 @@ public class Register {
         // If the student is added successfully,
         // return "Successfully added student ID".
         // Otherwise, return "Error adding student ID".
+        if (students.containsKey(id)) {
+            return "Error adding student " + id;
+        }
         
+        Student student = new Student(id, capacity);
+        HashSet<Integer> timeSlots = student.timeSlots;
+        for (int i = start; i <= end; i++) {
+            timeSlots.add(i);
+        }
+        
+        return "Successfully added student " + id;
     }
 
     public String removeStudent(int id) {
@@ -145,6 +155,12 @@ public class Register {
             || !student.timeSlots.contains(course.time)) {
             return errorString;
         }
+        
+        course.remainCapcity--;
+        student.remainCourseSlots--;
+        student.timeSlots.remove(course.time);
+        
+        return "Number of free spots left in class " + classId + ": " + course.remainCapcity;
     }
 
     public String unenrollStudent(int studentId, int classId) {
