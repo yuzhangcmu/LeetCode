@@ -2,6 +2,7 @@ package Algorithms.algorithm.interviews.ea.epic;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 public class Register {
     static HashMap<Integer, Course> courses = new HashMap<Integer, Course>();
@@ -9,54 +10,30 @@ public class Register {
 
     private static class Course {
         int id;
-        int capcity;
+        int remainCapcity;
         int time;
 
-        HashSet<Integer> students = new HashSet<Integer>();
+        TreeSet<Integer> students = new TreeSet<Integer>();
 
         public Course(int id, int capcity, int time) {
             super();
             this.id = id;
-            this.capcity = capcity;
-            this.time = time;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public int getCapcity() {
-            return capcity;
-        }
-
-        public void setCapcity(int capcity) {
-            this.capcity = capcity;
-        }
-
-        public int getTime() {
-            return time;
-        }
-
-        public void setTime(int time) {
+            this.remainCapcity = capcity;
             this.time = time;
         }
     }
 
     private static class Student {
         HashSet<Course> courses = new HashSet<Course>();
-        HashSet<Integer> timeSlot = new HashSet<Integer>();
+        HashSet<Integer> timeSlots = new HashSet<Integer>();
 
         int id;
-        int maxCourse;
+        int remainCourseSlots;
 
-        public Student(int id, int maxCourse) {
+        public Student(int id, int remainCourseSlots) {
             super();
             this.id = id;
-            this.maxCourse = maxCourse;
+            this.remainCourseSlots = remainCourseSlots;
         }
     }
 
@@ -65,7 +42,7 @@ public class Register {
         // return "Successfully added class ID".
         // Otherwise, return "Error adding class ID".
         if (courses.containsKey(id)) {
-            return "Error adding class ID";
+            return "Error adding class " + id;
         }
 
         courses.put(id, new Course(id, capacity, time));
@@ -78,7 +55,7 @@ public class Register {
         // Otherwise, return "Error removing class ID".
 
         if (!courses.containsKey(id)) {
-            return "Error removing class ID";
+            return "Error removing class " + id;
         }
 
         Course course = courses.get(id);
@@ -90,7 +67,7 @@ public class Register {
         }
         
         courses.remove(id);
-        return "Successfully removed class ID";
+        return "Successfully removed class " + id;
     }
 
     public String infoClass(int id) {
@@ -111,12 +88,21 @@ public class Register {
         if (course.students.isEmpty()) {
             return "Class " + id + " is empty";
         }
+        
+        StringBuilder studList = new StringBuilder();
+        for (Integer student: course.students) {
+            studList.append(student + ",");
+        }
+        
+        studList.deleteCharAt(studList.length() - 1);
+        return "Class " + id + " has the following students: " + studList.toString();
     }
 
     public String addStudent(int id, int capacity, int start, int end) {
         // If the student is added successfully,
         // return "Successfully added student ID".
         // Otherwise, return "Error adding student ID".
+        
     }
 
     public String removeStudent(int id) {
@@ -139,7 +125,26 @@ public class Register {
     }
 
     public String enrollStudent(int studentId, int classId) {
-
+        // If enrollment of the student in the class succeeded,
+        // return "Number of free spots left in class CLASSID: FREESPOTS" 
+        // where FREESPOTS is the number of free spots left 
+        // in the class after the student enrolls. 
+        // Otherwise, return "Enrollment of student STUDENTID in class CLASSID failed".
+        String errorString = "Enrollment of student " + studentId + " in class " + classId + " failed";
+        if (!students.containsKey(studentId) 
+            || !courses.containsKey(classId)
+            ) {
+            return errorString;
+        }
+        
+        Student student = students.get(studentId);
+        Course course = courses.get(classId);
+        if (student.courses.contains(classId)
+            || student.remainCourseSlots <= 0
+            || course.remainCapcity <= 0
+            || !student.timeSlots.contains(course.time)) {
+            return errorString;
+        }
     }
 
     public String unenrollStudent(int studentId, int classId) {
