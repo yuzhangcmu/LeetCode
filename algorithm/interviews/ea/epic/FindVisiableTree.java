@@ -4,10 +4,14 @@ import Algorithms.tree.TreeNode;
 
 public class FindVisiableTree {
     public static void main(String[] strs) {
-        int[] A = {1, 1, 0, 1, 0, 0};
+        //int[] A = {1, 0, 0, 1, 0, 0, 1, 0};
+        //int[] A = {1, 0, 0, 1, 0, 0, 1, 0};
+        int[] A = {1, 1, 1, 1};
+        //int[] A = {0,0,1,0,0};
         
         int[] A1 = {};
-        System.out.println(solution(A1));
+        System.out.println("num:");
+        System.out.println(find(A));
     }
     
     public int findNum(TreeNode root) {
@@ -35,25 +39,27 @@ public class FindVisiableTree {
         return ret;
     }
     
-    public static int solution1(int[] A) {
-        int n = A.length;
+    
+    public static int solution1(int[] arr) {
+        int n = arr.length;
         int result = 0;
         for (int i = 0; i < n - 1; i++) {
-            if (A[i] == A[i + 1])
+            if (arr[i] == arr[i + 1]) {
                 result = result + 1;
-            System.out.println(result);
+            }
+            //System.out.println(result);
         }
         int r = 0;
         for (int i = 0; i < n; i++) {
             int count = 0;
             if (i > 0) {
-                if (A[i - 1] != A[i])
+                if (arr[i - 1] != arr[i])
                     count = count + 1;
                 else
                     count = count - 1;
             }
             if (i < n - 1) {
-                if (A[i + 1] != A[i])
+                if (arr[i + 1] != arr[i])
                     count = count + 1;
                 else
                     count = count - 1;
@@ -63,25 +69,27 @@ public class FindVisiableTree {
         return result + r;
     }
     
-    public static int solution(int[] A) {
-        int n = A.length;
+    public static int solution(int[] arr) {
+        int n = arr.length;
         int result = 0;
         for (int i = 0; i < n - 1; i++) {
-            if (A[i] == A[i + 1])
+            if (arr[i] == arr[i + 1])
                 result = result + 1;
             //System.out.println(result);
         }
+        
         int r = Integer.MIN_VALUE;
+        
         for (int i = 0; i < n; i++) {
             int count = 0;
             if (i > 0) {
-                if (A[i - 1] != A[i])
+                if (arr[i - 1] != arr[i])
                     count = count + 1;
                 else
                     count = count - 1;
             }
             if (i < n - 1) {
-                if (A[i + 1] != A[i])
+                if (arr[i + 1] != arr[i])
                     count = count + 1;
                 else
                     count = count - 1;

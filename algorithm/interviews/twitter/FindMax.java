@@ -39,6 +39,68 @@ public class FindMax {
         list.add(1);
     }
     
+    public static int find(int[] arr) {
+        int cnt = 0;
+        
+        int max = Integer.MIN_VALUE;
+        
+        int lMax = 0;
+        int rMax = 0;
+        
+        int l = 0; 
+        
+//        boolean allOne = true;
+//        for (int i = 0; i < arr.length; i++) {
+//            if (arr[i] == 0) {
+//                allOne = false;
+//            }
+//        }
+//        
+//        if (allOne) {
+//            return arr.length;
+//        }
+        
+        for (int i = 0; i < arr.length; i++) {
+            if (cnt < 0) {
+                l = i;
+                cnt = 0;
+            }
+            
+            if (arr[i] == 0) {
+                cnt++;
+            } else {
+                cnt--;
+            }
+            
+            if (cnt > max) {
+                max = Math.max(max, cnt);
+                lMax = l;
+                rMax = i;
+            }
+        }
+        
+        //System.out.println("max:" + max);
+        if (max == -1) {
+            return arr.length;
+        }
+        
+        int num = 0;
+        for (int i = 0; i <= arr.length - 1; i++) {
+            if (i <= rMax && i >= lMax) {
+                if (arr[i] == 0) {
+                    num++;
+                }    
+                continue;
+            }
+            
+            if (arr[i] == 1) {
+                num++;
+            }
+        }
+        
+        return num;
+    }
+    
     public static int findMax(int[] arr) {
         if (arr == null || arr.length == 0) {
             return 0;

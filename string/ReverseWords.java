@@ -17,9 +17,11 @@ public class ReverseWords {
         
         StringBuilder sb = new StringBuilder();
         
+        //System.out.println(s);
+        
         // remove the leading and the tail space.
-        //String sTrim = s.trim();
-        String[] strs = s.split("\\s+");
+        String sTrim = s.trim();
+        String[] strs = sTrim.split("\\s+");
         for (int i = strs.length - 1; i >= 0; i--) {
             System.out.println("word:" + strs[i]);
             if (strs[i].equals("")) {
