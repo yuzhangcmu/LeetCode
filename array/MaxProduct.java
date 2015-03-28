@@ -33,7 +33,7 @@ public class MaxProduct {
     /*
      * 2014.12.20 Redo
      * */
-    public int maxProduct2(int[] A) {
+    public static int maxProduct2(int[] A) {
         if (A == null || A.length == 0) {
             return 0;
         }
@@ -46,8 +46,14 @@ public class MaxProduct {
             int n1 = max * A[i];
             int n2 = min * A[i];
             
+            System.out.println("n1:" + n1);
+            System.out.println("n2:" + n2);
+            
             max = Math.max(A[i], Math.max(n1, n2));
             min = Math.min(A[i], Math.min(n1, n2));
+            
+            System.out.println("max:" + max);
+            System.out.println("min:" + min);
             
             ret = Math.max(max, ret);
         }
@@ -59,8 +65,8 @@ public class MaxProduct {
      * 作法是找到连续的正数，不断相乘即可。
      * */
     public static void main(String[] strs) {
-        int[] A = {2, 3, -2, 4};
+        int[] A = {-2, 0, -1};
         
-        System.out.println(maxProduct(A));
+        System.out.println(maxProduct2(A));
     }
 }

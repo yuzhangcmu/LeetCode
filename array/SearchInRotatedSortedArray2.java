@@ -143,4 +143,62 @@ public class SearchInRotatedSortedArray2 {
         
         return false;
     }
+    
+    // Version3: Drop the sides quicker.
+    public boolean search3(int[] A, int target) {
+        if (A == null) {
+            return false;
+        }
+        
+        int l = 0;
+        int r = A.length - 1;
+        
+        while (l < r - 1) {
+            int mid = l + (r - l) / 2;
+            int value = A[mid];
+            
+            if (target == value) {
+                return true;
+            }
+            
+            // The right side is sorted.
+            if (value < A[l]) {
+                if (target > A[r] || target < value) {
+                    // Drop the right side.
+                    r = mid;
+                } else {
+                    // Drop the left side.
+                    l = mid;
+                }
+            // The left side is sorted.    
+            } else if (value > A[l]){
+                if (target > value || target < A[l]) {
+                    // drop the left side.
+                    l = mid;
+                } else {
+                    r = mid;
+                }
+            } else {
+                if (value > A[r]) {
+                    // The right side is unordered, so the left side should be ordered.
+                    if (target > value || target < A[l]) {
+                    // drop the left side.
+                        l = mid;
+                    } else {
+                        r = mid;
+                    }
+                }
+                
+                l++;
+            }
+        }
+        
+        if (A[l] == target) {
+            return true;
+        } else if (A[r] == target) {
+            return true;
+        }
+        
+        return false;
+    }
 }

@@ -1,10 +1,42 @@
 package Algorithms.dfs;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Subsets {
-    public List<List<Integer>> subsets(int[] S) {
+    public static void main(String[] strs) {
+        int size = 19;
+        int[] S = new int[size];
+        for (int i = 0; i < size; i++) {
+            S[i] = i;
+        }
+        
+        
+        Algorithms.permutation.Stopwatch timer1 = new Algorithms.permutation.Stopwatch();
+        //System.out.println(subsets(S));
+        subsets(S);
+        System.out
+                .println("Subset with memory record: "
+                        + timer1.elapsedTime() + " millisec.");
+        
+        timer1 = new Algorithms.permutation.Stopwatch();
+        //System.out.println(subsets(S));
+        subsets1(S);
+        System.out
+                .println("Subset recursion: "
+                        + timer1.elapsedTime() + " millisec.");
+        
+        timer1 = new Algorithms.permutation.Stopwatch();
+        //System.out.println(subsets(S));
+        subsets2(S);
+        System.out
+                .println("Subset Iterator: "
+                        + timer1.elapsedTime() + " millisec.");
+    }
+    
+    public static List<List<Integer>> subsets1(int[] S) {
         List<List<Integer>> ret = new ArrayList<List<Integer>>();
         List<Integer> path = new ArrayList<Integer>();
         
@@ -19,7 +51,7 @@ public class Subsets {
         return ret;
     }
     
-    public void subsets(int[] S, List<Integer> path, List<List<Integer>> ret, int index) {
+    public static void subsets(int[] S, List<Integer> path, List<List<Integer>> ret, int index) {
         // 把当前的结果可以添加到结果集中. 空集也算是一种集合 
         ret.add(new ArrayList<Integer>(path));
         
@@ -32,7 +64,7 @@ public class Subsets {
         }
     }
     
-    public List<List<Integer>> subsets2(int[] S) {
+    public static List<List<Integer>> subsets2(int[] S) {
         List<List<Integer>> ret = new ArrayList<List<Integer>>();
         if (S == null || S.length == 0) {
             return ret;
@@ -45,22 +77,71 @@ public class Subsets {
         long numOfSet = (long)Math.pow(2, len);
         
         for (int i = 0; i < numOfSet; i++) {
-            // bug 3: should use tmp - i.
             long tmp = i;
             
             ArrayList<Integer> list = new ArrayList<Integer>();
             while (tmp != 0) {
-                // bug 2: use error NumberOfTrailingZeros. 
                 int indexOfLast1 = Long.numberOfTrailingZeros(tmp);
                 list.add(S[indexOfLast1]);
                 
-                // clear the bit.
                 tmp ^= (1 << indexOfLast1);
             }
             
             ret.add(list);
         }
+//        for (int i = 0; i < numOfSet; i++) {
+//            long tmp = i;
+//            
+//            ArrayList<Integer> list = new ArrayList<Integer>();
+//            int index = 0;
+//            while (tmp != 0) {
+//                if ((tmp & 1) == 1) {
+//                    list.add(S[index]);
+//                }
+//                index++;
+//                tmp = tmp >> 1;
+//            }
+//            
+//            ret.add(list);
+//        }
         
+        return ret;
+    }
+    
+    // Solution 3: The memory and recursion.
+    public static List<List<Integer>> subsets(int[] S) {
+        // 2135
+        List<List<Integer>> ret = new ArrayList<List<Integer>>();
+        if (S == null) {
+            return ret;
+        }
+        
+        Arrays.sort(S);
+        return dfs3(S, 0, new HashMap<Integer, List<List<Integer>>>());
+    }
+    
+    public static List<List<Integer>> dfs3(int[] S, int index, HashMap<Integer, List<List<Integer>>> map) {
+        int len = S.length;
+        
+        if (map.containsKey(index)) {
+            return map.get(index);
+        }
+        
+        List<List<Integer>> ret = new ArrayList<List<Integer>>();
+        List<Integer> pathTmp = new ArrayList<Integer>();
+        ret.add(pathTmp);
+        
+        for (int i = index; i < len; i++) {
+            List<List<Integer>> left = dfs3(S, i + 1, map);
+            for (List<Integer> list: left) {
+                pathTmp = new ArrayList<Integer>();
+                pathTmp.add(S[i]);
+                pathTmp.addAll(list);
+                ret.add(pathTmp);
+            }
+        }
+        
+        map.put(index, ret);
         return ret;
     }
 }
