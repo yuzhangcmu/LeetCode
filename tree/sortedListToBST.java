@@ -103,4 +103,44 @@ public class sortedListToBST {
         
         return root;
     }
+    
+    // Solution 3:
+    // Recursion.
+    ListNode curNode = null;
+    
+    public TreeNode sortedListToBST3(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        
+        int size = 0;
+        ListNode cur = head;
+        while (cur != null) {
+            size++;
+            cur = cur.next;
+        }
+        
+        curNode = head;
+        return dfs(head, size);
+    }
+    
+    // Use the size to control.
+    public TreeNode dfs(ListNode head, int size) {
+        if (size <= 0) {
+            return null;
+        }
+        
+        TreeNode left = dfs(head, size / 2);
+        TreeNode root = new TreeNode(curNode.val);
+        
+        // move the current node to the next place.
+        curNode = curNode.next;
+        TreeNode right = dfs(curNode, size - size / 2 - 1);
+        
+        root.left = left;
+        root.right = right;
+        
+        return root;
+    }
 }
+
