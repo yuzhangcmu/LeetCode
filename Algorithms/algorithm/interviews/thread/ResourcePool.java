@@ -76,11 +76,11 @@ public class ResourcePool<R> {
     }
     
     public boolean add(R resource) {
-        
+        return true;
     }
     
     public boolean remove(R resource) {
-        
+        return true;
     }
     
     /**
@@ -89,7 +89,7 @@ public class ResourcePool<R> {
      * @return
      */
     public boolean removeNow(R resource) {
-        
+        return true;
     }
     
     public R acquire() throws Exception {
@@ -103,7 +103,7 @@ public class ResourcePool<R> {
     }
     
     public R acquire(long timeout, java.util.concurrent.TimeUnit unit) {
-        
+        return null;
     }
     
     public void release (R resource) {

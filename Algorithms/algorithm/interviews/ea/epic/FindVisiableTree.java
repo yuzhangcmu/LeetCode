@@ -11,7 +11,7 @@ public class FindVisiableTree {
         
         int[] A1 = {};
         System.out.println("num:");
-        System.out.println(find(A));
+//        System.out.println(find(A));
     }
     
     public int findNum(TreeNode root) {

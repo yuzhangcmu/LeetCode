@@ -2,7 +2,7 @@ package Algorithms.string;
 
 public class IsNumber {
     public static void main(String[] strs) {
-        System.out.println(isNumber("e"));
+//        System.out.println(isNumber("e"));
     }
     
     public boolean isNumber1(String s) {

@@ -28,7 +28,7 @@ public class RecoverTree {
     public static void main(String[] strs) {
         ArrayList<Object> list = new ArrayList<Object>();
         
-        list.add("string");
+        list.add("Algorithms/string");
         list.add(1);
         
         Function fuc = new Function();
