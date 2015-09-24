@@ -17,4 +17,4 @@ combination -- leetcode 组合相关
 2. 微博园解题报告：http://www.cnblogs.com/yuzhangcmu/  
 3. 算法辅导：http://goo.gl/zgA2Dn  
 4. Leetcode在线答案：http://goo.gl/12jBTx  
-5. 刷新题网站 ：http://www.lintcode.com/en/daily/  
+5. 刷新题网站 ：http://goo.gl/IolF5t
