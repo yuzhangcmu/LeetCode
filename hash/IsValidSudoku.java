@@ -4,10 +4,82 @@ import java.util.HashSet;
 
 public class IsValidSudoku {
     public static void main(String[] strs) {
+        char[][] board = new char[9][9];
         
+        String[] strs1 = new String[9];
+        
+        strs1[0] = ".87654321";
+        strs1[1] = "2........";
+        strs1[2] = "3........";
+        strs1[3] = "4........";
+        strs1[4] = "5........";
+        strs1[5] = "6........";
+        strs1[6] = "7........";
+        strs1[7] = "8........";
+        strs1[8] = "9........";
+        
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                board[i][j] = strs1[i].charAt(j);
+            }
+        }
+        
+        System.out.println(isValidSudoku(board));
     }
     
     public static boolean isValidSudoku(char[][] board) {
+        // 0346
+        HashSet<Character> set = new HashSet<Character>();
+        
+        // Examine every rows.
+        for (int i = 0; i < 9; i++) {
+            set.clear();
+            for (int j = 0; j < 9; j++) {
+                if (!isValid(board, i, j, set)) {
+                    return false;
+                }
+            }
+        }
+        
+        // Examine every cols.
+        for (int j = 0; j < 9; j++) {
+            set.clear();
+            for (int i = 0; i < 9; i++) {
+                if (!isValid(board, i, j, set)) {
+                    return false;
+                }
+            }
+        }
+        
+        // Eamine every square.
+        for (int i = 0; i < 9; i++) {
+            set.clear();
+            for (int j = i / 3 * 3; j < i / 3 * 3 + 3; j++) {
+                for (int k = i % 3 * 3; k < i % 3 * 3 + 3; k++) {
+                    if (!isValid(board, j, k, set)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    public static boolean isValid(char[][] board, int i, int j, HashSet<Character> set) {
+        if (board[i][j] == '.') {
+            return true;
+        }
+        
+        if (!set.contains(board[i][j])) {
+            return false;                    
+        }
+                
+        set.add(board[i][j]);
+        return true;
+    }
+    
+    public static boolean isValidSudoku1(char[][] board) {
         if (board == null || board.length != 9 ||
             board[0].length != 9) {
             return false;

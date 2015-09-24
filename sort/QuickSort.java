@@ -13,7 +13,7 @@ import java.util.*;
 
 public class QuickSort {
     //private static final int SIZE = 100000;
-    private static final int SIZE = 10;
+    private static final int SIZE = 5000;
     private static Random rand = new Random();
 
     public static void main(String args[]) {
@@ -24,29 +24,29 @@ public class QuickSort {
             //array[i] = i;
         
         //int[] array = {3, 4, 6, 1, 7, 8, 6, 7, 6, 6};
-        //int[] array1 = {6,6,1,3,2,5,6,6};
-        int[] array1 = {6,6,6,6};
+        int[] array1 = {6,1,3,2,5};
+        //int[] array1 = {6,6,6,6};
 
         // reversely ordered
         /*
         for(int i=0;i<SIZE; i++) array[i] = SIZE - i;
          */
 
-        quickSort(array);
+        quickSort(array1);
 
         // to make sure sorting works.
         // add "-ea" vm argument
-        assert isSorted(array);
-        System.out.println(partition(array1, 0, array1.length - 1, array1[array1.length - 1]));
-        System.out.println(isSorted(array));
-        printArray(array1);
+        //assert isSorted(array1);
+        //System.out.println(partition(array1, 0, array1.length - 1, array1[array1.length - 1]));
+        System.out.println(isSorted(array1));
+        //printArray(array);
     }
     
     public static void printArray(int[] arr) {
-        System.out.println();
-        for(int i: arr) {
-            System.out.print(i + " ");
-        }
+//        System.out.println();
+//        for(int i: arr) {
+//            System.out.print(i + " ");
+//        }
     }
 
     public static void quickSort(int[] arr) {
@@ -60,10 +60,40 @@ public class QuickSort {
         }
 
         // we just set the right node to be pivot.
-        int pivPosition = partition(arr, left, right, arr[right]);
+        int pivPosition = partition1(arr, left, right, arr[right]);
 
         recQuickSort(arr, left, pivPosition - 1);
         recQuickSort(arr, pivPosition + 1, right);
+    }
+    
+    private static int partition1(int[] arr, int left, int right, int pivot) {
+        int l = left;
+        int r = right;
+        
+        //System.out.printf("\nEnter partition1. left:%d, right:%d\n", left, right);
+        
+        while (l < r) {
+            while (l < r && arr[l] < pivot) {
+                l++;
+            }
+            
+            while (l < r && arr[r] >= pivot) {
+                r--;
+            }
+            
+            //System.out.printf("\nswap while arr before. l:%d, r:%d\n", l, r);
+            printArray(arr);
+            swap(arr, l, r);
+            //System.out.printf("\nswap while arr end. l:%d, r:%d\n", l, r);
+            printArray(arr);
+        }
+        
+        //System.out.printf("\nEnd while swap while arr Begin. l:%d, r:%d\n", l, r);
+        printArray(arr);
+        swap(arr, l, right);
+        //System.out.printf("\nEnd while swap while arr end. l:%d, r:%d\n", l, r);
+        printArray(arr);
+        return l;
     }
     
     // partition the array and return the new pivot position.

@@ -15,26 +15,52 @@ import Algorithms.algorithm.others.ListNode;
  */
 
 public class SwapPairs {
+    public static void main(String[] strs) {
+        ListNode n1 = new ListNode(1);
+        ListNode n2 = new ListNode(2);
+        ListNode n3 = new ListNode(3);
+        ListNode n4 = new ListNode(4);
+        
+        n1.next = n2;
+        n2.next = n3;
+        n3.next = n4;
+        
+        ListNode swap = swapPairs1(n1);
+        System.out.println(swap.toString());
+    }
+    
+    
     // Solution 1: recursion.
-    public ListNode swapPairs1(ListNode head) {
+    public static ListNode swapPairs1(ListNode head) {
         return rec(head);
     }
     
-    public ListNode rec(ListNode head) {
+    public static ListNode rec(ListNode head) {
         // nodes less than 2, do nothing.
         if (head == null || head.next == null) {
             return head;
         }
         
-        // reverse the next part.
+        // reverse the next part.        
         ListNode next = rec(head.next.next);
+        
+        if (next == null) {
+            System.out.println("next is null ");
+        } else {
+            System.out.println("next:" + next.val + " ");
+        }
+        
         
         // store the new head;
         ListNode headNew = head.next;
         
+        //System.out.println("headNew:" + headNew.val + " ");
+        
         // reverse the two nodes.
         headNew.next = head;
-        head.next = next;
+        head.next = next;        
+        
+        System.out.println("headNew: " + headNew.toString());
         
         return headNew;
     }

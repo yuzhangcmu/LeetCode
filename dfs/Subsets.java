@@ -7,16 +7,15 @@ import java.util.List;
 
 public class Subsets {
     public static void main(String[] strs) {
-        int size = 19;
+        int size = 3;
         int[] S = new int[size];
         for (int i = 0; i < size; i++) {
             S[i] = i;
         }
         
-        
         Algorithms.permutation.Stopwatch timer1 = new Algorithms.permutation.Stopwatch();
         //System.out.println(subsets(S));
-        subsets(S);
+        System.out.println(subsets(S));
         System.out
                 .println("Subset with memory record: "
                         + timer1.elapsedTime() + " millisec.");
@@ -109,7 +108,7 @@ public class Subsets {
     }
     
     // Solution 3: The memory and recursion.
-    public static List<List<Integer>> subsets(int[] S) {
+    public static List<List<Integer>> subsets3(int[] S) {
         // 2135
         List<List<Integer>> ret = new ArrayList<List<Integer>>();
         if (S == null) {
@@ -143,6 +142,34 @@ public class Subsets {
         
         map.put(index, ret);
         return ret;
+    }
+    
+    public static List<List<Integer>> subsets(int[] S) {
+        List<List<Integer>> ret = new ArrayList<List<Integer>>();
+        if (S == null) {
+            return ret;
+        }
+        
+        Arrays.sort(S);
+        
+        ArrayList<Integer> path = new ArrayList<Integer>();
+        
+        dfs2(S, 0, path, ret);    
+        
+        return ret;
+    }
+    
+    public static void dfs2(int[] S, int index, List<Integer> path, List<List<Integer>> ret) {
+        if (index >= S.length) { 
+            ret.add(new ArrayList<Integer>(path));    
+            return;
+        }
+        
+        path.add(S[index]);
+        dfs2(S, index + 1, path, ret);
+        path.remove(path.size() - 1);
+        
+        dfs2(S, index + 1, path, ret);
     }
 }
 
