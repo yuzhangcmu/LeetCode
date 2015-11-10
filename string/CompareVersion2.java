@@ -7,37 +7,27 @@ public class CompareVersion2 {
     }
     
     public static int compareVersion(String version1, String version2) {
-        if (version1 == null || version2 == null) {
+        if (version1 == null || version2 == null || version1.length() == 0
+            || version2.length() == 0) {
             return 0;
         }
         
-        int len1 = version1.length();
-        int len2 = version2.length();
         
-        int p1 = 0;
-        int p2 = 0;
+        String [] strs1 = version1.split("\\.");
+        String [] strs2 = version2.split("\\.");
         
-        int v1 = 0;
-        int v2 = 0;
-        while (true) {
-            v1 = 0;
-            v2 = 0;
-            
-            // Like this: 1.3  VS  1.3.4
-            // The length of the two version are not equal.
-            if (p1 >= len1 && p2 >= len2) {
-                return 0;
-            }
-            
-            while (p1 < len1 && version1.charAt(p1) != '.') {
-                v1 = v1 * 10 + ((int)version1.charAt(p1) - '0');
-                p1++;
-            }    
-            
-            while (p2 < len2 && version2.charAt(p2) != '.') {
-                v2 = v2 * 10 + ((int)version2.charAt(p2) - '0');
-                p2++;
-            }
+        int size1 = strs1.length;
+        int size2 = strs2.length;
+        
+        int maxSize = Math.max(size1,size2);
+        
+        for (int i=0; i< maxSize; i++) {
+            int v1 = 0;
+            int v2 = 0;
+            if (size1 > i)
+                v1 = Integer.parseInt(strs1[i]);
+            if (size2 > i)
+                v2 = Integer.parseInt(strs2[i]);
             
             if (v1 > v2) {
                 return 1;
@@ -45,8 +35,8 @@ public class CompareVersion2 {
                 return -1;
             }
             
-            p1++;
-            p2++;
         }
+        
+        return 0;
     }
 }
