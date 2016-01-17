@@ -5,12 +5,13 @@ public class IsMatch {
 //        System.out.println(isMatch("aa","a"));
 //        System.out.println(isMatch("aa","aa**"));
 //        System.out.println(isMatch("aaa","aa"));
-        System.out.println(isMatch("hi", "*?"));
+        System.out.println(isMatch2("aa", "c*a*b"));
 //        System.out.println(isMatch("aa","a*"));
 //        System.out.println(isMatch("ab","?*"));
 //        System.out.println(isMatch("aab", "c*a*b"));
     }
     
+    // 1. DP.
     public static boolean isMatch1(String s, String p) {
         if (s == null || p == null) {
             return false;
@@ -68,6 +69,7 @@ public class IsMatch {
         return (p == '?' || p == c);
     }
     
+    // 2. 
     public static boolean isMatch(String s, String p) {
         if (s == null || p == null) {
             return false;
@@ -119,5 +121,44 @@ public class IsMatch {
         }
 
         return false;
+    }
+    
+    //     1. DFS.
+    public static boolean isMatch2(String s, String p) {
+        int lenP = p.length();
+        int lenS = s.length();
+        
+        if (lenP == 0) {
+            return lenS == 0;
+        }
+        
+        char pchar = p.charAt(0);
+        
+        if (lenP >= 2 && p.charAt(1) == '*') {
+            //'*' Matches zero or more of the preceding element.
+            if (isMatch2(s, p.substring(2))) {
+                return true;
+            }
+            
+            for (int i = 0; i < lenS; i++) {
+                if (!matchChar2(s.charAt(i), pchar)) {
+                    break;
+                }
+                
+                if (isMatch2(s.substring(i + 1), p.substring(2))) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        return lenS > 0 
+            && matchChar(s.charAt(0), pchar) 
+            && isMatch2(s.substring(1), p.substring(1));
+    }
+    
+    public static boolean matchChar2(char s, char p) {
+        return p == '.' || s == p;
     }
 }
