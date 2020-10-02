@@ -1,7 +1,7 @@
 LeetCode
 ==================
 一、简介  
-1. Leetcode sol ution writtern in Java.  
+1. Leetcode solution writtern in Java.  
 2. 部分公司面经
 
 二、目录划分：  
